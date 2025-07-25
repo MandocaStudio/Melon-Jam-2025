@@ -1,16 +1,12 @@
 {
-<<<<<<<< HEAD:Assets/inputs.inputactions
     "name": "inputs",
-========
-    "name": "PlayerControls",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
     "maps": [
         {
             "name": "Player",
             "id": "885175b0-3e71-4bf7-82b7-ae742f149ee1",
             "actions": [
                 {
-                    "name": "movement",
+                    "name": "Move",
                     "type": "Value",
                     "id": "0795af10-9c77-4c2b-a80e-6dc8ccf70461",
                     "expectedControlType": "Vector2",
@@ -68,8 +64,6 @@
                     "type": "Button",
                     "id": "65a41ae1-d683-4ae4-8043-ce293d4ea2ee",
                     "expectedControlType": "",
-<<<<<<<< HEAD:Assets/inputs.inputactions
-========
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -79,7 +73,6 @@
                     "type": "Button",
                     "id": "8156b1fb-514e-4ced-b704-4f93f08143d7",
                     "expectedControlType": "",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -93,7 +86,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "movement",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -101,12 +94,6 @@
                     "name": "up",
                     "id": "b3bf01c1-7e07-45de-a8d8-047a4874ef41",
                     "path": "<Keyboard>/upArrow",
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "movement",
-========
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
@@ -122,7 +109,6 @@
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
                     "action": "Move",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -133,35 +119,11 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                    "action": "movement",
-========
                     "action": "Move",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                    "name": "Right",
-                    "id": "67b9c1f5-f377-41fd-ad50-d4648023d9a4",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Left",
-                    "id": "f17b6078-eaa2-48a8-8899-2762a99d63ae",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "movement",
-========
                     "name": "down",
                     "id": "2fdaa02b-743c-4b0a-b6e0-7ded4ca68b23",
                     "path": "<Keyboard>/s",
@@ -169,7 +131,6 @@
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
                     "action": "Move",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -180,11 +141,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                    "action": "movement",
-========
                     "action": "Move",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -195,22 +152,11 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                    "action": "movement",
-========
                     "action": "Move",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                    "name": "",
-                    "id": "8afe3aad-1b79-4db3-a085-f5170cc33a88",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-========
                     "name": "2D Vector",
                     "id": "859074cf-028c-417a-81c1-86e29f4bc322",
                     "path": "2DVector",
@@ -249,7 +195,6 @@
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "groups": ";Gamepad;teclado",
                     "action": "Interact",
                     "isComposite": false,
@@ -302,8 +247,6 @@
                 {
                     "name": "",
                     "id": "f1ab43ea-5e19-4ded-997a-5d4912e99157",
-<<<<<<<< HEAD:Assets/inputs.inputactions
-========
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
@@ -392,83 +335,13 @@
                 {
                     "name": "",
                     "id": "ff3cb292-aab9-490b-acc9-a63eeb81baae",
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "polarityChanger",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
-<<<<<<<< HEAD:Assets/inputs.inputactions
-                },
-                {
-                    "name": "",
-                    "id": "b7303d6e-b0d4-432b-80df-8702b2a96664",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "restartButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b20e515e-5bc3-4cdd-b458-7b367e97919a",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "restartButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a2f0545d-2bdb-4d11-a803-49f60b92a34d",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "exitButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "01287d2d-79ca-4b2e-9722-d5249e97eaea",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "exitButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4d0ae1a1-02a0-4daf-bf3b-7229508baa72",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "traversableButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "18ba8ffb-eb98-43ab-903b-8d232c7e0f70",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "traversableButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-========
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions
                 }
             ]
         },

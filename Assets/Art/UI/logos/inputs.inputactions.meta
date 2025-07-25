@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/inputs.inputactions.meta
-guid: 797d841978d5eb54180b623d9ab681f4
-========
-guid: b07ee4960d2adca43858f4b538af3b0a
->>>>>>>> 482049f938acac8517faa7fa6764f28fe60df56f:Assets/PlayerControls.inputactions.meta
+guid: 1ced994c9a194294cb78604e2f97a7c3
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -12,7 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 8404be70184654265930450def6a9037, type: 3}
-  generateWrapperCode: 1
+  generateWrapperCode: 0
   wrapperCodePath: 
   wrapperClassName: 
   wrapperCodeNamespace: 
