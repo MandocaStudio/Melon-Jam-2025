@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour
             {
                 smallCount -= 5;
                 bigCount++;
-                Debug.Log("¡Se creó un:" + type);
+                Debug.Log("Tenemos un:" + type);
             }
 
         }
@@ -68,7 +68,6 @@ public class Inventory : MonoBehaviour
     {
         InventoryItem item = inventory[(int)type];
         item.AddSmall();
-        Debug.Log($"Recolectaste un objeto pequeño de tipo {type}. Total pequeños: {item.smallCount}, grandes: {item.bigCount}");
     }
 
 
