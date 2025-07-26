@@ -3,9 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerControls controls;
+    private PlayerControls controls;  // El sistema de controles
     public GameObject projectilePrefab;
-    private PlayerHealth playerHealth;
 
     [Header("Grid Setup")]
     public GameObject[] tileObjects = new GameObject[5];  // Tiles fila 0 a 4
@@ -15,10 +14,10 @@ public class PlayerController : MonoBehaviour
     private float columnX;   // Se toma del spawnTile
     private int currentRow;  // Se determina automáticamente según spawnTile
 
+    // Asegúrate de inicializar controls en Awake, no en Start.
     private void Awake()
     {
-        controls = new PlayerControls();
-        playerHealth = GetComponent<PlayerHealth>();
+        controls = new PlayerControls();  // Inicializa el sistema de controles
     }
 
     private void Start()
@@ -61,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        controls.Enable();
+        controls.Enable();  // Activa el sistema de entradas
         controls.Player.Move.performed += OnMovePerformed;
         controls.Player.Attack.performed += OnAttackPerformed;
     }
@@ -70,15 +69,16 @@ public class PlayerController : MonoBehaviour
     {
         controls.Player.Move.performed -= OnMovePerformed;
         controls.Player.Attack.performed -= OnAttackPerformed;
-        controls.Disable();
+        controls.Disable();  // Desactiva el sistema de entradas
     }
 
-   private void OnMovePerformed(InputAction.CallbackContext ctx)
-{
-    Vector2 input = ctx.ReadValue<Vector2>();
-    if (input.y > 0.1f) MoveDown();      // W o Joystick arriba → baja fila (índice mayor → posición más arriba)
-    else if (input.y < -0.1f) MoveUp();  // S o Joystick abajo → sube fila (índice menor → posición más abajo)
-}
+    private void OnMovePerformed(InputAction.CallbackContext ctx)
+    {
+        Vector2 input = ctx.ReadValue<Vector2>();
+        if (input.y > 0.1f) MoveDown();      // W o Joystick arriba → baja fila (índice mayor → posición más arriba)
+        else if (input.y < -0.1f) MoveUp();  // S o Joystick abajo → sube fila (índice menor → posición más abajo)
+    }
+
     private void MoveUp()
     {
         if (currentRow < rowYPositions.Length - 1)
@@ -113,14 +113,5 @@ public class PlayerController : MonoBehaviour
         Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);
         Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
         Debug.Log("Disparando proyectil");
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy") || other.CompareTag("EnemyProjectile"))
-        {
-            playerHealth.TakeDamage(1);
-            Destroy(other.gameObject);
-        }
     }
 }

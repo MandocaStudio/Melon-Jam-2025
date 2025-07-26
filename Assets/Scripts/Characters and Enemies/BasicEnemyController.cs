@@ -52,7 +52,7 @@ public class BasicEnemyController : MonoBehaviour
 
         if (other.CompareTag("PlayerColumn"))
         {
-            PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
+            ColumnHealthBar playerHealth = other.GetComponentInParent<ColumnHealthBar>();
             if (playerHealth != null)
                 playerHealth.TakeDamage(1);
 

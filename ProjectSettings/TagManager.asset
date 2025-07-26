@@ -4,17 +4,18 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - PlayerColumn
   - Enemy
   - Projectile
-  - PlayerColumn
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Projectile
+  - 
   - Water
   - UI
-  - Enemy
+  - 
   - 
   - 
   - 
