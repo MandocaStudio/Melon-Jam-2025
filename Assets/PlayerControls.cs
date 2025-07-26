@@ -101,7 +101,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""ice"",
                     ""type"": ""Button"",
                     ""id"": ""30627c68-48eb-4716-affc-f265e73373b8"",
                     ""expectedControlType"": """",
@@ -110,27 +110,27 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""pauseButton"",
-                    ""type"": ""Button"",
-                    ""id"": ""32486be2-366f-420e-aa68-8ff5cc7d2a8a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""polarityChanger"",
-                    ""type"": ""Button"",
-                    ""id"": ""e7864d27-7724-40a3-b850-f6a3cc29f1fa"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""restartButton"",
+                    ""name"": ""ray"",
                     ""type"": ""Button"",
                     ""id"": ""c12bb07c-8c32-4454-bd02-d81bbeae85e2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""wind"",
+                    ""type"": ""Button"",
+                    ""id"": ""65a41ae1-d683-4ae4-8043-ce293d4ea2ee"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""deselect"",
+                    ""type"": ""Button"",
+                    ""id"": ""a82a1c51-e418-47a9-a7f2-8b48c7b053dd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -140,15 +140,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""exitButton"",
                     ""type"": ""Button"",
                     ""id"": ""57785c52-5bd3-426e-be07-28ca4b61c739"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""traversableButton"",
-                    ""type"": ""Button"",
-                    ""id"": ""65a41ae1-d683-4ae4-8043-ce293d4ea2ee"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -282,84 +273,40 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad;teclado"",
-                    ""action"": ""Interact"",
+                    ""action"": ""ice"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""e65957b1-b957-4303-a513-1371d12cfedf"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d28581ad-f6d7-45e4-984a-43674002508c"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""pauseButton"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3776261f-5141-4ef4-9181-04cbde65d5d7"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""pauseButton"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""726b6a1a-fbe6-43a2-bca4-0fe24de9c7c8"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""polarityChanger"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f1ab43ea-5e19-4ded-997a-5d4912e99157"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""polarityChanger"",
+                    ""action"": ""ice"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""b7303d6e-b0d4-432b-80df-8702b2a96664"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""restartButton"",
+                    ""action"": ""ray"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""b20e515e-5bc3-4cdd-b458-7b367e97919a"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""restartButton"",
+                    ""action"": ""ray"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -388,22 +335,44 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4d0ae1a1-02a0-4daf-bf3b-7229508baa72"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""traversableButton"",
+                    ""action"": ""wind"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""18ba8ffb-eb98-43ab-903b-8d232c7e0f70"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""traversableButton"",
+                    ""action"": ""wind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c699d000-fb84-4a31-9aed-488d13d1bf3c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""deselect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0bbd12ea-6c6e-4433-b743-9af68dc865e2"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";teclado;KeyBoard"",
+                    ""action"": ""deselect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1093,12 +1062,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_pauseButton = m_Player.FindAction("pauseButton", throwIfNotFound: true);
-        m_Player_polarityChanger = m_Player.FindAction("polarityChanger", throwIfNotFound: true);
-        m_Player_restartButton = m_Player.FindAction("restartButton", throwIfNotFound: true);
+        m_Player_ice = m_Player.FindAction("ice", throwIfNotFound: true);
+        m_Player_ray = m_Player.FindAction("ray", throwIfNotFound: true);
+        m_Player_wind = m_Player.FindAction("wind", throwIfNotFound: true);
+        m_Player_deselect = m_Player.FindAction("deselect", throwIfNotFound: true);
         m_Player_exitButton = m_Player.FindAction("exitButton", throwIfNotFound: true);
-        m_Player_traversableButton = m_Player.FindAction("traversableButton", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1196,12 +1164,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_pauseButton;
-    private readonly InputAction m_Player_polarityChanger;
-    private readonly InputAction m_Player_restartButton;
+    private readonly InputAction m_Player_ice;
+    private readonly InputAction m_Player_ray;
+    private readonly InputAction m_Player_wind;
+    private readonly InputAction m_Player_deselect;
     private readonly InputAction m_Player_exitButton;
-    private readonly InputAction m_Player_traversableButton;
     private readonly InputAction m_Player_Attack;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -1219,29 +1186,25 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Player_Move;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Interact".
+        /// Provides access to the underlying input action "Player/ice".
         /// </summary>
-        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @ice => m_Wrapper.m_Player_ice;
         /// <summary>
-        /// Provides access to the underlying input action "Player/pauseButton".
+        /// Provides access to the underlying input action "Player/ray".
         /// </summary>
-        public InputAction @pauseButton => m_Wrapper.m_Player_pauseButton;
+        public InputAction @ray => m_Wrapper.m_Player_ray;
         /// <summary>
-        /// Provides access to the underlying input action "Player/polarityChanger".
+        /// Provides access to the underlying input action "Player/wind".
         /// </summary>
-        public InputAction @polarityChanger => m_Wrapper.m_Player_polarityChanger;
+        public InputAction @wind => m_Wrapper.m_Player_wind;
         /// <summary>
-        /// Provides access to the underlying input action "Player/restartButton".
+        /// Provides access to the underlying input action "Player/deselect".
         /// </summary>
-        public InputAction @restartButton => m_Wrapper.m_Player_restartButton;
+        public InputAction @deselect => m_Wrapper.m_Player_deselect;
         /// <summary>
         /// Provides access to the underlying input action "Player/exitButton".
         /// </summary>
         public InputAction @exitButton => m_Wrapper.m_Player_exitButton;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/traversableButton".
-        /// </summary>
-        public InputAction @traversableButton => m_Wrapper.m_Player_traversableButton;
         /// <summary>
         /// Provides access to the underlying input action "Player/Attack".
         /// </summary>
@@ -1275,24 +1238,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
-            @pauseButton.started += instance.OnPauseButton;
-            @pauseButton.performed += instance.OnPauseButton;
-            @pauseButton.canceled += instance.OnPauseButton;
-            @polarityChanger.started += instance.OnPolarityChanger;
-            @polarityChanger.performed += instance.OnPolarityChanger;
-            @polarityChanger.canceled += instance.OnPolarityChanger;
-            @restartButton.started += instance.OnRestartButton;
-            @restartButton.performed += instance.OnRestartButton;
-            @restartButton.canceled += instance.OnRestartButton;
+            @ice.started += instance.OnIce;
+            @ice.performed += instance.OnIce;
+            @ice.canceled += instance.OnIce;
+            @ray.started += instance.OnRay;
+            @ray.performed += instance.OnRay;
+            @ray.canceled += instance.OnRay;
+            @wind.started += instance.OnWind;
+            @wind.performed += instance.OnWind;
+            @wind.canceled += instance.OnWind;
+            @deselect.started += instance.OnDeselect;
+            @deselect.performed += instance.OnDeselect;
+            @deselect.canceled += instance.OnDeselect;
             @exitButton.started += instance.OnExitButton;
             @exitButton.performed += instance.OnExitButton;
             @exitButton.canceled += instance.OnExitButton;
-            @traversableButton.started += instance.OnTraversableButton;
-            @traversableButton.performed += instance.OnTraversableButton;
-            @traversableButton.canceled += instance.OnTraversableButton;
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
@@ -1310,24 +1270,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
-            @pauseButton.started -= instance.OnPauseButton;
-            @pauseButton.performed -= instance.OnPauseButton;
-            @pauseButton.canceled -= instance.OnPauseButton;
-            @polarityChanger.started -= instance.OnPolarityChanger;
-            @polarityChanger.performed -= instance.OnPolarityChanger;
-            @polarityChanger.canceled -= instance.OnPolarityChanger;
-            @restartButton.started -= instance.OnRestartButton;
-            @restartButton.performed -= instance.OnRestartButton;
-            @restartButton.canceled -= instance.OnRestartButton;
+            @ice.started -= instance.OnIce;
+            @ice.performed -= instance.OnIce;
+            @ice.canceled -= instance.OnIce;
+            @ray.started -= instance.OnRay;
+            @ray.performed -= instance.OnRay;
+            @ray.canceled -= instance.OnRay;
+            @wind.started -= instance.OnWind;
+            @wind.performed -= instance.OnWind;
+            @wind.canceled -= instance.OnWind;
+            @deselect.started -= instance.OnDeselect;
+            @deselect.performed -= instance.OnDeselect;
+            @deselect.canceled -= instance.OnDeselect;
             @exitButton.started -= instance.OnExitButton;
             @exitButton.performed -= instance.OnExitButton;
             @exitButton.canceled -= instance.OnExitButton;
-            @traversableButton.started -= instance.OnTraversableButton;
-            @traversableButton.performed -= instance.OnTraversableButton;
-            @traversableButton.canceled -= instance.OnTraversableButton;
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
@@ -1635,33 +1592,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ice" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnInteract(InputAction.CallbackContext context);
+        void OnIce(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "pauseButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ray" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPauseButton(InputAction.CallbackContext context);
+        void OnRay(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "polarityChanger" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "wind" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPolarityChanger(InputAction.CallbackContext context);
+        void OnWind(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "restartButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "deselect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRestartButton(InputAction.CallbackContext context);
+        void OnDeselect(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "exitButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -1669,13 +1626,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnExitButton(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "traversableButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnTraversableButton(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

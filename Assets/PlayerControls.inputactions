@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Interact",
+                    "name": "ice",
                     "type": "Button",
                     "id": "30627c68-48eb-4716-affc-f265e73373b8",
                     "expectedControlType": "",
@@ -24,27 +24,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "pauseButton",
-                    "type": "Button",
-                    "id": "32486be2-366f-420e-aa68-8ff5cc7d2a8a",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "polarityChanger",
-                    "type": "Button",
-                    "id": "e7864d27-7724-40a3-b850-f6a3cc29f1fa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "restartButton",
+                    "name": "ray",
                     "type": "Button",
                     "id": "c12bb07c-8c32-4454-bd02-d81bbeae85e2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "wind",
+                    "type": "Button",
+                    "id": "65a41ae1-d683-4ae4-8043-ce293d4ea2ee",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "deselect",
+                    "type": "Button",
+                    "id": "a82a1c51-e418-47a9-a7f2-8b48c7b053dd",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -54,15 +54,6 @@
                     "name": "exitButton",
                     "type": "Button",
                     "id": "57785c52-5bd3-426e-be07-28ca4b61c739",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "traversableButton",
-                    "type": "Button",
-                    "id": "65a41ae1-d683-4ae4-8043-ce293d4ea2ee",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -196,84 +187,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad;teclado",
-                    "action": "Interact",
+                    "action": "ice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "e65957b1-b957-4303-a513-1371d12cfedf",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d28581ad-f6d7-45e4-984a-43674002508c",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "pauseButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3776261f-5141-4ef4-9181-04cbde65d5d7",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "pauseButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "726b6a1a-fbe6-43a2-bca4-0fe24de9c7c8",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";teclado;KeyBoard",
-                    "action": "polarityChanger",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f1ab43ea-5e19-4ded-997a-5d4912e99157",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "polarityChanger",
+                    "action": "ice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "b7303d6e-b0d4-432b-80df-8702b2a96664",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-                    "action": "restartButton",
+                    "action": "ray",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "b20e515e-5bc3-4cdd-b458-7b367e97919a",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "restartButton",
+                    "action": "ray",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -302,22 +249,44 @@
                 {
                     "name": "",
                     "id": "4d0ae1a1-02a0-4daf-bf3b-7229508baa72",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "traversableButton",
+                    "action": "wind",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "18ba8ffb-eb98-43ab-903b-8d232c7e0f70",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-                    "action": "traversableButton",
+                    "action": "wind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c699d000-fb84-4a31-9aed-488d13d1bf3c",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "deselect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0bbd12ea-6c6e-4433-b743-9af68dc865e2",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";teclado;KeyBoard",
+                    "action": "deselect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

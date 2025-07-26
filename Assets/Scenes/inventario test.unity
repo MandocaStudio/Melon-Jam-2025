@@ -1075,6 +1075,7 @@ GameObject:
   - component: {fileID: 662114204}
   - component: {fileID: 662114203}
   - component: {fileID: 662114207}
+  - component: {fileID: 662114208}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1186,13 +1187,35 @@ MonoBehaviour:
   inventory:
   - type: 0
     smallCount: 0
-    bigCount: 0
+    bigCount: 1
   - type: 0
     smallCount: 0
-    bigCount: 0
+    bigCount: 1
   - type: 0
     smallCount: 0
-    bigCount: 0
+    bigCount: 1
+--- !u!114 &662114208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662114202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fd5f2dc6a29fc4f96bed5fde3dc0df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 662114207}
+  cancel:
+    m_Name: Cancel
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 554bc82b-9cbf-491a-91dd-b49caa69278b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &684809750
 GameObject:
   m_ObjectHideFlags: 0
