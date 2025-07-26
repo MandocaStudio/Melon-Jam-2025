@@ -32,6 +32,7 @@ public class GridPositionerFixedIndex : MonoBehaviour
     private void OnEnable()
     {
         HandleVisibility();
+        UpdateTilePositions(); // Actualiza las posiciones de los tiles al iniciar.
     }
 
     private void HandleVisibility()
@@ -54,6 +55,9 @@ public class GridPositionerFixedIndex : MonoBehaviour
 
     private void UpdateTilePositions()
     {
+        // Obtener la rotación actual de la cámara
+        float cameraAngle = Camera.main.transform.rotation.eulerAngles.y;
+
         for (int col = 0; col < columnPositions.Length; col++)
         {
             for (int row = 0; row < rowCount; row++)
@@ -63,9 +67,22 @@ public class GridPositionerFixedIndex : MonoBehaviour
 
                 if (tile != null)
                 {
+                    // Calculamos las posiciones X y Y de acuerdo con la rotación de la cámara
                     float posX = columnPositions[col];
                     float posY = rowStartY + row * rowSpacing;
-                    tile.position = transform.position + new Vector3(posX, posY, 0f);
+
+                    // Mantén la posición Z constante si no necesitas un desplazamiento en Z
+                    float posZ = 0f;
+
+                    // Aplica la rotación al tile sin afectar la escala
+                    Vector3 offset = new Vector3(posX, posY, posZ);
+                    tile.position = transform.position + offset;
+
+                    // Aplique la rotación solo al eje Y sin alterar la escala del tile
+                    tile.rotation = Quaternion.Euler(0, cameraAngle, 0);
+
+                    // Si el tile es un cubo, asegúrate de que su escala sea constante
+                    tile.localScale = Vector3.one; // Asegura que la escala del tile sea 1 en todos los ejes
                 }
             }
         }
