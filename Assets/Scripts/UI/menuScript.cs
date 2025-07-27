@@ -18,6 +18,9 @@ public class menuScript : MonoBehaviour
     public GameObject mainMenu;
     public GameObject firstButtonMainMenu;
 
+    public GameObject creditSection;
+    public GameObject firstButtoncreditSection;
+
     public GameObject imageTitle;
 
     private string currentControlScheme;
@@ -72,11 +75,28 @@ public class menuScript : MonoBehaviour
     {
         mainMenu.SetActive(true);
         optionsMenu.SetActive(false);
+        if (creditSection.activeSelf)
+        {
+            creditSection.SetActive(false);
+
+        }
 
         imageTitle.SetActive(true);
 
 
         StartCoroutine(FocusNextButton(firstButtonMainMenu));
+
+    }
+
+    public void openCreditsSection()
+    {
+        mainMenu.SetActive(false);
+        creditSection.SetActive(true);
+
+        imageTitle.SetActive(false);
+
+
+        StartCoroutine(FocusNextButton(firstButtoncreditSection));
 
     }
 
@@ -135,7 +155,7 @@ public class menuScript : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             // Detectar entrada de teclado o gamepad
-            Debug.Log("entro");
+            //Debug.Log("entro");
 
             if (optionsMenu.activeSelf && (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard"))
             {
@@ -145,6 +165,10 @@ public class menuScript : MonoBehaviour
             else if (mainMenu.activeSelf && (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard"))
             {
                 EventSystem.current.SetSelectedGameObject(firstButtonMainMenu);
+            }
+            else if (creditSection.activeSelf && (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard"))
+            {
+                EventSystem.current.SetSelectedGameObject(firstButtoncreditSection);
             }
 
         }
