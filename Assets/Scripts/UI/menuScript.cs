@@ -5,6 +5,8 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+
 
 
 
@@ -17,6 +19,11 @@ public class menuScript : MonoBehaviour
     public GameObject firstButtonMainMenu;
 
     private string currentControlScheme;
+
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+    //public Slider ambientSlider;
 
     [SerializeField] private AudioMixer audioMixer;
 
@@ -85,22 +92,28 @@ public class menuScript : MonoBehaviour
 
     public void changeGeneralVolume(float volume)
     {
-        audioMixer.SetFloat("volume", volume);
+        audioMixer.SetFloat("volume", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("volume", volume);
     }
 
     public void changeSFX(float volume)
     {
-        audioMixer.SetFloat("sfx", volume);
+        audioMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("sfx", volume);
     }
 
     public void changeMusic(float volume)
     {
-        audioMixer.SetFloat("music", volume);
+        audioMixer.SetFloat("music", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("music", volume);
+
     }
 
     public void changeAmbient(float volume)
     {
-        audioMixer.SetFloat("ambient", volume);
+        audioMixer.SetFloat("ambient", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("ambient", volume);
+
     }
 
     IEnumerator FocusNextButton(GameObject button)
@@ -129,4 +142,37 @@ public class menuScript : MonoBehaviour
 
         }
     }
+
+
+
+    void Start()
+    {
+        SetSliderAndVolume(masterSlider, "volume");
+        SetSliderAndVolume(musicSlider, "music");
+        SetSliderAndVolume(sfxSlider, "sfx");
+        //SetSliderAndVolume(ambientSlider, "ambient");
+    }
+
+    void SetSliderAndVolume(Slider slider, string key)
+    {
+        float savedVolume = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.5f;
+
+        slider.value = savedVolume;
+
+        float dB = savedVolume > 0.0001f ? Mathf.Log10(savedVolume) * 20f : -80f;
+        audioMixer.SetFloat(key, dB);
+    }
+
+
+    public void ChangeVolume(Slider slider, string key)
+    {
+        float volume = slider.value;
+
+        PlayerPrefs.SetFloat(key, volume);
+
+        float dB = volume > 0.0001f ? Mathf.Log10(volume) * 20f : -80f;
+        audioMixer.SetFloat(key, dB);
+    }
+
+
 }
