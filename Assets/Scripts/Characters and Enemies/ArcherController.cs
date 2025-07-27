@@ -22,6 +22,9 @@ public class ShooterController : MonoBehaviour
     public float blinkInterval = 3f;  // Intervalo entre los blinks (en segundos)
     public float blinkProbability = 0.2f;  // Probabilidad de blink (20%)
 
+    public Material ThunderFullMaterial;  
+    public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
+
     private void Start()
     {
         // Verifica si ya existe un tirador en la escena
@@ -135,19 +138,19 @@ public class ShooterController : MonoBehaviour
         Destroy(gameObject);  // Destruye el tirador
     }
 
-    private void DropShard()
+     private void DropShard()
     {
         // Se añade un shard de "viento" al inventario dependiendo de la cantidad de bigCount
-        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Ray].bigCount > 0)
+        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Wind].bigCount > 0)
         {
-            // Añadir un shard grande de "viento" al inventario si el bigCount lo permite
-            Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
+            // Añadir un shard grande al inventario si el bigCount lo permite
+            Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
             Debug.Log("Fragmento grande de viento añadido al inventario.");
         }
         else
         {
-            // De lo contrario, añadir un shard pequeño de "viento"
-            Inventory.Instance.CollectSmall(Inventory.ItemType.Ray);
+            // De lo contrario, añadir un shard pequeño
+            Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
             Debug.Log("Fragmento pequeño de viento añadido al inventario.");
         }
     }

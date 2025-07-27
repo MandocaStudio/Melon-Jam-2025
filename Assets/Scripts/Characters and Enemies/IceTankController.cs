@@ -3,30 +3,31 @@ using UnityEngine;
 public class IceTankController : MonoBehaviour
 {
     [Header("Configuración del Tanque")]
-    public int health = 4;  // Salud del tanque
-    public int shieldHits = 3;  // Número de impactos que el escudo puede bloquear
-    public int damageToPlayer = 1;  // Daño que el tanque hace al impactar con la columna (configurable en el Inspector)
-    public float moveSpeed = 1f;  // Velocidad del movimiento
+    public int health = 4;
+    public int shieldHits = 3;
+    public int damageToPlayer = 1;
+    public float moveSpeed = 1f;
 
-    public static int maxActiveTanks = 2;  // Máximo de tanques de Hielo en toda la escena
-    public static int[] activeTanksPerRow = new int[5];  // Conteo de tanques por fila
-    public static int currentTankCount = 0;  // Conteo total de tanques activos
+    public static int maxActiveTanks = 2;
+    public static int[] activeTanksPerRow = new int[5];
+    public static int currentTankCount = 0;
 
     private bool isShieldActive = true;
-    private bool hasReachedPlayer = false;  // Para saber si el tanque ya ha alcanzado la columna
+    private bool hasReachedPlayer = false;
 
-    public int rowIndex; // La fila en la que se encuentra el tanque (calculado automáticamente)
+    public int rowIndex;
+
+    public Material blueFullMaterial;  
+    public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
 
     private void Start()
     {
-        // Asignar el rowIndex dinámicamente basado en la posición Y del tanque
         AssignRowIndex();
 
-        // Verifica que el tanque cumpla con las condiciones de spawn (solo 1 por fila y máximo 2 en la escena)
         if (currentTankCount >= maxActiveTanks || !IsRowIndexValid(rowIndex) || activeTanksPerRow[rowIndex] > 0)
         {
             Debug.LogWarning("No se puede crear más tanques en esta fila o en la escena.");
-            Destroy(gameObject);  // Destruye el tanque si no cumple las condiciones
+            Destroy(gameObject);
             return;
         }
 
@@ -34,22 +35,19 @@ public class IceTankController : MonoBehaviour
         activeTanksPerRow[rowIndex]++;
         ActivateShieldAura();
 
-        // Asignar rotación de 60 grados en el eje X al tanque
-        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en X
+        // Rotación X = 60 grados
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
     }
 
     private void Update()
     {
         if (!hasReachedPlayer)
         {
-            // Movimiento del tanque de derecha a izquierda
             transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
 
-            // Verificar si alcanzó la columna del jugador (PlayerColumn)
-            if (transform.position.x <= 0)  // Ajusta el valor '0' según la posición de la PlayerColumn
+            if (transform.position.x <= 0)
             {
                 hasReachedPlayer = true;
-                // Llamar a la función que maneja el daño a la columna
                 ReachPlayerColumn();
             }
         }
@@ -57,32 +55,28 @@ public class IceTankController : MonoBehaviour
 
     private bool IsRowIndexValid(int rowIndex)
     {
-        // Asegurarse de que el índice esté dentro del rango permitido (0 - 4)
         return rowIndex >= 0 && rowIndex < activeTanksPerRow.Length;
     }
 
     private void ActivateShieldAura()
     {
         Debug.Log($"Escudo activado en la fila {rowIndex}, bloqueando {shieldHits} impactos.");
-        // Aquí puedes agregar el efecto visual del escudo (si lo deseas)
     }
 
     private void ReachPlayerColumn()
     {
         Debug.Log("Tanque ha alcanzado la columna del jugador.");
 
-        // Aquí puedes aplicar el daño a la columna del jugador
         GameObject playerColumn = GameObject.Find("PlayerColumn");
         if (playerColumn != null)
         {
             ColumnHealthBar columnHealth = playerColumn.GetComponentInParent<ColumnHealthBar>();
             if (columnHealth != null)
             {
-                columnHealth.TakeDamage(damageToPlayer);  // Restar vida de la columna con el valor configurable
+                columnHealth.TakeDamage(damageToPlayer);
             }
         }
 
-        // Destruir el tanque al llegar a la columna del jugador
         Destroy(gameObject);
     }
 
@@ -101,7 +95,6 @@ public class IceTankController : MonoBehaviour
                 {
                     isShieldActive = false;
                     Debug.Log("Escudo destruido");
-                    // Puedes quitar el efecto visual del escudo aquí
                 }
             }
             else
@@ -119,42 +112,40 @@ public class IceTankController : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Tanque destruido");
-            DropShard();  // Llama al método para añadir el shard al inventario
+            DropShard();  // DROP DE MATERIAL
             Cleanup();
         }
     }
 
     private void DropShard()
     {
-        // Si el bigCount es 3 o más, se considera un fragmento grande
-        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Ice].bigCount > 0)
+        // Se añade un shard de "viento" al inventario dependiendo de la cantidad de bigCount
+        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Wind].bigCount > 0)
         {
             // Añadir un shard grande al inventario si el bigCount lo permite
-            Inventory.Instance.CollectBig(Inventory.ItemType.Ice);
-            Debug.Log("Fragmento grande de hielo añadido al inventario.");
+            Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
+            Debug.Log("Fragmento grande de viento añadido al inventario.");
         }
         else
         {
             // De lo contrario, añadir un shard pequeño
-            Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);
-            Debug.Log("Fragmento pequeño de hielo añadido al inventario.");
+            Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
+            Debug.Log("Fragmento pequeño de viento añadido al inventario.");
         }
     }
 
     private void Cleanup()
     {
         currentTankCount--;
-        if (rowIndex >= 0 && rowIndex < activeTanksPerRow.Length)
+        if (IsRowIndexValid(rowIndex))
             activeTanksPerRow[rowIndex]--;
         Destroy(gameObject);
     }
 
     private void AssignRowIndex()
     {
-        // Asignar rowIndex según la posición Y del punto de spawn
         float spawnY = transform.position.y;
 
-        // Asumiendo que tus filas están distribuidas en el rango de Y (ajusta los valores según tu escena)
         if (spawnY >= 3.0f)
             rowIndex = 4;
         else if (spawnY >= 2.0f)

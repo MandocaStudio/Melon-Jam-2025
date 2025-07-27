@@ -13,6 +13,9 @@ public class SpeedsterController : MonoBehaviour
 
     private bool hasReachedPlayer = false;  // Para saber si el velocista ya ha alcanzado la columna
     public int rowIndex; // La fila en la que se encuentra el velocista (asignada al instanciar)
+    
+    public Material WindFullMaterial;  
+    public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
 
     private void Start()
     {
@@ -26,7 +29,7 @@ public class SpeedsterController : MonoBehaviour
 
         currentSpeedsterCount++;
         activeSpeedstersPerRow[rowIndex]++;
-        
+
         // Asignar rotación de 60 grados en el eje X al velocista
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en X
     }
