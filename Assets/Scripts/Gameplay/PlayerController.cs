@@ -1,28 +1,41 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerControls controls;  // El sistema de controles
+    private PlayerControls controls;
     public GameObject projectilePrefab;
 
     [Header("Grid Setup")]
-    public GameObject[] tileObjects = new GameObject[5];  // Tiles fila 0 a 4
-    public Transform spawnTile;                           // Tile_0_2 por defecto
-    private float[] rowZPositions = new float[5];         // Almacenaremos las posiciones Z de los tiles
+    public GameObject[] tileObjects = new GameObject[5];
+    public Transform spawnTile;
+    private float[] rowZPositions = new float[5];
 
-    private float columnX;   // Se toma del spawnTile (posición X del tile de spawn)
-    private int currentRow;  // Se determina automáticamente según spawnTile
+    private float columnX;
+    private int currentRow;
 
-    // Asegúrate de inicializar controls en Awake, no en Start.
+    [Header("Modelos del Jugador")]
+    public GameObject idleModel;
+    public GameObject attackModel;
+    public float attackDuration = 0.5f;
+
+    [Header("Audio")]
+    public AudioSource shootAudioSource;
+    public AudioSource moveAudioSource;  // 🎵 Nuevo audio de movimiento
+
+    [Header("Disparo")]
+    public Transform projectileSpawnPoint;
+
+    private bool isAttacking = false;
+
     private void Awake()
     {
-        controls = new PlayerControls();  // Inicializa el sistema de controles
+        controls = new PlayerControls();
     }
 
     private void Start()
     {
-        // Verifica y asigna posiciones Z de cada fila
         for (int i = 0; i < tileObjects.Length; i++)
         {
             if (tileObjects[i] != null)
@@ -33,9 +46,8 @@ public class PlayerController : MonoBehaviour
 
         if (spawnTile != null)
         {
-            columnX = spawnTile.position.x;  // Posición X de spawnTile
+            columnX = spawnTile.position.x;
 
-            // Detecta automáticamente en qué fila está el spawnTile
             float spawnZ = spawnTile.position.z;
             int closestRow = 0;
             float minDistance = Mathf.Abs(rowZPositions[0] - spawnZ);
@@ -50,17 +62,20 @@ public class PlayerController : MonoBehaviour
             }
 
             currentRow = closestRow;
-            MoveToRow(currentRow); // Posiciona al jugador correctamente
+            MoveToRow(currentRow);
         }
         else
         {
             Debug.LogError("No has asignado el Spawn Tile al Player.");
         }
+
+        if (idleModel != null) idleModel.SetActive(true);
+        if (attackModel != null) attackModel.SetActive(false);
     }
 
     private void OnEnable()
     {
-        controls.Enable();  // Activa el sistema de entradas
+        controls.Enable();
         controls.Player.Move.performed += OnMovePerformed;
         controls.Player.Attack.performed += OnAttackPerformed;
     }
@@ -69,48 +84,48 @@ public class PlayerController : MonoBehaviour
     {
         controls.Player.Move.performed -= OnMovePerformed;
         controls.Player.Attack.performed -= OnAttackPerformed;
-        controls.Disable();  // Desactiva el sistema de entradas
+        controls.Disable();
     }
 
     private void OnMovePerformed(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
-        if (input.y > 0.1f) MoveForward();   // Mover hacia adelante (Eje Z positivo)
-        else if (input.y < -0.1f) MoveBackward();  // Mover hacia atrás (Eje Z negativo)
+        if (input.y > 0.1f) MoveForward();
+        else if (input.y < -0.1f) MoveBackward();
     }
 
     private void MoveForward()
     {
-        // Mover hacia adelante en el eje Z (solo entre los tiles predefinidos)
         if (currentRow < rowZPositions.Length - 1)
         {
             currentRow++;
             MoveToRow(currentRow);
+            PlayMoveSound();  // 🎵 Sonido de movimiento
         }
     }
 
     private void MoveBackward()
     {
-        // Mover hacia atrás en el eje Z (solo entre los tiles predefinidos)
         if (currentRow > 0)
         {
             currentRow--;
             MoveToRow(currentRow);
+            PlayMoveSound();  // 🎵 Sonido de movimiento
         }
+    }
+
+    private void PlayMoveSound()
+    {
+        if (moveAudioSource != null)
+            moveAudioSource.Play();
     }
 
     private void MoveToRow(int rowIndex)
     {
-        // Obtener la posición Z del tile en la fila seleccionada
         float z = rowZPositions[rowIndex];
-
-        // Obtener la posición Y del tile correspondiente
         float y = tileObjects[rowIndex].transform.position.y;
-
-        // La posición X se toma de la columna del tile
-        Vector3 newPosition = new Vector3(columnX, y, z);  // Mantener la posición en X, Y y Z del tile
-
-        transform.position = newPosition;  // Actualiza la posición del jugador
+        Vector3 newPosition = new Vector3(columnX, y, z);
+        transform.position = newPosition;
     }
 
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
@@ -120,8 +135,29 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);
+        if (isAttacking) return;
+
+        Vector3 spawnPosition = projectileSpawnPoint.position;
         Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
-        //Debug.Log("Disparando proyectil");
+
+        if (shootAudioSource != null)
+            shootAudioSource.Play();
+
+        StartCoroutine(PlayAttackAnimation());
+    }
+
+    private IEnumerator PlayAttackAnimation()
+    {
+        isAttacking = true;
+
+        if (idleModel != null) idleModel.SetActive(false);
+        if (attackModel != null) attackModel.SetActive(true);
+
+        yield return new WaitForSeconds(attackDuration);
+
+        if (attackModel != null) attackModel.SetActive(false);
+        if (idleModel != null) idleModel.SetActive(true);
+
+        isAttacking = false;
     }
 }

@@ -1,35 +1,34 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class PhaseManager : MonoBehaviour
 {
-    [Header("Duración de Subfases")]
-    public float[] subPhaseDurations = { 30f, 30f, 30f }; // Subfases
+    [Header("Duración de Subfases (segundos)")]
+    public float[] subPhaseDurations = { 30f, 30f, 30f };
 
-    [Header("Prefabs de Enemigos")]
+    [Header("Cantidad de enemigos por subfase")]
+    public int[] basicEnemiesPerSubPhase = { 5, 5, 5 };
+    public int[] mediumEnemiesPerSubPhase = { 1, 2, 4 };
+
+    [Header("Spawners y Prefabs")]
     public GameObject[] basicEnemies;
     public GameObject[] mediumEnemies; // IceTank, ThunderArcher, CloudSpeedster
+    public Transform[] spawnTiles;
 
-    [Header("Spawn")]
-    public Transform[] spawnTiles; // 5 posiciones
-    public float basicSpawnInterval = 2f;
-    public float mediumSpawnInterval = 3f;
+    [Header("Intervalos entre spawns")]
+    public float basicSpawnInterval = 1.0f;
+    public float mediumSpawnInterval = 2.0f;
 
     [Header("Iluminación")]
     public Light directionalLight;
     public Color[] lightingColors;
 
-    [Header("Cantidad de Enemigos por Subfase")]
-    public int[] mediumEnemiesPerSubPhase = { 1, 2, 4 };
-    public int[] basicEnemiesPerSubPhase = { 4, 4, 4 };
-
     private int currentSubPhase = 0;
     private float subPhaseTimer = 0f;
-    private Coroutine enemySpawnRoutine;
 
     void Start()
     {
-        StartSubPhase(0);
+        StartSubPhase(currentSubPhase);
     }
 
     void Update()
@@ -46,8 +45,7 @@ public class PhaseManager : MonoBehaviour
             else
             {
                 SpawnBossWave();
-                if (enemySpawnRoutine != null) StopCoroutine(enemySpawnRoutine);
-                enabled = false; // Desactiva este PhaseManager
+                enabled = false;
             }
         }
     }
@@ -56,12 +54,14 @@ public class PhaseManager : MonoBehaviour
     {
         subPhaseTimer = 0f;
 
-        // Iluminación
-        if (directionalLight != null && lightingColors.Length > index)
-            directionalLight.color = lightingColors[index];
+        Debug.Log($"Iniciando Subfase {index + 1}");
 
-        if (enemySpawnRoutine != null) StopCoroutine(enemySpawnRoutine);
-        enemySpawnRoutine = StartCoroutine(SpawnEnemiesOverTime(index));
+        if (directionalLight != null && lightingColors.Length > index)
+        {
+            directionalLight.color = lightingColors[index];
+        }
+
+        StartCoroutine(SpawnEnemiesOverTime(index));
     }
 
     IEnumerator SpawnEnemiesOverTime(int index)
@@ -69,59 +69,83 @@ public class PhaseManager : MonoBehaviour
         int basicCount = basicEnemiesPerSubPhase[index];
         int mediumCount = mediumEnemiesPerSubPhase[index];
 
-        int basicSpawned = 0;
-        int mediumSpawned = 0;
+        StartCoroutine(SpawnBasicEnemies(basicCount));
+        StartCoroutine(SpawnMediumEnemies(mediumCount));
 
-        while (basicSpawned < basicCount || mediumSpawned < mediumCount)
+        yield break;
+    }
+
+    IEnumerator SpawnBasicEnemies(int count)
+    {
+        for (int i = 0; i < count; i++)
         {
-            if (basicSpawned < basicCount)
-            {
-                SpawnBasicEnemy();
-                basicSpawned++;
-                yield return new WaitForSeconds(basicSpawnInterval);
-            }
-
-            if (mediumSpawned < mediumCount)
-            {
-                SpawnMediumEnemy();
-                mediumSpawned++;
-                yield return new WaitForSeconds(mediumSpawnInterval);
-            }
+            SpawnBasicEnemy(i);
+            yield return new WaitForSeconds(basicSpawnInterval);
         }
     }
 
-    void SpawnBasicEnemy()
+    IEnumerator SpawnMediumEnemies(int count)
     {
-        if (basicEnemies.Length == 0) return;
-
-        GameObject prefab = basicEnemies[Random.Range(0, basicEnemies.Length)];
-        if (prefab == null) return;
-
-        Transform tile = spawnTiles[Random.Range(0, spawnTiles.Length)];
-        Instantiate(prefab, tile.position, Quaternion.Euler(60f, 0f, 0f));
+        for (int i = 0; i < count; i++)
+        {
+            SpawnMediumEnemy(i);
+            yield return new WaitForSeconds(mediumSpawnInterval);
+        }
     }
 
-    void SpawnMediumEnemy()
+    void SpawnBasicEnemy(int index)
     {
-        if (mediumEnemies.Length == 0) return;
+        if (basicEnemies.Length == 0 || spawnTiles.Length == 0) return;
+
+        GameObject prefab = basicEnemies[Random.Range(0, basicEnemies.Length)];
+        Transform tile = spawnTiles[Random.Range(0, spawnTiles.Length)];
+
+        if (prefab != null && tile != null)
+        {
+            Instantiate(prefab, tile.position, Quaternion.Euler(60f, 0f, 0f));
+            Debug.Log($"[BasicEnemy] Spawned basic enemy {index + 1}");
+        }
+        else
+        {
+            Debug.LogWarning("[BasicEnemy] Prefab o tile nulo.");
+        }
+    }
+
+    void SpawnMediumEnemy(int index)
+    {
+        if (mediumEnemies.Length == 0 || spawnTiles.Length == 0) return;
 
         GameObject prefab = mediumEnemies[Random.Range(0, mediumEnemies.Length)];
-        if (prefab == null) return;
-
         Transform tile = spawnTiles[Random.Range(0, spawnTiles.Length)];
-        Instantiate(prefab, tile.position, Quaternion.Euler(60f, 0f, 0f));
+
+        if (prefab != null && tile != null)
+        {
+            GameObject spawned = Instantiate(prefab, tile.position, Quaternion.Euler(60f, 0f, 0f));
+            Debug.Log($"[MediumEnemy] Spawned medium enemy {index + 1} at tile {tile.name}");
+
+            if (spawned == null)
+                Debug.LogError($"[MediumEnemy] Instantiate falló en el enemigo {index + 1}");
+        }
+        else
+        {
+            Debug.LogWarning("[MediumEnemy] Prefab o tile nulo.");
+        }
     }
 
     void SpawnBossWave()
     {
-        Debug.Log("¡Spawn de Boss de Fase 1!");
+        Debug.Log("¡Boss de Fase 1 activado!");
 
         for (int i = 0; i < 5; i++)
         {
+            GameObject prefab = mediumEnemies[Random.Range(0, mediumEnemies.Length)];
             Transform tile = spawnTiles[Random.Range(0, spawnTiles.Length)];
-            GameObject boss = mediumEnemies[Random.Range(0, mediumEnemies.Length)];
-            if (boss != null)
-                Instantiate(boss, tile.position, Quaternion.Euler(60f, 0f, 0f));
+
+            if (prefab != null && tile != null)
+            {
+                Instantiate(prefab, tile.position, Quaternion.Euler(60f, 0f, 0f));
+                Debug.Log($"[Boss] Spawned boss enemy {i + 1}");
+            }
         }
     }
 }

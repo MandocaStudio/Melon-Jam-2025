@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: New VFX
+  m_Name: Trail
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -254,7 +254,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New VFX
+  m_Name: Trail
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -4170,7 +4170,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615176}
   m_ExposedName: StretchedParticlesColor
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 1
   m_Category: STRETCHED PARTICLES
   m_Min:
     m_Type:
@@ -4387,7 +4387,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615182}
   m_ExposedName: StretchedParticlesRate
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 2
   m_Category: STRETCHED PARTICLES
   m_Min:
     m_Type:
@@ -4468,7 +4468,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615184}
   m_ExposedName: StretchedParticlesLifetime
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 3
   m_Category: STRETCHED PARTICLES
   m_Min:
     m_Type:
@@ -4552,7 +4552,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615186}
   m_ExposedName: StretchedParticlesVelocity
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 4
   m_Category: STRETCHED PARTICLES
   m_Min:
     m_Type:
@@ -4636,7 +4636,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615188}
   m_ExposedName: StretchedParticlesSize
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 5
   m_Category: STRETCHED PARTICLES
   m_Min:
     m_Type:
@@ -4720,7 +4720,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615190}
   m_ExposedName: StretchedParticlesScale
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 6
   m_Category: STRETCHED PARTICLES
   m_Min:
     m_Type:
