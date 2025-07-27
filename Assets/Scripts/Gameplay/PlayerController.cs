@@ -29,12 +29,14 @@ public class PlayerController : MonoBehaviour
 
     private bool isAttacking = false;
 
-    public bool allowInput = true;
+    public bool allowInput = false;
 
 
     private void Awake()
     {
         controls = new PlayerControls();
+        allowInput = false;
+
     }
 
     private void Start()
