@@ -700,10 +700,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: menu pausa
       objectReference: {fileID: 0}
-    - target: {fileID: 1182645601389787425, guid: ef142c985f84eed498d94081b744fcc7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1335337659722313552, guid: ef142c985f84eed498d94081b744fcc7, type: 3}
       propertyPath: m_UIInputModule
       value: 
