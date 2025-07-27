@@ -25,6 +25,16 @@ public class ElementCombiner : MonoBehaviour
     [SerializeField] private GameObject windPushPrefab;
     [SerializeField] private Transform windSpawnPoint;
 
+    [SerializeField] private GameObject slowAOEPrefab;
+    [SerializeField] private Transform aoeSpawnPoint;
+
+    [SerializeField] private GameObject freezeSpellPrefab;  // Prefab del hechizo de congelación global
+    [SerializeField] private GameObject thunderBeamPrefab;
+    [SerializeField] private Transform beamSpawnPoint;
+
+
+
+
 
     private void Awake()
     {
@@ -207,24 +217,34 @@ private void CastWindPushSpell()
         // Aplicar daño desde arriba a los enemigos con el tag "Enemy"
     }
 
-    private void CastWindIceSlowSpell()
+   private void CastWindIceSlowSpell()
+{
+    if (slowAOEPrefab != null && aoeSpawnPoint != null)
     {
-        // Crear ventisca que ralentiza a los enemigos en el área de efecto (AOE)
+        Instantiate(slowAOEPrefab, aoeSpawnPoint.position, Quaternion.identity);
+        Debug.Log("AOE de viento + hielo lanzado.");
     }
+}
 
-    private void CastThunderSpell()
+  private void CastThunderSpell()
+{
+    if (thunderBeamPrefab != null && beamSpawnPoint != null)
     {
-        // Crear el hechizo de daño horizontal con movimiento
-        // El jugador puede moverse mientras lanza este hechizo
+        Instantiate(thunderBeamPrefab, beamSpawnPoint.position, Quaternion.identity);
     }
+}
+
 
     private void CastThunderIceSpell()
     {
         // Crear el hechizo con menor daño pero con congelación al frente del jugador
     }
 
-    private void CastIceFreezeSpell()
-    {
-        // Crear una congelación absoluta que congela a todos los enemigos dentro del radio
-    }
+private void CastIceFreezeSpell()
+{
+    // Instanciar el hechizo FreezeSpell en la escena (posición 0,0,0 ya que afecta a todos)
+    Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
+}
+
+
 }
