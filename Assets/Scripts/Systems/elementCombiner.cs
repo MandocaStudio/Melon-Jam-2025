@@ -79,14 +79,19 @@ public class ElementCombiner : MonoBehaviour
     {
         if (firstSelection.HasValue && secondSelection.HasValue)
         {
-            CombineObjects(firstSelection.Value, secondSelection.Value);
+
+            inventory.CombineObjects(firstSelection.Value, secondSelection.Value);
+
             firstSelection = null;
             secondSelection = null;
+
+
         }
     }
 
-    private void CombineObjects(Inventory.ItemType first, Inventory.ItemType second)
+    private void CombineObjectsLocal(Inventory.ItemType first, Inventory.ItemType second)
     {
+
         // Lógica de combinación de hechizos
         if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Wind)
         {

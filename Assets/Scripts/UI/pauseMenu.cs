@@ -180,7 +180,7 @@ public class pauseMenu : MonoBehaviour
         {
             scheme = PlayerInput.all[0].currentControlScheme;
 
-            Debug.Log(scheme);
+            //Debug.Log(scheme);
             if (scheme != currentControlScheme)
             {
 
@@ -195,7 +195,7 @@ public class pauseMenu : MonoBehaviour
     {
 
         // Solo si no hay ningún objeto seleccionado
-        if (EventSystem.current.currentSelectedGameObject == null)
+        if (EventSystem.current.currentSelectedGameObject == null && inputActions.UI.enabled)
         {
             // Detectar entrada de teclado o gamepad
             //Debug.Log("entro");

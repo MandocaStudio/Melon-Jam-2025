@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
@@ -20,6 +22,9 @@ public class Inventory : MonoBehaviour
         public int smallCount = 0;  // Cantidad de objetos pequeños
         public int bigCount = 0;    // Cantidad de objetos grandes
 
+        public TextMeshProUGUI AmountBig;
+
+
         public void AddSmall()
         {
             if (bigCount == 3 && smallCount == 5)
@@ -31,18 +36,26 @@ public class Inventory : MonoBehaviour
             {
                 smallCount -= 5;
                 bigCount++;
+
+                AmountBig.text = "x" + bigCount;
+
                 Debug.Log("Tenemos un:" + type);
             }
         }
 
         public void AddBig()
         {
-            if (bigCount == 3)
+            Debug.Log("alo?");
+
+            if (bigCount >= 3)
             {
                 return;
             }
             bigCount++;
-            Debug.Log("Tenemos un:" + type);
+
+            AmountBig.text = "x" + bigCount;
+
+            Debug.Log("Tenemos un: grandote" + type);
         }
 
         public void RemoveBig()
@@ -52,6 +65,9 @@ public class Inventory : MonoBehaviour
                 return;
             }
             bigCount--;
+
+            AmountBig.text = "x" + bigCount;
+
             Debug.Log("Tenemos un:" + type);
         }
     }
@@ -61,9 +77,9 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         // Inicializamos los 3 tipos
-        inventory[0] = new InventoryItem { type = ItemType.Wind };
-        inventory[1] = new InventoryItem { type = ItemType.Ice };
-        inventory[2] = new InventoryItem { type = ItemType.Ray };
+        // inventory[0] = new InventoryItem { type = ItemType.Wind };
+        // inventory[1] = new InventoryItem { type = ItemType.Ice };
+        // inventory[2] = new InventoryItem { type = ItemType.Ray };
     }
 
     // Método para simular recolección de objeto pequeño
@@ -76,21 +92,36 @@ public class Inventory : MonoBehaviour
     // Método para simular recolección de objeto grande
     public void CollectBig(ItemType type)
     {
+        Debug.Log("Tenemos un:" + (int)type);
+
         InventoryItem item = inventory[(int)type];
+
         item.AddBig();
     }
 
     // Método para combinar objetos grandes
     public void CombineObjects(ItemType type1, ItemType type2)
     {
+        Debug.Log("combinando.....");
+
         if (inventory[(int)type1].bigCount <= 0 || inventory[(int)type2].bigCount <= 0)
         {
+
             Debug.Log("No hay suficientes objetos grandes para combinar.");
             return;
         }
 
+        InventoryItem item1 = inventory[(int)type1];
+        InventoryItem item2 = inventory[(int)type2];
+
+        item1.RemoveBig();
+        item2.RemoveBig();
+
+
         // Disminuye uno de cada uno
-        inventory[(int)type1].bigCount--;
-        inventory[(int)type2].bigCount--;
+        // inventory[(int)type1].bigCount--;
+        // inventory[(int)type2].bigCount--;
     }
+
+
 }

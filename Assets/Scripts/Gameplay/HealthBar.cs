@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class ColumnHealthBar : MonoBehaviour
 {
+
+    public Image healthBar;
     public int maxHealth = 3;  // Salud máxima de la columna
-    private int currentHealth;  // Salud actual de la columna
+    [SerializeField] private int currentHealth;  // Salud actual de la columna
 
     void Start()
     {
@@ -13,7 +17,9 @@ public class ColumnHealthBar : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;  // Restar salud cuando se recibe daño
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);  // Limitar la salud entre 0 y maxHealth
+                                  //currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);  // Limitar la salud entre 0 y maxHealth
+
+        healthBar.fillAmount = (float)currentHealth / maxHealth;
 
         // Mostrar la salud actual en la consola para probar
         Debug.Log("Columna Salud: " + currentHealth + "/" + maxHealth);

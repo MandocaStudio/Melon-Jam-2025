@@ -103,10 +103,10 @@ public class PlayerController : MonoBehaviour
     {
         // Obtener la posición Z del tile en la fila seleccionada
         float z = rowZPositions[rowIndex];
-        
+
         // Obtener la posición Y del tile correspondiente
         float y = tileObjects[rowIndex].transform.position.y;
-        
+
         // La posición X se toma de la columna del tile
         Vector3 newPosition = new Vector3(columnX, y, z);  // Mantener la posición en X, Y y Z del tile
 
@@ -122,6 +122,6 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);
         Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
-        Debug.Log("Disparando proyectil");
+        //Debug.Log("Disparando proyectil");
     }
 }
