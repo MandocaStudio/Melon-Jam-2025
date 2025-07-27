@@ -43,7 +43,8 @@ public class pauseMenu : MonoBehaviour
         InputSystem.onActionChange += HandleDeviceChange;
 
         inputActions.Player.exitButton.performed += openpauseMenu;
-        inputActions.Player.back.performed += BacktoMainMenu;
+        inputActions.UI.Cancel.performed += BacktoMainMenu;
+        inputActions.UI.exitButton.performed += BacktoMainMenu;
         inputActions.Enable();
     }
 
@@ -53,7 +54,8 @@ public class pauseMenu : MonoBehaviour
         InputSystem.onActionChange -= HandleDeviceChange;
 
         inputActions.Player.exitButton.performed -= openpauseMenu;
-        inputActions.Player.back.performed += BacktoMainMenu;
+        inputActions.UI.Cancel.performed -= BacktoMainMenu;
+        inputActions.UI.exitButton.performed -= BacktoMainMenu;
 
         inputActions.Disable();
     }
@@ -164,7 +166,7 @@ public class pauseMenu : MonoBehaviour
         {
             scheme = PlayerInput.all[0].currentControlScheme;
 
-            //Debug.Log(scheme);
+            Debug.Log(scheme);
             if (scheme != currentControlScheme)
             {
 
