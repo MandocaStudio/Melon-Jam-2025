@@ -11,6 +11,7 @@ using UnityEngine.UI;
 
 public class pauseMenu : MonoBehaviour
 {
+    [SerializeField] private PlayerController player;
 
 
     public GameObject PauseMenu;
@@ -85,8 +86,17 @@ public class pauseMenu : MonoBehaviour
             Time.timeScale = 1;
             PauseMenu.SetActive(false);
 
+            player.allowInput = true;
+
+
             basicSection.SetActive(true);
             optionSection.SetActive(false);
+
+            inputActions.UI.Disable();
+            inputActions.Player.Enable();
+
+            //Debug.Log(scheme);
+
         }
         else if (!PauseMenu.activeSelf)
         {
@@ -94,8 +104,14 @@ public class pauseMenu : MonoBehaviour
 
             PauseMenu.SetActive(true);
 
+            player.allowInput = false;
+
+
             basicSection.SetActive(true);
             optionSection.SetActive(false);
+
+            inputActions.UI.Enable();
+            inputActions.Player.Disable();
         }
 
         StartCoroutine(FocusNextButton(firstBasicButton));
