@@ -22,6 +22,9 @@ public class ElementCombiner : MonoBehaviour
 
     [SerializeField] private Image firstSlot;
     [SerializeField] private Image secondtSlot;
+    [SerializeField] private GameObject windPushPrefab;
+    [SerializeField] private Transform windSpawnPoint;
+
 
     private void Awake()
     {
@@ -188,13 +191,15 @@ public class ElementCombiner : MonoBehaviour
 
     // Métodos para cada hechizo
 
-    private void CastWindPushSpell()
+private void CastWindPushSpell()
+{
+    if (windPushPrefab != null && windSpawnPoint != null)
     {
-        // Crear el hechizo de empuje de viento
-        // Se crea un viento que empuja a los enemigos hacia la derecha
-        // Asegúrate de usar un Collider con el tag "Enemy"
-        // Usa un RigidBody o Collider para simular el empuje
+        Instantiate(windPushPrefab, windSpawnPoint.position, Quaternion.identity);
+        Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
     }
+}
+
 
     private void CastWindThunderCloudSpell()
     {
