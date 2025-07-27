@@ -646,8 +646,8 @@ MonoBehaviour:
   m_ActionsAsset: {fileID: -944628639613478452, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
   m_PointAction: {fileID: 3279808246748167251, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
   m_MoveAction: {fileID: 2939445514034276881, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
-  m_SubmitAction: {fileID: 8119542422334947649, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
-  m_CancelAction: {fileID: -8095133945909572706, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
+  m_SubmitAction: {fileID: 1276115962241920947, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
+  m_CancelAction: {fileID: -7016098046756040420, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
   m_LeftClickAction: {fileID: -3724134631330467741, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
   m_MiddleClickAction: {fileID: 1875195984285846181, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}
   m_RightClickAction: {fileID: -6690490863180761058, guid: 797d841978d5eb54180b623d9ab681f4, type: 3}

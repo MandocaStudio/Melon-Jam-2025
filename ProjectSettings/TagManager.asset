@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Projectile
   - EnemyProjectile
+  - Common
+  - IPreviewable
   layers:
   - Default
   - TransparentFX

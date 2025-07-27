@@ -157,39 +157,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "2D Vector",
-                    "id": "859074cf-028c-417a-81c1-86e29f4bc322",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "ffd0ab48-6ed4-45c1-897d-fe6cae7eea3d",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "246cfe43-7996-4fcf-a2bd-14197c13930a",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "8afe3aad-1b79-4db3-a085-f5170cc33a88",
                     "path": "<Gamepad>/buttonNorth",
@@ -359,6 +326,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "exitButton",
+                    "type": "Button",
+                    "id": "69b7e08d-1012-4e14-9f70-16931cce9b65",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "pauseButton",
                     "type": "Button",
                     "id": "232c3a9c-6fde-4c15-99f2-c6d789ff9b8d",
@@ -380,6 +356,15 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "3cf9ebee-d7fa-4426-85b8-427b81867260",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "select",
+                    "type": "Button",
+                    "id": "5e375da6-fafd-489a-a151-940cd6a6472c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -725,6 +710,28 @@
                 },
                 {
                     "name": "",
+                    "id": "1ae22e7e-0682-4b82-b61a-161bdd44dddd",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";teclado;KeyBoard",
+                    "action": "exitButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e36fa3f7-9c03-4442-b58b-7e43265f4958",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "exitButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "45c18bb5-9f61-40ac-84e3-17833280c6da",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -764,6 +771,50 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e20df3a1-231c-4cfc-aa1d-ec082b953a80",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyBoard",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5976ce5e-0fd5-4151-9383-29a22cb2826e",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "action": "select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87bd9cda-1e51-4906-b687-708cab57f070",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyBoard",
+                    "action": "select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0fe0933f-8060-4feb-a856-7531b52d70d4",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyBoard",
+                    "action": "select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
