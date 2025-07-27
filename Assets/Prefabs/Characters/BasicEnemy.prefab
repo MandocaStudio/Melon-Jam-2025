@@ -56,7 +56,7 @@ MonoBehaviour:
   purpleShard: {fileID: 638563841065727098, guid: 2aa0fd1acb304594eadad2ad92893acf, type: 3}
   blueShard: {fileID: 7504079459426212655, guid: 674cb08b422f3d04e826ce3b2b4fe53a, type: 3}
   yellowShard: {fileID: 3163790923392068294, guid: 62b29fd5c1021264f82c99d9935384ab, type: 3}
-  dropOffset: {x: -0.3, y: 0, z: 0}
+  dropOffset: {x: 0, y: 0, z: 1}
   enemyColor: 1
 --- !u!212 &1093081999943729296
 SpriteRenderer:
@@ -132,7 +132,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.59, y: 2.4, z: 0.2}
+  m_Size: {x: 2.5, y: 2.5, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7952663272024998385
 Rigidbody:

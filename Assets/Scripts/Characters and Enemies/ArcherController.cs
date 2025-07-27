@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class ShooterController : MonoBehaviour
 {
-    public GameObject[] tileObjects = new GameObject[5];  // Arreglo de prefabs de los tiles
+    public GameObject[] tileObjects = new GameObject[5];  // Arreglo de prefabs de los tiles (enemigos)
     private int rowIndex = 0;  // Fila actual, empieza en 0 (la primera fila)
+    private int lastRowIndex = -1;  // Guarda la última fila para evitar repetir
 
     [Header("Configuración del Tirador")]
     public int health = 1;  // Salud del tirador (1 por defecto)
@@ -67,15 +68,22 @@ public class ShooterController : MonoBehaviour
         // 20% de probabilidad de hacer un "blink"
         if (Random.value < blinkProbability)
         {
-            // Escoge una fila aleatoria dentro de los índices posibles (0-4)
+            // Escoge una fila aleatoria dentro de los índices posibles (0-4), excluyendo la última fila
             int newRowIndex = Random.Range(0, tileObjects.Length);
 
-            // Asegúrate de que el archer se mantenga sobre el tile correspondiente
+            // Asegúrate de que la nueva fila no sea la misma que la última
+            while (newRowIndex == lastRowIndex)
+            {
+                newRowIndex = Random.Range(0, tileObjects.Length);
+            }
+
+            // Asegúrate de que el arquero se mantenga sobre el tile correspondiente
             Vector3 newPosition = tileObjects[newRowIndex].transform.position;
             newPosition.z = transform.position.z;  // Mantén el valor de Z (si es necesario)
 
+            // Copiar la posición X y Y del tile seleccionado (enemigo)
             transform.position = newPosition;  // Teletransportarse a esa fila
-            rowIndex = newRowIndex;  // Actualiza el índice de la fila
+            lastRowIndex = newRowIndex;  // Actualiza el índice de la fila
             Debug.Log($"¡Blink! Tirador teletransportado a la fila {newRowIndex}");
         }
     }

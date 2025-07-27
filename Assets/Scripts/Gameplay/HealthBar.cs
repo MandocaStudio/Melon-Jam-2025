@@ -29,4 +29,21 @@ public class ColumnHealthBar : MonoBehaviour
         Debug.Log("¡La columna ha caído!");
         gameObject.SetActive(false);  // Desactiva la columna (el juego termina)
     }
+
+    // Detectar la colisión con un proyectil enemigo
+    private void OnTriggerEnter(Collider other)
+    {
+        // Si colisiona con un proyectil enemigo
+        if (other.CompareTag("EnemyProjectile"))
+        {
+            TakeDamage(1);  // Recibe daño del proyectil
+            Destroy(other.gameObject);  // Destruye el proyectil
+        }
+
+        // Si colisiona con un enemigo
+        if (other.CompareTag("Enemy"))
+        {
+            TakeDamage(1);  // Recibe daño del enemigo
+        }
+    }
 }
