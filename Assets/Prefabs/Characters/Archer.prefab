@@ -124,18 +124,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileObjects:
-  - {fileID: 6176343004075193814, guid: a853b5be9513f9d4588165971d0b3ba9, type: 3}
-  - {fileID: 2031775676622407501, guid: 018a7ebe8e99c234f8397a4a115d1d38, type: 3}
-  - {fileID: 4200788139593571785, guid: a3f43dfa8e33c054eb63a79b59d1e323, type: 3}
-  - {fileID: 1322671774051030719, guid: 4b9cdf35b2ed5e741b33f1353e2d2708, type: 3}
-  - {fileID: 7433769085203564071, guid: efb8084c3f971e74081ecb081d474dc0, type: 3}
-  health: 1
-  damageToPlayer: 2
-  fireRate: 2
+  - {fileID: 7468673559398512695, guid: 2016f8df770b4ae4e8f46fc01f5e4f87, type: 3}
+  - {fileID: 4567624890156172348, guid: 9f2f8e18eb2e4564888e17f1fd476d9a, type: 3}
+  - {fileID: 7204819974554915853, guid: 0e50957ac9409894bb979cc4e75ce429, type: 3}
+  - {fileID: 6525844325855831874, guid: 4823fe24f6af64e41a01c750f008ccfd, type: 3}
+  - {fileID: 8276590465651829867, guid: 9d47e631f76974742873bf3453515ee4, type: 3}
+  health: 2
+  damageToPlayer: 1
+  fireRate: 5
   projectilePrefab: {fileID: 3477972661528652700, guid: ff3368ee85f99334cad1617298998a4f, type: 3}
   projectileSpeed: 5
   blinkInterval: 1
-  blinkProbability: 0.2
+  blinkProbability: 1
 --- !u!54 &9212302667668836226
 Rigidbody:
   m_ObjectHideFlags: 0
