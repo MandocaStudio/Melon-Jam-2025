@@ -12,6 +12,9 @@ public class Inventory : MonoBehaviour
         Instance = this;
     }
 
+
+
+
     public enum ItemType { Wind, Ice, Ray }
 
     // Estructura de un objeto del inventario
@@ -23,6 +26,33 @@ public class Inventory : MonoBehaviour
         public int bigCount = 0;    // Cantidad de objetos grandes
 
         public TextMeshProUGUI AmountBig;
+
+        public GameObject parent;
+        [SerializeField] private GameObject[] children;
+
+        public void InitializeChildren()
+        {
+            int childCount = parent.transform.childCount;
+
+            children = new GameObject[childCount];
+
+            for (int i = 0; i < childCount; i++)
+            {
+                children[i] = parent.transform.GetChild(i).gameObject;
+
+            }
+        }
+
+        public void ShowOnlyChildren(int amount)
+        {
+            if (children == null || children.Length == 0)
+                return;
+
+            for (int i = 0; i < children.Length; i++)
+            {
+                children[i].SetActive(i < amount);
+            }
+        }
 
 
         public void AddSmall()
@@ -41,6 +71,8 @@ public class Inventory : MonoBehaviour
 
                 Debug.Log("Tenemos un:" + type);
             }
+
+            ShowOnlyChildren(smallCount);
         }
 
         public void AddBig()
@@ -76,6 +108,11 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
+
+        foreach (var item in inventory)
+        {
+            item.InitializeChildren();
+        }
         // Inicializamos los 3 tipos
         // inventory[0] = new InventoryItem { type = ItemType.Wind };
         // inventory[1] = new InventoryItem { type = ItemType.Ice };

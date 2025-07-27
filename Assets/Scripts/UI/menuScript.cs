@@ -18,6 +18,8 @@ public class menuScript : MonoBehaviour
     public GameObject mainMenu;
     public GameObject firstButtonMainMenu;
 
+    public GameObject imageTitle;
+
     private string currentControlScheme;
 
     public Slider masterSlider;
@@ -59,6 +61,8 @@ public class menuScript : MonoBehaviour
         mainMenu.SetActive(false);
         optionsMenu.SetActive(true);
 
+        imageTitle.SetActive(false);
+
         StartCoroutine(FocusNextButton(firstButtonOptionMenu));
 
 
@@ -68,6 +72,9 @@ public class menuScript : MonoBehaviour
     {
         mainMenu.SetActive(true);
         optionsMenu.SetActive(false);
+
+        imageTitle.SetActive(true);
+
 
         StartCoroutine(FocusNextButton(firstButtonMainMenu));
 
