@@ -33,6 +33,9 @@ public class ShooterController : MonoBehaviour
         }
 
         isShooterActive = true;  // Marca que el tirador está activo
+
+        // Asignar rotación de 60 grados en el eje X al tirador
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en X
     }
 
     private void Update()
@@ -121,6 +124,7 @@ public class ShooterController : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Tirador destruido");
+            DropShard();  // Llama al método para añadir el shard de viento al inventario
             Cleanup();
         }
     }
@@ -129,5 +133,22 @@ public class ShooterController : MonoBehaviour
     {
         isShooterActive = false;  // Marca que el tirador ha sido destruido
         Destroy(gameObject);  // Destruye el tirador
+    }
+
+    private void DropShard()
+    {
+        // Se añade un shard de "viento" al inventario dependiendo de la cantidad de bigCount
+        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Ray].bigCount > 0)
+        {
+            // Añadir un shard grande de "viento" al inventario si el bigCount lo permite
+            Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
+            Debug.Log("Fragmento grande de viento añadido al inventario.");
+        }
+        else
+        {
+            // De lo contrario, añadir un shard pequeño de "viento"
+            Inventory.Instance.CollectSmall(Inventory.ItemType.Ray);
+            Debug.Log("Fragmento pequeño de viento añadido al inventario.");
+        }
     }
 }

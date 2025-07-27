@@ -33,6 +33,9 @@ public class IceTankController : MonoBehaviour
         currentTankCount++;
         activeTanksPerRow[rowIndex]++;
         ActivateShieldAura();
+
+        // Asignar rotación de 60 grados en el eje X al tanque
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en X
     }
 
     private void Update()
@@ -72,7 +75,7 @@ public class IceTankController : MonoBehaviour
         GameObject playerColumn = GameObject.Find("PlayerColumn");
         if (playerColumn != null)
         {
-            ColumnHealthBar columnHealth = playerColumn.GetComponent<ColumnHealthBar>();
+            ColumnHealthBar columnHealth = playerColumn.GetComponentInParent<ColumnHealthBar>();
             if (columnHealth != null)
             {
                 columnHealth.TakeDamage(damageToPlayer);  // Restar vida de la columna con el valor configurable
@@ -116,7 +119,25 @@ public class IceTankController : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Tanque destruido");
+            DropShard();  // Llama al método para añadir el shard al inventario
             Cleanup();
+        }
+    }
+
+    private void DropShard()
+    {
+        // Si el bigCount es 3 o más, se considera un fragmento grande
+        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Ice].bigCount > 0)
+        {
+            // Añadir un shard grande al inventario si el bigCount lo permite
+            Inventory.Instance.CollectBig(Inventory.ItemType.Ice);
+            Debug.Log("Fragmento grande de hielo añadido al inventario.");
+        }
+        else
+        {
+            // De lo contrario, añadir un shard pequeño
+            Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);
+            Debug.Log("Fragmento pequeño de hielo añadido al inventario.");
         }
     }
 

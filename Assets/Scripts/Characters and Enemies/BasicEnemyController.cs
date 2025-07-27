@@ -5,58 +5,45 @@ public class BasicEnemyController : MonoBehaviour
     public float moveSpeed = 1.5f;
     public int maxHealth = 3;
 
-    public Sprite whiteSprite, purpleSprite, blueSprite, yellowSprite;
-    public GameObject purpleShard, blueShard, yellowShard;
+    // Materiales correspondientes a los shards (para ser añadidos al inventario)
+    public Material purpleShardMaterial, blueShardMaterial, yellowShardMaterial;  
     public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
 
     private int currentHealth;
-    private SpriteRenderer spriteRenderer;
     private bool killedByProjectile = false;
 
-    public enum EnemyColor { White, Purple, Blue, Yellow }
+    public enum EnemyColor { Purple, Blue, Yellow }
     [HideInInspector] public EnemyColor enemyColor;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        spriteRenderer = GetComponent<SpriteRenderer>();
         enemyColor = GetRandomColor();
-        AsignarColorYSprite();
+
+        // Asegúrate de que el enemigo tenga la rotación correcta
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en el eje X
     }
 
     private void Update()
     {
-        transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);  // Movimiento constante del enemigo
     }
 
     private EnemyColor GetRandomColor()
     {
-        int rand = Random.Range(0, 4);
+        int rand = Random.Range(0, 3);
         return (EnemyColor)rand;
-    }
-
-    private void AsignarColorYSprite()
-    {
-        switch (enemyColor)
-        {
-            case EnemyColor.White: spriteRenderer.sprite = whiteSprite; break;
-            case EnemyColor.Purple: spriteRenderer.sprite = purpleSprite; break;
-            case EnemyColor.Blue: spriteRenderer.sprite = blueSprite; break;
-            case EnemyColor.Yellow: spriteRenderer.sprite = yellowSprite; break;
-        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enemigo detectó colisión con: " + other.name);
-
         if (other.CompareTag("PlayerColumn"))
         {
             ColumnHealthBar playerHealth = other.GetComponentInParent<ColumnHealthBar>();
             if (playerHealth != null)
                 playerHealth.TakeDamage(1);
 
-            Destroy(gameObject);
+            Destroy(gameObject);  // Destruye el enemigo al colisionar con la columna
         }
 
         if (other.CompareTag("Projectile"))
@@ -64,7 +51,7 @@ public class BasicEnemyController : MonoBehaviour
             Debug.Log("Enemigo recibió impacto de proyectil");
             killedByProjectile = true;
             TakeDamage(1);
-            Destroy(other.gameObject);
+            Destroy(other.gameObject);  // Destruye el proyectil
         }
     }
 
@@ -76,26 +63,30 @@ public class BasicEnemyController : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("Enemigo destruido");
-            if (killedByProjectile) DropShard();
-            Destroy(gameObject);
+            if (killedByProjectile)
+            {
+                DropShard();  // Llama al método para añadir el shard al inventario
+            }
+            Destroy(gameObject);  // Destruye el enemigo
         }
     }
 
     private void DropShard()
     {
-        GameObject shardToDrop = null;
-
+        // Se asigna el material del shard correspondiente al inventario según el color del enemigo
         switch (enemyColor)
         {
-            case EnemyColor.Purple: shardToDrop = purpleShard; break;
-            case EnemyColor.Blue: shardToDrop = blueShard; break;
-            case EnemyColor.Yellow: shardToDrop = yellowShard; break;
+            case EnemyColor.Purple:
+                Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);  // Asignar material púrpura (shard)
+                break;
+            case EnemyColor.Blue:
+                Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);  // Asignar material azul (shard)
+                break;
+            case EnemyColor.Yellow:
+                Inventory.Instance.CollectSmall(Inventory.ItemType.Ray);  // Asignar material amarillo (shard)
+                break;
         }
 
-        if (shardToDrop != null)
-        {
-            Instantiate(shardToDrop, transform.position + dropOffset, Quaternion.identity);
-            Debug.Log("Shard generado");
-        }
+        Debug.Log("Fragmento de color " + enemyColor + " añadido al inventario.");
     }
 }

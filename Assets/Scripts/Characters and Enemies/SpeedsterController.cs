@@ -26,6 +26,9 @@ public class SpeedsterController : MonoBehaviour
 
         currentSpeedsterCount++;
         activeSpeedstersPerRow[rowIndex]++;
+        
+        // Asignar rotación de 60 grados en el eje X al velocista
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en X
     }
 
     private void Update()
@@ -82,6 +85,7 @@ public class SpeedsterController : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Velocista destruido");
+            DropShard();  // Llama al método para añadir el shard de viento al inventario
             Cleanup();
         }
     }
@@ -115,6 +119,23 @@ public class SpeedsterController : MonoBehaviour
             {
                 speedster.moveSpeed *= 1.5f;  // Aumenta la velocidad del velocista
             }
+        }
+    }
+
+    private void DropShard()
+    {
+        // Se añade un shard de "viento" al inventario dependiendo de la cantidad de bigCount
+        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Wind].bigCount > 0)
+        {
+            // Añadir un shard grande al inventario si el bigCount lo permite
+            Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
+            Debug.Log("Fragmento grande de viento añadido al inventario.");
+        }
+        else
+        {
+            // De lo contrario, añadir un shard pequeño
+            Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
+            Debug.Log("Fragmento pequeño de viento añadido al inventario.");
         }
     }
 }
