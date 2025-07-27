@@ -4,17 +4,23 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private PlayerControls controls;  // El sistema de controles
-    public GameObject projectilePrefab;
+    public GameObject projectilePrefab;  // Prefab del proyectil
 
     [Header("Grid Setup")]
     public GameObject[] tileObjects = new GameObject[5];  // Tiles fila 0 a 4
-    public Transform spawnTile;                           // Tile_0_2 por defecto
-    private float[] rowZPositions = new float[5];         // Almacenaremos las posiciones Z de los tiles
+    public Transform spawnTile;  // Tile_0_2 por defecto
+    private float[] rowZPositions = new float[5];  // Almacenaremos las posiciones Z de los tiles
 
     private float columnX;   // Se toma del spawnTile (posición X del tile de spawn)
     private int currentRow;  // Se determina automáticamente según spawnTile
 
-    // Asegúrate de inicializar controls en Awake, no en Start.
+    // Para manejar el delay entre disparos
+    public float fireRate = 0.5f;  // Tasa de disparo (intervalo entre disparos)
+    private float nextFireTime = 0f;  // Para controlar el tiempo entre disparos
+
+    // Transform desde el que el proyectil debe salir
+    public Transform shootTransform;  // Puedes asignar en el Inspector
+
     private void Awake()
     {
         controls = new PlayerControls();  // Inicializa el sistema de controles
@@ -120,8 +126,14 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);
-        Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
-        Debug.Log("Disparando proyectil");
+        // Verifica si ha pasado el tiempo necesario entre disparos
+        if (Time.time >= nextFireTime)
+        {
+            Vector3 spawnPosition = shootTransform.position;  // El proyectil sale desde shootTransform
+            Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(60f, 0f, 0f));  // Rotación de 60 grados
+
+            nextFireTime = Time.time + fireRate;  // Establece el próximo disparo según la tasa de disparo
+            Debug.Log("Disparando proyectil");
+        }
     }
 }
