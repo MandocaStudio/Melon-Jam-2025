@@ -29,14 +29,9 @@ public class PlayerController : MonoBehaviour
 
     private bool isAttacking = false;
 
-    public bool allowInput = false;
-
-
     private void Awake()
     {
         controls = new PlayerControls();
-        allowInput = false;
-
     }
 
     private void Start()
@@ -94,8 +89,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnMovePerformed(InputAction.CallbackContext ctx)
     {
-        if (!allowInput) return;
-
         Vector2 input = ctx.ReadValue<Vector2>();
         if (input.y > 0.1f) MoveForward();
         else if (input.y < -0.1f) MoveBackward();
@@ -137,8 +130,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        if (!allowInput) return;
-
         Shoot();
     }
 
