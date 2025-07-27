@@ -4,16 +4,32 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.Audio;
 
 
 public class pauseMenu : MonoBehaviour
 {
 
-    public InputAction exitButton;
 
     public GameObject PauseMenu;
 
-    public GameObject firstMenuButton;
+    public GameObject optionSection;
+
+    public GameObject firstOptionsButton;
+
+    public GameObject basicSection;
+
+    public GameObject firstBasicButton;
+
+
+    private PlayerControls inputActions;
+
+    private void Awake()
+    {
+        inputActions = new PlayerControls();
+    }
+
+    [SerializeField] private AudioMixer audioMixer;
 
     string scheme;
 
@@ -21,39 +37,102 @@ public class pauseMenu : MonoBehaviour
 
     private string currentControlScheme;
 
+
     void OnEnable()
     {
         InputSystem.onActionChange += HandleDeviceChange;
-        exitButton.Enable();
-        exitButton.performed += openpauseMenu;
+
+        inputActions.Player.exitButton.performed += openpauseMenu;
+        inputActions.Player.back.performed += BacktoMainMenu;
+        inputActions.Enable();
     }
+
 
     void OnDisable()
     {
         InputSystem.onActionChange -= HandleDeviceChange;
-        exitButton.performed -= openpauseMenu;
-        exitButton.Disable();
+
+        inputActions.Player.exitButton.performed -= openpauseMenu;
+        inputActions.Player.back.performed += BacktoMainMenu;
+
+        inputActions.Disable();
+    }
+
+    public void BacktoMainMenu(InputAction.CallbackContext context)
+    {
+        basicSection.SetActive(true);
+        optionSection.SetActive(false);
+
+        StartCoroutine(FocusNextButton(firstBasicButton));
 
     }
 
     public void openpauseMenu(InputAction.CallbackContext context)
     {
 
-
         if (PauseMenu.activeSelf)
         {
             Time.timeScale = 1;
             PauseMenu.SetActive(false);
+
+            basicSection.SetActive(true);
+            optionSection.SetActive(false);
         }
         else if (!PauseMenu.activeSelf)
         {
             Time.timeScale = 0;
 
             PauseMenu.SetActive(true);
+
+            basicSection.SetActive(true);
+            optionSection.SetActive(false);
         }
 
-        StartCoroutine(FocusNextButton(firstMenuButton));
+        StartCoroutine(FocusNextButton(firstBasicButton));
 
+    }
+
+    public void openOptionsMenu()
+    {
+        basicSection.SetActive(false);
+        optionSection.SetActive(true);
+
+        StartCoroutine(FocusNextButton(firstOptionsButton));
+
+    }
+
+    public void openMainMenu()
+    {
+        basicSection.SetActive(true);
+        optionSection.SetActive(false);
+
+        StartCoroutine(FocusNextButton(firstBasicButton));
+
+    }
+
+    public void changeGeneralVolume(float volume)
+    {
+        audioMixer.SetFloat("volume", volume);
+    }
+
+    public void changeSFX(float volume)
+    {
+        audioMixer.SetFloat("sfx", volume);
+    }
+
+    public void changeMusic(float volume)
+    {
+        audioMixer.SetFloat("music", volume);
+    }
+
+    public void changeAmbient(float volume)
+    {
+        audioMixer.SetFloat("ambient", volume);
+    }
+
+    public void fullScream(bool fullScream)
+    {
+        Screen.fullScreen = fullScream;
     }
 
     public void resumeButton()
@@ -100,15 +179,20 @@ public class pauseMenu : MonoBehaviour
     {
 
         // Solo si no hay ningún objeto seleccionado
-        if (EventSystem.current.currentSelectedGameObject == null && PauseMenu.activeSelf)
+        if (EventSystem.current.currentSelectedGameObject == null)
         {
             // Detectar entrada de teclado o gamepad
-            Debug.Log("entro");
+            //Debug.Log("entro");
 
-            if (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard")
+
+            if (basicSection.activeSelf && (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard"))
             {
-                EventSystem.current.SetSelectedGameObject(firstMenuButton);
+                EventSystem.current.SetSelectedGameObject(firstBasicButton);
 
+            }
+            else if (optionSection.activeSelf && (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard"))
+            {
+                EventSystem.current.SetSelectedGameObject(firstOptionsButton);
             }
 
         }

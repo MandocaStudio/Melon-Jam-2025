@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.Audio;
 
 
 
@@ -16,6 +17,8 @@ public class menuScript : MonoBehaviour
     public GameObject firstButtonMainMenu;
 
     private string currentControlScheme;
+
+    [SerializeField] private AudioMixer audioMixer;
 
     string scheme;
     void OnEnable()
@@ -73,6 +76,31 @@ public class menuScript : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         SceneManager.LoadScene(currentSceneIndex + 1);
+    }
+
+    public void fullScream(bool fullScream)
+    {
+        Screen.fullScreen = fullScream;
+    }
+
+    public void changeGeneralVolume(float volume)
+    {
+        audioMixer.SetFloat("volume", volume);
+    }
+
+    public void changeSFX(float volume)
+    {
+        audioMixer.SetFloat("sfx", volume);
+    }
+
+    public void changeMusic(float volume)
+    {
+        audioMixer.SetFloat("music", volume);
+    }
+
+    public void changeAmbient(float volume)
+    {
+        audioMixer.SetFloat("ambient", volume);
     }
 
     IEnumerator FocusNextButton(GameObject button)

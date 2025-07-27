@@ -8,7 +8,6 @@ public class elementCombiner : MonoBehaviour
     private Inventory.ItemType? firstSelection = null;
     private Inventory.ItemType? secondSelection = null;
     private PlayerControls inputActions;
-    public InputAction cancel;
 
     private void Awake()
     {

@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "back",
+                    "type": "Button",
+                    "id": "d0dd353c-047a-441a-b10c-48758722e72d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "deselect",
                     "type": "Button",
                     "id": "a82a1c51-e418-47a9-a7f2-8b48c7b053dd",
@@ -265,6 +274,28 @@
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
                     "action": "wind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4dac7867-e792-40b4-a489-b535bc8e3690",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca8faa93-99be-42a5-b94a-e82d713ac00e",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";teclado;KeyBoard",
+                    "action": "back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -128,6 +128,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""back"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0dd353c-047a-441a-b10c-48758722e72d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""deselect"",
                     ""type"": ""Button"",
                     ""id"": ""a82a1c51-e418-47a9-a7f2-8b48c7b053dd"",
@@ -351,6 +360,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
                     ""action"": ""wind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dac7867-e792-40b4-a489-b535bc8e3690"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca8faa93-99be-42a5-b94a-e82d713ac00e"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";teclado;KeyBoard"",
+                    ""action"": ""back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1065,6 +1096,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_ice = m_Player.FindAction("ice", throwIfNotFound: true);
         m_Player_ray = m_Player.FindAction("ray", throwIfNotFound: true);
         m_Player_wind = m_Player.FindAction("wind", throwIfNotFound: true);
+        m_Player_back = m_Player.FindAction("back", throwIfNotFound: true);
         m_Player_deselect = m_Player.FindAction("deselect", throwIfNotFound: true);
         m_Player_exitButton = m_Player.FindAction("exitButton", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
@@ -1167,6 +1199,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ice;
     private readonly InputAction m_Player_ray;
     private readonly InputAction m_Player_wind;
+    private readonly InputAction m_Player_back;
     private readonly InputAction m_Player_deselect;
     private readonly InputAction m_Player_exitButton;
     private readonly InputAction m_Player_Attack;
@@ -1197,6 +1230,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/wind".
         /// </summary>
         public InputAction @wind => m_Wrapper.m_Player_wind;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/back".
+        /// </summary>
+        public InputAction @back => m_Wrapper.m_Player_back;
         /// <summary>
         /// Provides access to the underlying input action "Player/deselect".
         /// </summary>
@@ -1247,6 +1284,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @wind.started += instance.OnWind;
             @wind.performed += instance.OnWind;
             @wind.canceled += instance.OnWind;
+            @back.started += instance.OnBack;
+            @back.performed += instance.OnBack;
+            @back.canceled += instance.OnBack;
             @deselect.started += instance.OnDeselect;
             @deselect.performed += instance.OnDeselect;
             @deselect.canceled += instance.OnDeselect;
@@ -1279,6 +1319,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @wind.started -= instance.OnWind;
             @wind.performed -= instance.OnWind;
             @wind.canceled -= instance.OnWind;
+            @back.started -= instance.OnBack;
+            @back.performed -= instance.OnBack;
+            @back.canceled -= instance.OnBack;
             @deselect.started -= instance.OnDeselect;
             @deselect.performed -= instance.OnDeselect;
             @deselect.canceled -= instance.OnDeselect;
@@ -1612,6 +1655,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnWind(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "back" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBack(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "deselect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
