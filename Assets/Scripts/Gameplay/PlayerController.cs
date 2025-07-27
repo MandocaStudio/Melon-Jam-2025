@@ -73,20 +73,7 @@ public class PlayerController : MonoBehaviour
         if (attackModel != null) attackModel.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        controls.Enable();
-        controls.Player.Move.performed += OnMovePerformed;
-        controls.Player.Attack.performed += OnAttackPerformed;
-    }
-
-    private void OnDisable()
-    {
-        controls.Player.Move.performed -= OnMovePerformed;
-        controls.Player.Attack.performed -= OnAttackPerformed;
-        controls.Disable();
-    }
-
+    
     private void OnMovePerformed(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
@@ -128,11 +115,7 @@ public class PlayerController : MonoBehaviour
         transform.position = newPosition;
     }
 
-    private void OnAttackPerformed(InputAction.CallbackContext ctx)
-    {
-        Shoot();
-    }
-
+   
     private void Shoot()
     {
         if (isAttacking) return;
@@ -160,4 +143,6 @@ public class PlayerController : MonoBehaviour
 
         isAttacking = false;
     }
+
+   
 }

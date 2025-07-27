@@ -32,14 +32,11 @@ public class ElementCombiner : MonoBehaviour
     [SerializeField] private GameObject thunderBeamPrefab;
     [SerializeField] private Transform beamSpawnPoint;
 
-
-
-
-
     private void Awake()
     {
         inputActions = new PlayerControls();
     }
+
     private void OnEnable()
     {
         inputActions.Enable();
@@ -209,7 +206,6 @@ private void CastWindPushSpell()
         Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
     }
 }
-
 
     private void CastWindThunderCloudSpell()
     {
