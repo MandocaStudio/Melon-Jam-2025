@@ -103,15 +103,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ice"",
                     ""type"": ""Button"",
-                    ""id"": ""30627c68-48eb-4716-affc-f265e73373b8"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ray"",
-                    ""type"": ""Button"",
                     ""id"": ""c12bb07c-8c32-4454-bd02-d81bbeae85e2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -120,6 +111,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""wind"",
+                    ""type"": ""Button"",
+                    ""id"": ""30627c68-48eb-4716-affc-f265e73373b8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ray"",
                     ""type"": ""Button"",
                     ""id"": ""65a41ae1-d683-4ae4-8043-ce293d4ea2ee"",
                     ""expectedControlType"": """",
@@ -249,7 +249,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad;teclado"",
-                    ""action"": ""ice"",
+                    ""action"": ""wind"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -260,7 +260,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""ice"",
+                    ""action"": ""wind"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -271,7 +271,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""ray"",
+                    ""action"": ""ice"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -282,7 +282,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""ray"",
+                    ""action"": ""ice"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -315,7 +315,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""wind"",
+                    ""action"": ""ray"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -326,7 +326,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""wind"",
+                    ""action"": ""ray"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1145,8 +1145,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_ice = m_Player.FindAction("ice", throwIfNotFound: true);
-        m_Player_ray = m_Player.FindAction("ray", throwIfNotFound: true);
         m_Player_wind = m_Player.FindAction("wind", throwIfNotFound: true);
+        m_Player_ray = m_Player.FindAction("ray", throwIfNotFound: true);
         m_Player_back = m_Player.FindAction("back", throwIfNotFound: true);
         m_Player_deselect = m_Player.FindAction("deselect", throwIfNotFound: true);
         m_Player_exitButton = m_Player.FindAction("exitButton", throwIfNotFound: true);
@@ -1250,8 +1250,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_ice;
-    private readonly InputAction m_Player_ray;
     private readonly InputAction m_Player_wind;
+    private readonly InputAction m_Player_ray;
     private readonly InputAction m_Player_back;
     private readonly InputAction m_Player_deselect;
     private readonly InputAction m_Player_exitButton;
@@ -1276,13 +1276,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ice => m_Wrapper.m_Player_ice;
         /// <summary>
-        /// Provides access to the underlying input action "Player/ray".
-        /// </summary>
-        public InputAction @ray => m_Wrapper.m_Player_ray;
-        /// <summary>
         /// Provides access to the underlying input action "Player/wind".
         /// </summary>
         public InputAction @wind => m_Wrapper.m_Player_wind;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ray".
+        /// </summary>
+        public InputAction @ray => m_Wrapper.m_Player_ray;
         /// <summary>
         /// Provides access to the underlying input action "Player/back".
         /// </summary>
@@ -1331,12 +1331,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ice.started += instance.OnIce;
             @ice.performed += instance.OnIce;
             @ice.canceled += instance.OnIce;
-            @ray.started += instance.OnRay;
-            @ray.performed += instance.OnRay;
-            @ray.canceled += instance.OnRay;
             @wind.started += instance.OnWind;
             @wind.performed += instance.OnWind;
             @wind.canceled += instance.OnWind;
+            @ray.started += instance.OnRay;
+            @ray.performed += instance.OnRay;
+            @ray.canceled += instance.OnRay;
             @back.started += instance.OnBack;
             @back.performed += instance.OnBack;
             @back.canceled += instance.OnBack;
@@ -1366,12 +1366,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ice.started -= instance.OnIce;
             @ice.performed -= instance.OnIce;
             @ice.canceled -= instance.OnIce;
-            @ray.started -= instance.OnRay;
-            @ray.performed -= instance.OnRay;
-            @ray.canceled -= instance.OnRay;
             @wind.started -= instance.OnWind;
             @wind.performed -= instance.OnWind;
             @wind.canceled -= instance.OnWind;
+            @ray.started -= instance.OnRay;
+            @ray.performed -= instance.OnRay;
+            @ray.canceled -= instance.OnRay;
             @back.started -= instance.OnBack;
             @back.performed -= instance.OnBack;
             @back.canceled -= instance.OnBack;
@@ -1717,19 +1717,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnIce(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ray" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRay(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "wind" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnWind(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ray" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRay(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "back" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

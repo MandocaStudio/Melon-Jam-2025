@@ -1,5 +1,8 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ElementCombiner : MonoBehaviour
 {
@@ -8,6 +11,18 @@ public class ElementCombiner : MonoBehaviour
     private Inventory.ItemType? secondSelection = null;
     private PlayerControls inputActions;
 
+    [SerializeField] private Sprite rayImage;
+
+    [SerializeField] private Sprite windImage;
+
+    [SerializeField] private Sprite iceImage;
+
+    [SerializeField] private Sprite voidmage;
+
+
+    [SerializeField] private Image firstSlot;
+    [SerializeField] private Image secondtSlot;
+
     private void Awake()
     {
         inputActions = new PlayerControls();
@@ -15,17 +30,18 @@ public class ElementCombiner : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Enable();
+
         inputActions.Player.ice.performed += ctx => SelectType(Inventory.ItemType.Ice);
-        inputActions.Player.ray.performed += ctx => SelectType(Inventory.ItemType.Ray);
         inputActions.Player.wind.performed += ctx => SelectType(Inventory.ItemType.Wind);
+        inputActions.Player.ray.performed += ctx => SelectType(Inventory.ItemType.Ray);
         inputActions.Player.deselect.performed += OnCancelSelection;
     }
 
     private void OnDisable()
     {
         inputActions.Player.ice.performed -= ctx => SelectType(Inventory.ItemType.Ice);
-        inputActions.Player.ray.performed -= ctx => SelectType(Inventory.ItemType.Ray);
         inputActions.Player.wind.performed -= ctx => SelectType(Inventory.ItemType.Wind);
+        inputActions.Player.ray.performed -= ctx => SelectType(Inventory.ItemType.Ray);
         inputActions.Player.deselect.performed -= OnCancelSelection;
 
         inputActions.Disable();
@@ -51,11 +67,45 @@ public class ElementCombiner : MonoBehaviour
         {
             firstSelection = selected;
             Debug.Log($"Primera selección: {selected}");
+
+
+            switch (selected)
+            {
+                case Inventory.ItemType.Ray:
+                    firstSlot.sprite = rayImage;
+                    break;
+
+                case Inventory.ItemType.Wind:
+                    firstSlot.sprite = windImage;
+                    break;
+
+                case Inventory.ItemType.Ice:
+                    firstSlot.sprite = iceImage;
+                    break;
+            }
+
+
         }
         else if (secondSelection == null)
         {
             secondSelection = selected;
             Debug.Log($"Segunda selección: {selected}");
+
+            switch (selected)
+            {
+                case Inventory.ItemType.Ray:
+                    secondtSlot.sprite = rayImage;
+                    break;
+
+                case Inventory.ItemType.Wind:
+                    secondtSlot.sprite = windImage;
+                    break;
+
+                case Inventory.ItemType.Ice:
+                    secondtSlot.sprite = iceImage;
+                    break;
+            }
+
             TryCombine();
         }
         else
@@ -66,11 +116,22 @@ public class ElementCombiner : MonoBehaviour
         }
     }
 
+    IEnumerator borrarCombinaciones()
+    {
+        yield return new WaitForSeconds(2f); // Espera 2 segundos
+
+        firstSlot.sprite = voidmage;
+        secondtSlot.sprite = voidmage;
+
+    }
+
     private void OnCancelSelection(InputAction.CallbackContext ctx)
     {
         if (firstSelection != null && secondSelection == null)
         {
             Debug.Log("Primera selección cancelada.");
+
+            firstSlot.sprite = voidmage;
             firstSelection = null;
         }
     }
@@ -85,7 +146,7 @@ public class ElementCombiner : MonoBehaviour
             firstSelection = null;
             secondSelection = null;
 
-
+            StartCoroutine(borrarCombinaciones());
         }
     }
 

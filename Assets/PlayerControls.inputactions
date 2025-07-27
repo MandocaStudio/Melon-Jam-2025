@@ -17,15 +17,6 @@
                 {
                     "name": "ice",
                     "type": "Button",
-                    "id": "30627c68-48eb-4716-affc-f265e73373b8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ray",
-                    "type": "Button",
                     "id": "c12bb07c-8c32-4454-bd02-d81bbeae85e2",
                     "expectedControlType": "",
                     "processors": "",
@@ -34,6 +25,15 @@
                 },
                 {
                     "name": "wind",
+                    "type": "Button",
+                    "id": "30627c68-48eb-4716-affc-f265e73373b8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ray",
                     "type": "Button",
                     "id": "65a41ae1-d683-4ae4-8043-ce293d4ea2ee",
                     "expectedControlType": "",
@@ -163,7 +163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad;teclado",
-                    "action": "ice",
+                    "action": "wind",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -174,7 +174,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-                    "action": "ice",
+                    "action": "wind",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -185,7 +185,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-                    "action": "ray",
+                    "action": "ice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -196,7 +196,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "ray",
+                    "action": "ice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -229,7 +229,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "wind",
+                    "action": "ray",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -240,7 +240,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";teclado;KeyBoard",
-                    "action": "wind",
+                    "action": "ray",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
