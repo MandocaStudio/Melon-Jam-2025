@@ -1,157 +1,101 @@
+// ============================
+// ShooterController.cs (actualizado) - Archer
+// ============================
+
 using UnityEngine;
 
 public class ShooterController : MonoBehaviour
 {
-    public GameObject[] tileObjects = new GameObject[5];  // Arreglo de prefabs de los tiles (enemigos)
-    private int rowIndex = 0;  // Fila actual, empieza en 0 (la primera fila)
-    private int lastRowIndex = -1;  // Guarda la última fila para evitar repetir
+    [Header("Blink Targets")]
+    public GameObject[] blinkObjects; // Objetos de la escena que definen los tiles
+    private int lastBlinkIndex = -1;
 
-    [Header("Configuración del Tirador")]
-    public int health = 1;  // Salud del tirador (1 por defecto)
-    public int damageToPlayer = 2;  // Daño que el proyectil hace al jugador (2)
-    public float fireRate = 2f;  // Tasa de disparo (cada cuánto tiempo dispara)
+    [Header("Configuración del Arquero")]
+    public int health = 1;
+    public float fireRate = 1.5f;
+    public float blinkInterval = 3f;
 
     [Header("Proyectil")]
-    public GameObject projectilePrefab;  // Prefab del proyectil (flecha)
-    public float projectileSpeed = 5f;  // Velocidad del proyectil
+    public GameObject projectilePrefab;
+    public float projectileSpeed = 10f;
 
-    private static bool isShooterActive = false;  // Verifica si hay un tirador activo en la escena
-    private float nextFireTime = 0f;  // Controla el tiempo entre disparos
-
-    private float blinkTimer = 0f;  // Temporizador para el blink
-    public float blinkInterval = 3f;  // Intervalo entre los blinks (en segundos)
-    public float blinkProbability = 0.2f;  // Probabilidad de blink (20%)
-
-    public Material ThunderFullMaterial;  
-    public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
+    private float nextFireTime = 0f;
+    private float blinkTimer = 0f;
 
     private void Start()
     {
-        // Verifica si ya existe un tirador en la escena
-        if (isShooterActive)
-        {
-            Debug.LogWarning("Solo puede haber un tirador en la escena al mismo tiempo.");
-            Destroy(gameObject);  // Si ya hay un tirador, destruye este
-            return;
-        }
-
-        isShooterActive = true;  // Marca que el tirador está activo
-
-        // Asignar rotación de 60 grados en el eje X al tirador
-        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en X
+        transform.tag = "Enemy";
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
+        BlinkToNewPosition();
     }
 
     private void Update()
     {
-        // Si el tirador está vivo, realiza un blink y dispara
-        if (health > 0)
+        if (health <= 0) return;
+
+        // Disparo
+        if (Time.time >= nextFireTime)
         {
-            // Control de la tasa de disparo
-            if (Time.time >= nextFireTime)
-            {
-                ShootProjectile();
-                nextFireTime = Time.time + fireRate;  // Establece el próximo disparo según la tasa de disparo
-            }
-
-            // Actualiza el temporizador para el blink
-            blinkTimer += Time.deltaTime;
-
-            // Verifica si ha pasado el tiempo necesario para realizar un "blink"
-            if (blinkTimer >= blinkInterval)
-            {
-                blinkTimer = 0f;  // Resetear el temporizador
-                TryBlink();  // Intentar hacer un "blink" (teletransportarse)
-            }
+            ShootProjectile();
+            nextFireTime = Time.time + fireRate;
         }
-        else
+
+        // Blink
+        blinkTimer += Time.deltaTime;
+        if (blinkTimer >= blinkInterval)
         {
-            Cleanup();  // El tirador muere, elimina el objeto
+            blinkTimer = 0f;
+            BlinkToNewPosition();
         }
     }
 
-    private void TryBlink()
+    private void BlinkToNewPosition()
     {
-        // 20% de probabilidad de hacer un "blink"
-        if (Random.value < blinkProbability)
-        {
-            // Escoge una fila aleatoria dentro de los índices posibles (0-4), excluyendo la última fila
-            int newRowIndex = Random.Range(0, tileObjects.Length);
+        if (blinkObjects == null || blinkObjects.Length == 0) return;
 
-            // Asegúrate de que la nueva fila no sea la misma que la última
-            while (newRowIndex == lastRowIndex)
-            {
-                newRowIndex = Random.Range(0, tileObjects.Length);
-            }
+        int newIndex = Random.Range(0, blinkObjects.Length);
+        while (newIndex == lastBlinkIndex && blinkObjects.Length > 1)
+            newIndex = Random.Range(0, blinkObjects.Length);
 
-            // Asegúrate de que el arquero se mantenga sobre el tile correspondiente
-            Vector3 newPosition = tileObjects[newRowIndex].transform.position;
-            newPosition.z = transform.position.z;  // Mantén el valor de Z (si es necesario)
+        transform.position = blinkObjects[newIndex].transform.position;
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
+        lastBlinkIndex = newIndex;
 
-            // Copiar la posición X y Y del tile seleccionado (enemigo)
-            transform.position = newPosition;  // Teletransportarse a esa fila
-            lastRowIndex = newRowIndex;  // Actualiza el índice de la fila
-            Debug.Log($"¡Blink! Tirador teletransportado a la fila {newRowIndex}");
-        }
+        Debug.Log($"Archer blinked to object {newIndex}.");
     }
 
     private void ShootProjectile()
     {
-        // Disparar un proyectil (flecha) hacia la columna del jugador (izquierda)
-        Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);  // Ajusta según el lugar del disparo
-        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
+        Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);
+        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(60f, 0f, 0f));
 
-        // Establece la dirección del proyectil
-        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-        if (projectileRb != null)
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            projectileRb.linearVelocity = Vector3.left * projectileSpeed;  // Mueve el proyectil hacia la izquierda
+            rb.linearVelocity = Vector3.left * projectileSpeed;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Recibe daño por proyectiles (en caso de ser impactado por el proyectil del jugador)
         if (other.CompareTag("Projectile"))
         {
-            Destroy(other.gameObject);  // Destruye el proyectil del jugador
-
-            TakeDamage(1);  // El tirador recibe 1 de daño por cada impacto
+            Destroy(other.gameObject);
+            TakeDamage(1);
         }
     }
 
     private void TakeDamage(int dmg)
     {
         health -= dmg;
-        Debug.Log($"Tirador recibió {dmg} de daño. Salud restante: {health}");
+        Debug.Log($"Archer took {dmg} damage. Remaining HP: {health}");
 
         if (health <= 0)
         {
-            Debug.Log("Tirador destruido");
-            DropShard();  // Llama al método para añadir el shard de viento al inventario
-            Cleanup();
+            Debug.Log("Archer destroyed");
+            Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
+            Destroy(gameObject);
         }
     }
+} 
 
-    private void Cleanup()
-    {
-        isShooterActive = false;  // Marca que el tirador ha sido destruido
-        Destroy(gameObject);  // Destruye el tirador
-    }
-
-     private void DropShard()
-    {
-        // Se añade un shard de "viento" al inventario dependiendo de la cantidad de bigCount
-        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Wind].bigCount > 0)
-        {
-            // Añadir un shard grande al inventario si el bigCount lo permite
-            Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
-            Debug.Log("Fragmento grande de viento añadido al inventario.");
-        }
-        else
-        {
-            // De lo contrario, añadir un shard pequeño
-            Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
-            Debug.Log("Fragmento pequeño de viento añadido al inventario.");
-        }
-    }
-}

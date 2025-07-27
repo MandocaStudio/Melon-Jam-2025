@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169766591672510676}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.004573982, w: 0.99998957}
-  m_LocalPosition: {x: 0.605362, y: -0.000000026950909, z: 0}
-  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8046974246809852025}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!1 &4185835103838082808
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 4254260625321850422}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 11.18941, y: -26.17641, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -189,21 +189,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef74cb7a231d33a4ba649c68add24307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileObjects:
-  - {fileID: 7468673559398512695, guid: 2016f8df770b4ae4e8f46fc01f5e4f87, type: 3}
-  - {fileID: 4567624890156172348, guid: 9f2f8e18eb2e4564888e17f1fd476d9a, type: 3}
-  - {fileID: 7204819974554915853, guid: 0e50957ac9409894bb979cc4e75ce429, type: 3}
-  - {fileID: 6525844325855831874, guid: 4823fe24f6af64e41a01c750f008ccfd, type: 3}
-  - {fileID: 8276590465651829867, guid: 9d47e631f76974742873bf3453515ee4, type: 3}
+  blinkPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   health: 1
-  damageToPlayer: 2
-  fireRate: 2
-  projectilePrefab: {fileID: 3477972661528652700, guid: ff3368ee85f99334cad1617298998a4f, type: 3}
-  projectileSpeed: 5
+  fireRate: 3
   blinkInterval: 3
-  blinkProbability: 0.2
-  ThunderFullMaterial: {fileID: 0}
-  dropOffset: {x: -0.3, y: 0, z: 0}
+  projectilePrefab: {fileID: 3477972661528652700, guid: ff3368ee85f99334cad1617298998a4f, type: 3}
+  projectileSpeed: 2
 --- !u!65 &5797693183766445077
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -387,13 +383,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7638364565447602657}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: 7.00078, y: 16.8746, z: -29.227663}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3153138401259433557}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!212 &2543602268585536824
 SpriteRenderer:
   m_ObjectHideFlags: 0
