@@ -1,7 +1,3 @@
-// ============================
-// ShooterController.cs (actualizado) - Archer
-// ============================
-
 using UnityEngine;
 
 public class ShooterController : MonoBehaviour
@@ -25,22 +21,22 @@ public class ShooterController : MonoBehaviour
     private void Start()
     {
         transform.tag = "Enemy";
-        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
-        BlinkToNewPosition();
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f); // Siempre rotado para vista isométrica
+        BlinkToNewPosition(); // Primer blink inicial
     }
 
     private void Update()
     {
         if (health <= 0) return;
 
-        // Disparo
+        // Disparo del arquero
         if (Time.time >= nextFireTime)
         {
             ShootProjectile();
             nextFireTime = Time.time + fireRate;
         }
 
-        // Blink
+        // Blink a nuevo tile
         blinkTimer += Time.deltaTime;
         if (blinkTimer >= blinkInterval)
         {
@@ -66,7 +62,7 @@ public class ShooterController : MonoBehaviour
 
     private void ShootProjectile()
     {
-        Vector3 spawnPosition = transform.position + new Vector3(1f, 0, 0);
+        Vector3 spawnPosition = transform.position + new Vector3(1f, 0f, 0f);
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(60f, 0f, 0f));
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
@@ -93,9 +89,14 @@ public class ShooterController : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Archer destroyed");
-            Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
+            DropShard();
             Destroy(gameObject);
         }
     }
-} 
 
+    private void DropShard()
+    {
+        Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
+        Debug.Log("Fragmento grande de rayo añadido al inventario.");
+    }
+}

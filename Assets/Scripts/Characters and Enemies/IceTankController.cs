@@ -8,35 +8,19 @@ public class IceTankController : MonoBehaviour
     public int damageToPlayer = 1;
     public float moveSpeed = 1f;
 
-    public static int maxActiveTanks = 2;
-    public static int[] activeTanksPerRow = new int[5];
-    public static int currentTankCount = 0;
-
+    public int rowIndex; // Fila asignada por el spawner
     private bool isShieldActive = true;
     private bool hasReachedPlayer = false;
 
-    public int rowIndex;
-
-    public Material blueFullMaterial;  
+    public Material blueFullMaterial;
     public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
 
     private void Start()
     {
-        AssignRowIndex();
-
-        if (currentTankCount >= maxActiveTanks || !IsRowIndexValid(rowIndex) || activeTanksPerRow[rowIndex] > 0)
-        {
-            Debug.LogWarning("No se puede crear más tanques en esta fila o en la escena.");
-            Destroy(gameObject);
-            return;
-        }
-
-        currentTankCount++;
-        activeTanksPerRow[rowIndex]++;
-        ActivateShieldAura();
-
-        // Rotación X = 60 grados
+        transform.tag = "Enemy";
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
+        ActivateShieldAura();
+        Debug.Log("Tanque en fila: " + rowIndex);
     }
 
     private void Update()
@@ -53,11 +37,6 @@ public class IceTankController : MonoBehaviour
         }
     }
 
-    private bool IsRowIndexValid(int rowIndex)
-    {
-        return rowIndex >= 0 && rowIndex < activeTanksPerRow.Length;
-    }
-
     private void ActivateShieldAura()
     {
         Debug.Log($"Escudo activado en la fila {rowIndex}, bloqueando {shieldHits} impactos.");
@@ -70,7 +49,7 @@ public class IceTankController : MonoBehaviour
         GameObject playerColumn = GameObject.Find("PlayerColumn");
         if (playerColumn != null)
         {
-            ColumnHealthBar columnHealth = playerColumn.GetComponentInParent<ColumnHealthBar>();
+            ColumnHealthBar columnHealth = playerColumn.GetComponent<ColumnHealthBar>();
             if (columnHealth != null)
             {
                 columnHealth.TakeDamage(damageToPlayer);
@@ -112,51 +91,22 @@ public class IceTankController : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Tanque destruido");
-            DropShard();  // DROP DE MATERIAL
-            Cleanup();
+            DropShard();
+            Destroy(gameObject);
         }
     }
 
     private void DropShard()
     {
-        // Se añade un shard de "viento" al inventario dependiendo de la cantidad de bigCount
-        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Wind].bigCount > 0)
+        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Ice].bigCount > 0)
         {
-            // Añadir un shard grande al inventario si el bigCount lo permite
-            Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
-            Debug.Log("Fragmento grande de viento añadido al inventario.");
+            Inventory.Instance.CollectBig(Inventory.ItemType.Ice);
+            Debug.Log("Fragmento grande de hielo añadido al inventario.");
         }
         else
         {
-            // De lo contrario, añadir un shard pequeño
-            Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
-            Debug.Log("Fragmento pequeño de viento añadido al inventario.");
+            Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);
+            Debug.Log("Fragmento pequeño de hielo añadido al inventario.");
         }
-    }
-
-    private void Cleanup()
-    {
-        currentTankCount--;
-        if (IsRowIndexValid(rowIndex))
-            activeTanksPerRow[rowIndex]--;
-        Destroy(gameObject);
-    }
-
-    private void AssignRowIndex()
-    {
-        float spawnY = transform.position.y;
-
-        if (spawnY >= 3.0f)
-            rowIndex = 4;
-        else if (spawnY >= 2.0f)
-            rowIndex = 3;
-        else if (spawnY >= 1.0f)
-            rowIndex = 2;
-        else if (spawnY >= 0.0f)
-            rowIndex = 1;
-        else
-            rowIndex = 0;
-
-        Debug.Log("Tanque en fila: " + rowIndex);
     }
 }
