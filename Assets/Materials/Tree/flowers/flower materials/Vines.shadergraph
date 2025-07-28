@@ -20,6 +20,9 @@
         },
         {
             "m_Id": "b6b431c328ef4d27a64b7f4331c4987e"
+        },
+        {
+            "m_Id": "0c908643d1884d3aaf4adccbe89d7133"
         }
     ],
     "m_Keywords": [],
@@ -122,6 +125,9 @@
         },
         {
             "m_Id": "69cc1bbac1a54da9b124d37963d8314c"
+        },
+        {
+            "m_Id": "b8cbcff648be41be9261607cc8df1c12"
         }
     ],
     "m_GroupDatas": [
@@ -391,11 +397,11 @@
                 "m_Node": {
                     "m_Id": "b742cbb2a0da4ce384b92c716e9abddd"
                 },
-                "m_SlotId": 0
+                "m_SlotId": 7
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "162f4ef8fd3d451697d02b97d76335cc"
+                    "m_Id": "a71f7d7b9c0e40af97284f3cf80c793f"
                 },
                 "m_SlotId": 0
             }
@@ -403,13 +409,13 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "b742cbb2a0da4ce384b92c716e9abddd"
+                    "m_Id": "b8cbcff648be41be9261607cc8df1c12"
                 },
-                "m_SlotId": 7
+                "m_SlotId": 0
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "a71f7d7b9c0e40af97284f3cf80c793f"
+                    "m_Id": "162f4ef8fd3d451697d02b97d76335cc"
                 },
                 "m_SlotId": 0
             }
@@ -737,6 +743,36 @@
 }
 
 {
+    "m_SGVersion": 3,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
+    "m_ObjectId": "0c908643d1884d3aaf4adccbe89d7133",
+    "m_Guid": {
+        "m_GuidSerialized": "6bcf8f12-4701-4f1f-82c1-9e0519c0f11d"
+    },
+    "m_Name": "Color",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Color",
+    "m_DefaultReferenceName": "_Color",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+    },
+    "isMainColor": false,
+    "m_ColorMode": 0
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "0dec9009a1164710aed13ca2add076db",
@@ -817,7 +853,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -1674,6 +1710,9 @@
     "m_Name": "",
     "m_ChildObjectList": [
         {
+            "m_Id": "0c908643d1884d3aaf4adccbe89d7133"
+        },
+        {
             "m_Id": "9c61ec83dba647138dd3753f834e1ef1"
         },
         {
@@ -1714,7 +1753,7 @@
     "m_Title": "UV Offset",
     "m_Position": {
         "x": -2859.0,
-        "y": -294.99993896484377
+        "y": -294.9999694824219
     }
 }
 
@@ -3016,8 +3055,8 @@
     "m_ObjectId": "a9c103f09dc44717bfbc97e69b7bdb31",
     "m_Title": "Vertex Animation Rot and Scale",
     "m_Position": {
-        "x": -1286.9998779296875,
-        "y": -151.0
+        "x": -1287.0,
+        "y": -150.99996948242188
     }
 }
 
@@ -3120,11 +3159,12 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "isMainTexture": false,
     "useTilingAndOffset": false,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -3191,6 +3231,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "b8cbcff648be41be9261607cc8df1c12",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -234.0318145751953,
+            "y": 724.2522583007813,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "c29587b8ca68485093e719657832f072"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "0c908643d1884d3aaf4adccbe89d7133"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "bddf557491574c959306bbe247404188",
     "m_Group": {
@@ -3230,6 +3306,31 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "c29587b8ca68485093e719657832f072",
+    "m_Id": 0,
+    "m_DisplayName": "Color",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -3377,11 +3478,12 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "isMainTexture": false,
     "useTilingAndOffset": false,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }

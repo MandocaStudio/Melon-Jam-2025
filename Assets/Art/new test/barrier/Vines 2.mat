@@ -7,37 +7,40 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Foliage
-  m_Shader: {fileID: -6465566751694194690, guid: 1af26a8165caff248a4d1a9b0c292236, type: 3}
+  m_Name: Vines 2
+  m_Shader: {fileID: -6465566751694194690, guid: 517d065e7f837c74c92d55eb894ea3ce, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
   - _ALPHATEST_ON
-  - _RECEIVE_SHADOWS_OFF
-  - _SPECULAR_SETUP
-  - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords:
-  - _EMISSION
-  m_LightmapFlags: 2
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2450
   stringTagMap:
-    RenderType: Transparent
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
-  - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: 4826b4a546a1ab44fac34a80af9d7bf3, type: 3}
+    - _Alpha:
+        m_Texture: {fileID: 2800000, guid: 41408a6ae0816da4387be01f12ae606c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _WindVertexDisplacementSubGraph_56b2b4dc013e4724a5b7ba60fa39a4ad_NoiseTexture_3733225736_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 1a78818c4cd6a674a9d946683e38cd57, type: 3}
+    - _AlphaClipping:
+        m_Texture: {fileID: 2800000, guid: e18ae8bcfae364b4bb17225da1997bb0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 41408a6ae0816da4387be01f12ae606c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -55,39 +58,34 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 1
-    - _AlphaToMask: 0
-    - _BillboardSize: 0.018
+    - _AlphaToMask: 1
+    - _AplhaCutoff: 0.5
     - _Blend: 0
-    - _BlendModePreserveSpecular: 1
-    - _CastShadows: 1
-    - _Cull: 2
-    - _DstBlend: 10
-    - _FresnelPower: 0
-    - _Inflate: 0
-    - _JitterScale: 0.85
-    - _PositionScale: 1
+    - _BlendModePreserveSpecular: 0
+    - _CastShadows: 0
+    - _Cull: 0
+    - _DstBlend: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 0
-    - _RotationScale: 1.4
-    - _RotationScrollSpeed: 0.49
-    - _RotationStrenght: 1.19
-    - _Scale: 0.002
-    - _Smoothness: -1.2
+    - _ReceiveShadows: 1
     - _SrcBlend: 1
-    - _Surface: 1
-    - _WindJitter: 2.16
-    - _WindScroll: 2.45
-    - _WorkflowMode: 0
+    - _Surface: 0
+    - _WiggleOffset: 0
+    - _WindSpeed: 5
+    - _WindStrenght: 0.282
+    - _WorkflowMode: 1
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
-    - _FresnelColor: {r: 0.4349858, g: 0.8018868, b: 0.79422915, a: 0}
+    - _BottomColor: {r: 0, g: 0.7355237, b: 1, a: 1}
+    - _Color: {r: 0.4669811, g: 0.98899525, b: 1, a: 1}
+    - _TopColor: {r: 0.19339621, g: 1, b: 0.8878823, a: 1}
+    - _Wind2: {r: 0, g: 0, b: 0, a: 0}
+    - _WindDirection: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6251960806840212547
+--- !u!114 &4523933565869413250
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
