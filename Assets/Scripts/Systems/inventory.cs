@@ -14,7 +14,6 @@ public class Inventory : MonoBehaviour
 
 
 
-
     public enum ItemType { Wind, Ice, Ray }
 
     // Estructura de un objeto del inventario
@@ -151,7 +150,6 @@ public class Inventory : MonoBehaviour
         InventoryItem item1 = inventory[(int)type1];
         InventoryItem item2 = inventory[(int)type2];
 
-<<<<<<< Updated upstream
         item1.RemoveBig();
         item2.RemoveBig();
 
@@ -159,8 +157,6 @@ public class Inventory : MonoBehaviour
         // Disminuye uno de cada uno
         // inventory[(int)type1].bigCount--;
         // inventory[(int)type2].bigCount--;
-=======
->>>>>>> Stashed changes
     }
 
 
