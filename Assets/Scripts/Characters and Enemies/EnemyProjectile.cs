@@ -1,7 +1,3 @@
-// ============================
-// EnemyProjectile.cs (aislado)
-// ============================
-
 using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour

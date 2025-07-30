@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour
 
     private bool isAttacking = false;
 
+    // Variables para el cooldown de disparos
+    public float shootCooldown = 1.5f;  // Cooldown entre disparos (en segundos)
+    private float shootTimer = 0f;       // Temporizador del cooldown
+
+    // Asegúrate de inicializar controls en Awake, no en Start.
     private void Awake()
     {
         controls = new PlayerControls();
@@ -73,7 +78,20 @@ public class PlayerController : MonoBehaviour
         if (attackModel != null) attackModel.SetActive(false);
     }
 
-    
+    private void OnEnable()
+    {
+        controls.Enable();
+        controls.Player.Move.performed += OnMovePerformed;
+        controls.Player.Attack.performed += OnAttackPerformed;
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Move.performed -= OnMovePerformed;
+        controls.Player.Attack.performed -= OnAttackPerformed;
+        controls.Disable();
+    }
+
     private void OnMovePerformed(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
@@ -115,7 +133,15 @@ public class PlayerController : MonoBehaviour
         transform.position = newPosition;
     }
 
-   
+    private void OnAttackPerformed(InputAction.CallbackContext ctx)
+    {
+        if (shootTimer <= 0)  // Comprobamos si el cooldown ha terminado
+        {
+            Shoot();  // Llamamos al método de disparo
+            shootTimer = shootCooldown;  // Reiniciamos el temporizador del cooldown
+        }
+    }
+
     private void Shoot()
     {
         if (isAttacking) return;
@@ -144,5 +170,12 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
-   
+    private void Update()
+    {
+        // Reducir el temporizador del cooldown en cada frame
+        if (shootTimer > 0)
+        {
+            shootTimer -= Time.deltaTime;  // Resta el tiempo del cooldown
+        }
+    }
 }

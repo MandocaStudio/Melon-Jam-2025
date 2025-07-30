@@ -10,27 +10,8 @@ public class ElementCombiner : MonoBehaviour
     private Inventory.ItemType? firstSelection = null;
     private Inventory.ItemType? secondSelection = null;
     private PlayerControls inputActions;
-
-    [SerializeField] private Sprite rayImage;
-
-    [SerializeField] private Sprite windImage;
-
-    [SerializeField] private Sprite iceImage;
-
-    [SerializeField] private Sprite voidmage;
-
-
-    [SerializeField] private Image firstSlot;
-    [SerializeField] private Image secondtSlot;
-    [SerializeField] private GameObject windPushPrefab;
-    [SerializeField] private Transform windSpawnPoint;
-
-    [SerializeField] private GameObject slowAOEPrefab;
-    [SerializeField] private Transform aoeSpawnPoint;
-
-    [SerializeField] private GameObject freezeSpellPrefab;  // Prefab del hechizo de congelación global
-    [SerializeField] private GameObject thunderBeamPrefab;
-    [SerializeField] private Transform beamSpawnPoint;
+    public InputAction cancel;
+    public WindPushSpell windPushSpellPrefab;  // Prefab para el hechizo de empuje de viento
 
     private void Awake()
     {
@@ -198,14 +179,15 @@ public class ElementCombiner : MonoBehaviour
 
     // Métodos para cada hechizo
 
-private void CastWindPushSpell()
+    private void CastWindPushSpell()
 {
-    if (windPushPrefab != null && windSpawnPoint != null)
-    {
-        Instantiate(windPushPrefab, windSpawnPoint.position, Quaternion.identity);
-        Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
-    }
+    // Aquí instanciamos el hechizo de WindPushSpell
+    WindPushSpell windPushSpell = Instantiate(windPushSpellPrefab, transform.position, Quaternion.identity);
+
+    // Llamamos al método para ejecutar el hechizo, pasando la posición de la columna del jugador o la posición deseada
+    windPushSpell.CastWindPush(transform.position);
 }
+
 
     private void CastWindThunderCloudSpell()
     {
