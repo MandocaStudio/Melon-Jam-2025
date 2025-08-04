@@ -10,8 +10,27 @@ public class ElementCombiner : MonoBehaviour
     private Inventory.ItemType? firstSelection = null;
     private Inventory.ItemType? secondSelection = null;
     private PlayerControls inputActions;
-    public InputAction cancel;
-    public WindPushSpell windPushSpellPrefab;  // Prefab para el hechizo de empuje de viento
+
+    [SerializeField] private Sprite rayImage;
+
+    [SerializeField] private Sprite windImage;
+
+    [SerializeField] private Sprite iceImage;
+
+    [SerializeField] private Sprite voidmage;
+
+
+    [SerializeField] private Image firstSlot;
+    [SerializeField] private Image secondtSlot;
+    [SerializeField] private GameObject windPushPrefab;
+    [SerializeField] private Transform windSpawnPoint;
+
+    [SerializeField] private GameObject slowAOEPrefab;
+    [SerializeField] private Transform aoeSpawnPoint;
+
+    [SerializeField] private GameObject freezeSpellPrefab;  // Prefab del hechizo de congelación global
+    [SerializeField] private GameObject thunderBeamPrefab;
+    [SerializeField] private Transform beamSpawnPoint;
 
     private void Awake()
     {
@@ -180,14 +199,13 @@ public class ElementCombiner : MonoBehaviour
     // Métodos para cada hechizo
 
     private void CastWindPushSpell()
-{
-    // Aquí instanciamos el hechizo de WindPushSpell
-    WindPushSpell windPushSpell = Instantiate(windPushSpellPrefab, transform.position, Quaternion.identity);
-
-    // Llamamos al método para ejecutar el hechizo, pasando la posición de la columna del jugador o la posición deseada
-    windPushSpell.CastWindPush(transform.position);
-}
-
+    {
+        if (windPushPrefab != null && windSpawnPoint != null)
+        {
+            Instantiate(windPushPrefab, windSpawnPoint.position, Quaternion.identity);
+            Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
+        }
+    }
 
     private void CastWindThunderCloudSpell()
     {
@@ -195,22 +213,22 @@ public class ElementCombiner : MonoBehaviour
         // Aplicar daño desde arriba a los enemigos con el tag "Enemy"
     }
 
-   private void CastWindIceSlowSpell()
-{
-    if (slowAOEPrefab != null && aoeSpawnPoint != null)
+    private void CastWindIceSlowSpell()
     {
-        Instantiate(slowAOEPrefab, aoeSpawnPoint.position, Quaternion.identity);
-        Debug.Log("AOE de viento + hielo lanzado.");
+        if (slowAOEPrefab != null && aoeSpawnPoint != null)
+        {
+            Instantiate(slowAOEPrefab, aoeSpawnPoint.position, Quaternion.identity);
+            Debug.Log("AOE de viento + hielo lanzado.");
+        }
     }
-}
 
-  private void CastThunderSpell()
-{
-    if (thunderBeamPrefab != null && beamSpawnPoint != null)
+    private void CastThunderSpell()
     {
-        Instantiate(thunderBeamPrefab, beamSpawnPoint.position, Quaternion.identity);
+        if (thunderBeamPrefab != null && beamSpawnPoint != null)
+        {
+            Instantiate(thunderBeamPrefab, beamSpawnPoint.position, Quaternion.identity);
+        }
     }
-}
 
 
     private void CastThunderIceSpell()
@@ -218,11 +236,9 @@ public class ElementCombiner : MonoBehaviour
         // Crear el hechizo con menor daño pero con congelación al frente del jugador
     }
 
-private void CastIceFreezeSpell()
-{
-    // Instanciar el hechizo FreezeSpell en la escena (posición 0,0,0 ya que afecta a todos)
-    Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
-}
-
-
+    private void CastIceFreezeSpell()
+    {
+        // Instanciar el hechizo FreezeSpell en la escena (posición 0,0,0 ya que afecta a todos)
+        Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
+    }
 }
