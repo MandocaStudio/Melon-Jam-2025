@@ -1,55 +1,89 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class ColumnHealthBar : MonoBehaviour
 {
-
     public Image healthBar;
-    public int maxHealth = 3;  // Salud máxima de la columna
-    [SerializeField] private int currentHealth;  // Salud actual de la columna
+    public Image SecondhealthBar;
+
+    [SerializeField] private float lerpSpeed = 2f;
+    [SerializeField] private float delayBeforeLerp = 0.5f;
+
+    public int maxHealth = 3;
+    [SerializeField] private int currentHealth;
+
+    private float targetFill;
+    private float delayTimer;
+    private bool isLerping;
 
     void Start()
     {
-        currentHealth = maxHealth;  // Inicializa la salud de la columna
+        currentHealth = maxHealth;
+        targetFill = 1f;
+        healthBar.fillAmount = targetFill;
+        SecondhealthBar.fillAmount = targetFill;
+    }
+
+    void Update()
+    {
+        // Actualizar la barra principal instantáneamente
+        float desiredFill = (float)currentHealth / maxHealth;
+        if (desiredFill != targetFill)
+        {
+            targetFill = desiredFill;
+            delayTimer = delayBeforeLerp;
+            isLerping = false;
+        }
+
+        healthBar.fillAmount = targetFill;
+
+        // Temporizador para retrasar el comienzo del Lerp
+        if (!isLerping)
+        {
+            delayTimer -= Time.deltaTime;
+            if (delayTimer <= 0f)
+            {
+                isLerping = true;
+            }
+        }
+
+        // Lerp de la barra secundaria
+        if (isLerping && SecondhealthBar.fillAmount > targetFill)
+        {
+            SecondhealthBar.fillAmount = Mathf.MoveTowards(SecondhealthBar.fillAmount, targetFill, lerpSpeed * Time.deltaTime);
+        }
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;  // Restar salud cuando se recibe daño
-                                  //currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);  // Limitar la salud entre 0 y maxHealth
-
-        healthBar.fillAmount = (float)currentHealth / maxHealth;
-
-        // Mostrar la salud actual en la consola para probar
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         Debug.Log("Columna Salud: " + currentHealth + "/" + maxHealth);
 
         if (currentHealth == 0)
         {
-            Die();  // Si la salud llega a 0, la columna muere
+            Die();
         }
     }
 
     void Die()
     {
         Debug.Log("¡La columna ha caído!");
-        gameObject.SetActive(false);  // Desactiva la columna (el juego termina)
+        gameObject.SetActive(false);
     }
 
-    // Detectar la colisión con un proyectil enemigo
     private void OnTriggerEnter(Collider other)
     {
-        // Si colisiona con un proyectil enemigo
         if (other.CompareTag("EnemyProjectile"))
         {
-            TakeDamage(1);  // Recibe daño del proyectil
-            Destroy(other.gameObject);  // Destruye el proyectil
+            TakeDamage(1);
+            Destroy(other.gameObject);
         }
 
-        // Si colisiona con un enemigo
         if (other.CompareTag("Enemy"))
         {
-            TakeDamage(1);  // Recibe daño del enemigo
+            TakeDamage(1);
         }
     }
 }
