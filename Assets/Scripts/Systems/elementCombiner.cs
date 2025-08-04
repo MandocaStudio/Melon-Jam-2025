@@ -198,14 +198,14 @@ public class ElementCombiner : MonoBehaviour
 
     // Métodos para cada hechizo
 
-private void CastWindPushSpell()
-{
-    if (windPushPrefab != null && windSpawnPoint != null)
+    private void CastWindPushSpell()
     {
-        Instantiate(windPushPrefab, windSpawnPoint.position, Quaternion.identity);
-        Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
+        if (windPushPrefab != null && windSpawnPoint != null)
+        {
+            Instantiate(windPushPrefab, windSpawnPoint.position, Quaternion.identity);
+            Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
+        }
     }
-}
 
     private void CastWindThunderCloudSpell()
     {
@@ -213,22 +213,22 @@ private void CastWindPushSpell()
         // Aplicar daño desde arriba a los enemigos con el tag "Enemy"
     }
 
-   private void CastWindIceSlowSpell()
-{
-    if (slowAOEPrefab != null && aoeSpawnPoint != null)
+    private void CastWindIceSlowSpell()
     {
-        Instantiate(slowAOEPrefab, aoeSpawnPoint.position, Quaternion.identity);
-        Debug.Log("AOE de viento + hielo lanzado.");
+        if (slowAOEPrefab != null && aoeSpawnPoint != null)
+        {
+            Instantiate(slowAOEPrefab, aoeSpawnPoint.position, Quaternion.identity);
+            Debug.Log("AOE de viento + hielo lanzado.");
+        }
     }
-}
 
-  private void CastThunderSpell()
-{
-    if (thunderBeamPrefab != null && beamSpawnPoint != null)
+    private void CastThunderSpell()
     {
-        Instantiate(thunderBeamPrefab, beamSpawnPoint.position, Quaternion.identity);
+        if (thunderBeamPrefab != null && beamSpawnPoint != null)
+        {
+            Instantiate(thunderBeamPrefab, beamSpawnPoint.position, Quaternion.identity);
+        }
     }
-}
 
 
     private void CastThunderIceSpell()
@@ -236,11 +236,9 @@ private void CastWindPushSpell()
         // Crear el hechizo con menor daño pero con congelación al frente del jugador
     }
 
-private void CastIceFreezeSpell()
-{
-    // Instanciar el hechizo FreezeSpell en la escena (posición 0,0,0 ya que afecta a todos)
-    Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
-}
-
-
+    private void CastIceFreezeSpell()
+    {
+        // Instanciar el hechizo FreezeSpell en la escena (posición 0,0,0 ya que afecta a todos)
+        Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
+    }
 }
