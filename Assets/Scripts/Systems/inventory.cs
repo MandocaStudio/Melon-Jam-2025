@@ -7,12 +7,33 @@ using TMPro;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
+
+    public AudioClip rayRune;
+    public AudioClip windRune;
+    public AudioClip iceRune;
+
+    public AudioSource inventorySoundsGenerator;
+
     private void Awake()
     {
         Instance = this;
     }
 
-
+    public void runeSound(string runeType)
+    {
+        switch (runeType)
+        {
+            case "Ray":
+                inventorySoundsGenerator.PlayOneShot(rayRune);
+                break;
+            case "Ice":
+                inventorySoundsGenerator.PlayOneShot(iceRune);
+                break;
+            case "Wind":
+                inventorySoundsGenerator.PlayOneShot(windRune);
+                break;
+        }
+    }
 
     public enum ItemType { Wind, Ice, Ray }
 
@@ -20,6 +41,7 @@ public class Inventory : MonoBehaviour
     [System.Serializable]
     public class InventoryItem
     {
+        public InventoryItem inventory;
         public ItemType type;
         public int smallCount = 0;  // Cantidad de objetos pequeños
         public int bigCount = 0;    // Cantidad de objetos grandes
@@ -64,7 +86,9 @@ public class Inventory : MonoBehaviour
             if (smallCount >= 5)
             {
                 smallCount -= 5;
-                bigCount++;
+                AddBig();
+
+                //bigCount++;
 
                 AmountBig.text = "x" + bigCount;
 
@@ -76,13 +100,14 @@ public class Inventory : MonoBehaviour
 
         public void AddBig()
         {
-            Debug.Log("alo?");
 
             if (bigCount >= 3)
             {
                 return;
             }
             bigCount++;
+
+            Inventory.Instance.runeSound(type.ToString());
 
             AmountBig.text = "x" + bigCount;
 
@@ -133,7 +158,11 @@ public class Inventory : MonoBehaviour
         InventoryItem item = inventory[(int)type];
 
         item.AddBig();
+
     }
+
+
+
 
     // Método para combinar objetos grandes
     public void CombineObjects(ItemType type1, ItemType type2)
