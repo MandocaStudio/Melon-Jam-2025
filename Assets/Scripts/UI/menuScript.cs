@@ -6,10 +6,6 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-
-
-
-
 public class menuScript : MonoBehaviour
 {
 
@@ -71,6 +67,8 @@ public class menuScript : MonoBehaviour
 
     }
 
+
+
     public void openMainMenu()
     {
         mainMenu.SetActive(true);
@@ -111,6 +109,8 @@ public class menuScript : MonoBehaviour
 
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
+
+
 
     public void goToTutorial()
     {
