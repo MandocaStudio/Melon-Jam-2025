@@ -32,6 +32,13 @@ public class ElementCombiner : MonoBehaviour
     [SerializeField] private GameObject thunderBeamPrefab;
     [SerializeField] private Transform beamSpawnPoint;
 
+    [Header("audio variables")]
+    [SerializeField] private AudioClip firstSelectionSound;
+
+    //[SerializeField] private AudioClip SecondSelectionSound;
+    [SerializeField] private AudioSource audiosource;
+
+
     private void Awake()
     {
         inputActions = new PlayerControls();
@@ -63,21 +70,22 @@ public class ElementCombiner : MonoBehaviour
 
         if ((firstSelection == selected || secondSelection == selected) && bigCount <= 1)
         {
-            Debug.Log($"No puedes seleccionar dos veces el mismo tipo {selected} si solo tienes uno.");
+            //Debug.Log($"No puedes seleccionar dos veces el mismo tipo {selected} si solo tienes uno.");
             return;
         }
 
         if (inventory.inventory[(int)selected].bigCount <= 0)
         {
-            Debug.Log($"No tienes objetos grandes del tipo {selected}.");
+            //Debug.Log($"No tienes objetos grandes del tipo {selected}.");
             return;
         }
 
         if (firstSelection == null)
         {
             firstSelection = selected;
-            Debug.Log($"Primera selección: {selected}");
+            //Debug.Log($"Primera selección: {selected}");
 
+            audiosource.PlayOneShot(firstSelectionSound);
 
             switch (selected)
             {
@@ -99,7 +107,7 @@ public class ElementCombiner : MonoBehaviour
         else if (secondSelection == null)
         {
             secondSelection = selected;
-            Debug.Log($"Segunda selección: {selected}");
+            //Debug.Log($"Segunda selección: {selected}");
 
             switch (selected)
             {
@@ -120,7 +128,7 @@ public class ElementCombiner : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ya has seleccionado dos elementos. Reiniciando selección.");
+            //Debug.Log("Ya has seleccionado dos elementos. Reiniciando selección.");
             firstSelection = selected;
             secondSelection = null;
         }

@@ -112,6 +112,11 @@ public class menuScript : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
 
+    public void goToTutorial()
+    {
+        SceneManager.LoadScene("tutorial");
+    }
+
     public void fullScream(bool fullScream)
     {
         Screen.fullScreen = fullScream;
