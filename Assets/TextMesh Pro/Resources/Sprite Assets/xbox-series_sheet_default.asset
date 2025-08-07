@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 7
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_7
+    m_Name: movimiento1
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 8
@@ -92,7 +92,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 10
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_10
+    m_Name: abajo1
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 11
@@ -107,7 +107,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 13
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_13
+    m_Name: arriba1
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 14
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 23
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_23
+    m_Name: deselect
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 24
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 41
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_41
+    m_Name: arriba2
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 42
@@ -317,7 +317,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 55
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_55
+    m_Name: movimiento2
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 56
@@ -327,7 +327,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 57
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_57
+    m_Name: abajo2
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 58
@@ -342,7 +342,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 60
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_60
+    m_Name: ice
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 61
@@ -512,7 +512,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 94
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_94
+    m_Name: disparo
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 95
@@ -522,7 +522,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 96
     m_Scale: 1
-    m_Name: xbox-series_sheet_default_96
+    m_Name: ray
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 97
@@ -655,8 +655,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 448
@@ -703,8 +703,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 0
@@ -751,8 +751,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 192
@@ -911,15 +911,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 192
       m_Y: 448
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1775216460, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -1199,15 +1199,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 64
       m_Y: 320
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -1180610925, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -1423,15 +1423,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 320
       m_Y: 256
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -767044612, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -1455,15 +1455,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 448
       m_Y: 256
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1042231477, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -1503,15 +1503,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -5
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 0
       m_Y: 192
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -751110058, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -1535,15 +1535,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 128
       m_Y: 192
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -523064695, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -1887,8 +1887,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 256
@@ -1919,8 +1919,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 384
@@ -1936,7 +1936,7 @@ MonoBehaviour:
       m_Width: 64
       m_Height: 64
       m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingY: 47
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 448
@@ -1951,8 +1951,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 512
@@ -2047,15 +2047,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 256
       m_Y: 0
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1533399979, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}
@@ -2079,15 +2079,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 64
       m_Height: 64
-      m_HorizontalBearingX: -32
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 50
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 384
       m_Y: 0
       m_Width: 64
       m_Height: 64
-    m_Scale: 1
+    m_Scale: 1.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1178522683, guid: 3a349d71ed33afc4585ff493988b7a93, type: 3}

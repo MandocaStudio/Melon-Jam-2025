@@ -48,7 +48,7 @@ public class InputSchemeTMPSwitcher : MonoBehaviour
         }
     }
 
-    private void UpdateAllTMPs()
+    public void UpdateAllTMPs()
     {
         allTMPs.Clear();
         allTMPs.AddRange(Object.FindObjectsByType<TMP_Text>(FindObjectsSortMode.None));
