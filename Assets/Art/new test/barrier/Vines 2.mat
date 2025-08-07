@@ -79,7 +79,7 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _BottomColor: {r: 0, g: 0.7355237, b: 1, a: 1}
-    - _Color: {r: 0.4669811, g: 0.98899525, b: 1, a: 1}
+    - _Color: {r: 0.46698105, g: 0.98899525, b: 1, a: 1}
     - _TopColor: {r: 0.19339621, g: 1, b: 0.8878823, a: 1}
     - _Wind2: {r: 0, g: 0, b: 0, a: 0}
     - _WindDirection: {r: 0, g: 1, b: 0, a: 0}

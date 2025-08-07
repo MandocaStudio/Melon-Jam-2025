@@ -595,7 +595,7 @@ ScriptedImporter:
     - {x: 33, y: 34}
     tessellationDetail: 0
     uvTransform: {x: 326, y: 156}
-    spritePosition: {x: 225, y: 319}
+    spritePosition: {x: 226, y: 319}
   - name: Cara
     originalName: 
     pivot: {x: 0.5, y: 0.5}

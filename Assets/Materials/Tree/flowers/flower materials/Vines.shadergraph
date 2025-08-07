@@ -1753,7 +1753,7 @@
     "m_Title": "UV Offset",
     "m_Position": {
         "x": -2859.0,
-        "y": -294.9999694824219
+        "y": -295.0
     }
 }
 
@@ -3056,7 +3056,7 @@
     "m_Title": "Vertex Animation Rot and Scale",
     "m_Position": {
         "x": -1287.0,
-        "y": -150.99996948242188
+        "y": -151.0
     }
 }
 
