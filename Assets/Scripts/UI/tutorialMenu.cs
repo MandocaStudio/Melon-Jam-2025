@@ -3,16 +3,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.InputSystem;
-using System.Linq;
-using UnityEngine.Audio;
-using UnityEngine.UI;
-
-
-
 
 public class tutorialMenu : MonoBehaviour
 {
-
     public GameObject tutorialMenuCanvas;
     public GameObject[] firstButtontutorialMenu;
 
@@ -22,86 +15,73 @@ public class tutorialMenu : MonoBehaviour
 
     private string currentControlScheme;
 
-    string scheme;
-    void OnEnable()
+    [SerializeField] private PlayerInput playerInput;
+
+    [SerializeField] private InputSchemeTMPSwitcher inputSchemeTMPSwitcher;
+
+
+    private void OnEnable()
     {
-        InputSystem.onActionChange += HandleDeviceChange;
+        if (playerInput != null)
+            playerInput.onControlsChanged += OnControlsChanged;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        InputSystem.onActionChange -= HandleDeviceChange;
+        if (playerInput != null)
+            playerInput.onControlsChanged -= OnControlsChanged;
     }
 
-    void HandleDeviceChange(object action, InputActionChange change)
+    private void OnControlsChanged(PlayerInput input)
     {
-        if (change == InputActionChange.ActionStarted)
-        {
-            scheme = PlayerInput.all[0].currentControlScheme;
-
-            //Debug.Log(scheme);
-            if (scheme != currentControlScheme)
-            {
-
-                currentControlScheme = scheme;
-
-            }
-        }
+        currentControlScheme = input.currentControlScheme;
+        // Debug.Log("Control scheme changed: " + currentControlScheme);
     }
-
-
-
 
     public void backIndex()
     {
-        if (buttonIndex >= 0)
+        if (buttonIndex > 0)
         {
             buttonIndex--;
         }
         StartCoroutine(FocusNextButton());
-
     }
 
     public void nextIndex()
     {
-        if (buttonIndex <= 5)
+        if (buttonIndex < firstButtontutorialMenu.Length - 1)
         {
             buttonIndex++;
         }
         StartCoroutine(FocusNextButton());
-
     }
-
 
     public void backToMainMenu()
     {
-
         SceneManager.LoadScene(1);
     }
 
-
-    IEnumerator FocusNextButton()
+    private IEnumerator FocusNextButton()
     {
         yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(firstButtontutorialMenu[buttonIndex]);
-    }
 
-    private void Update()
-    {
-        // Solo si no hay ningún objeto seleccionado
-        if (EventSystem.current.currentSelectedGameObject == null)
+        if (inputSchemeTMPSwitcher != null)
         {
-            // Detectar entrada de teclado o gamepad
-            //Debug.Log("entro");
-
-            if (tutorialMenuCanvas.activeSelf && (scheme == "Gamepad" || scheme == "DualShockGamepad" || scheme == "KeyBoard"))
-            {
-                EventSystem.current.SetSelectedGameObject(firstButtontutorialMenu[buttonIndex]);
-
-            }
-
+            inputSchemeTMPSwitcher.UpdateAllTMPs();
         }
     }
 
 
+    private void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            if (tutorialMenuCanvas.activeSelf &&
+                (currentControlScheme == "Gamepad" || currentControlScheme == "DualShockGamepad" || currentControlScheme == "Keyboard"))
+            {
+                EventSystem.current.SetSelectedGameObject(firstButtontutorialMenu[buttonIndex]);
+            }
+        }
+    }
 }
