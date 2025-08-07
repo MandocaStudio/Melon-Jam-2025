@@ -10,6 +10,9 @@ TagManager:
   - EnemyProjectile
   - Common
   - IPreviewable
+  - LeftPortal
+  - RightPortal
+  - Clouds
   layers:
   - Default
   - TransparentFX
