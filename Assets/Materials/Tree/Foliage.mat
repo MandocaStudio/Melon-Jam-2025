@@ -62,6 +62,7 @@ Material:
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _FresnelPower: 0
     - _Inflate: 0
     - _JitterScale: 0.85
@@ -75,6 +76,7 @@ Material:
     - _Scale: 0.002
     - _Smoothness: -1.2
     - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
     - _Surface: 1
     - _WindJitter: 2.16
     - _WindScroll: 2.45
