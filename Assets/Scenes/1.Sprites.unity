@@ -3825,6 +3825,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: protagIdle
       objectReference: {fileID: 0}
+    - target: {fileID: 6920486796476216710, guid: 26fbe12e5ae34644d8410f274b72a46a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8125227960693534181, guid: 26fbe12e5ae34644d8410f274b72a46a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.3289995
@@ -4120,6 +4124,10 @@ PrefabInstance:
     - target: {fileID: 8337799602316031824, guid: f961ea92a77f72443afafa60197f5335, type: 3}
       propertyPath: m_Name
       value: attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 8337799602316031824, guid: f961ea92a77f72443afafa60197f5335, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
