@@ -7,14 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: piedra 12
-  m_Shader: {fileID: -6465566751694194690, guid: 2bc61fd8d7bd5fb40bc84c61cda60c09, type: 3}
+  m_Name: chamo
+  m_Shader: {fileID: -6465566751694194690, guid: 7011830bfcae45f4bbbb72b7bc97f3ab, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _EMISSION
-  m_LightmapFlags: 2
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -25,28 +24,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Mask:
-        m_Texture: {fileID: 0}
+    - _Alpha:
+        m_Texture: {fileID: 2800000, guid: 416a6522cca81b34bb6dbaaaa9193db9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Noise:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_5d736b20a83b43af8dc873cb1f5cea2e_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 4469559ab8f6d164486db39039837a3d, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture2D_1:
-        m_Texture: {fileID: 2800000, guid: e452358624ee74f41b2daa4b62607c0b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture_Diffuse:
-        m_Texture: {fileID: 2800000, guid: 813f193c193a1044eac570cb1cb3fb3d, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _noise:
-        m_Texture: {fileID: 0}
+    - _SampleTexture2D_b87cd7ff74404605b46ada4c9edba803_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: eb07a05e75c6e1e459ab73f0c49a9dc3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -63,19 +46,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FresnelPower: 0.43
-    - _Mix: 0
-    - _NoiseIntensity: 1
+    - _Float: 3
+    - _FresnelPower: 3
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Toon_Ramp_Offset: 0.94
-    - _Toon_Ramp_Smoothness: 0.06
     m_Colors:
-    - _FresnelColor: {r: 0.8584906, g: 0.71314305, b: 0.58717513, a: 1}
-    - _Toon_Ramp_Tinting: {r: 0.9811321, g: 0.79931855, b: 0.63403344, a: 1}
+    - _Color: {r: 0.6901961, g: 0.025692226, b: 0.00784313, a: 0}
+    - _FresnelColor: {r: 0.57075465, g: 0.80711794, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &1123525108186082898
+--- !u!114 &8759097828242574702
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
