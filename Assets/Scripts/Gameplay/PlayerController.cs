@@ -5,13 +5,18 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     private PlayerControls controls;
-    public GameObject projectilePrefab;
+
+    [Header("Referencias")]
+    public ElementCombiner elementCombiner;
+    public Inventory inventory;
+
+    [Header("Ataque Básico")]
+    public GameObject projectilePrefab; 
 
     [Header("Grid Setup")]
     public GameObject[] tileObjects = new GameObject[5];
     public Transform spawnTile;
     private float[] rowZPositions = new float[5];
-
     private float columnX;
     private int currentRow;
 
@@ -22,18 +27,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Audio")]
     public AudioSource shootAudioSource;
-    public AudioSource moveAudioSource;  // 🎵 Nuevo audio de movimiento
+    public AudioSource moveAudioSource;
 
     [Header("Disparo")]
     public Transform projectileSpawnPoint;
-
+    public float shootCooldown = 1.5f;
+    private float shootTimer = 0f;
     private bool isAttacking = false;
 
-    // Variables para el cooldown de disparos
-    public float shootCooldown = 1.5f;  // Cooldown entre disparos (en segundos)
-    private float shootTimer = 0f;       // Temporizador del cooldown
-
-    // Asegúrate de inicializar controls en Awake, no en Start.
     private void Awake()
     {
         controls = new PlayerControls();
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        // --- Lógica de Grid (Restaurada) ---
         for (int i = 0; i < tileObjects.Length; i++)
         {
             if (tileObjects[i] != null)
@@ -52,7 +54,6 @@ public class PlayerController : MonoBehaviour
         if (spawnTile != null)
         {
             columnX = spawnTile.position.x;
-
             float spawnZ = spawnTile.position.z;
             int closestRow = 0;
             float minDistance = Mathf.Abs(rowZPositions[0] - spawnZ);
@@ -65,7 +66,6 @@ public class PlayerController : MonoBehaviour
                     minDistance = distance;
                 }
             }
-
             currentRow = closestRow;
             MoveToRow(currentRow);
         }
@@ -73,9 +73,14 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("No has asignado el Spawn Tile al Player.");
         }
-
+        
         if (idleModel != null) idleModel.SetActive(true);
         if (attackModel != null) attackModel.SetActive(false);
+        
+        if (elementCombiner == null)
+            Debug.LogError("¡ElementCombiner no está asignado en el PlayerController!");
+        if (inventory == null)
+            Debug.LogError("¡Inventory no está asignado en el PlayerController!");
     }
 
     private void OnEnable()
@@ -92,6 +97,8 @@ public class PlayerController : MonoBehaviour
         controls.Disable();
     }
 
+    // --- LÓGICA DE MOVIMIENTO (RESTAURADA) ---
+
     private void OnMovePerformed(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
@@ -105,7 +112,7 @@ public class PlayerController : MonoBehaviour
         {
             currentRow++;
             MoveToRow(currentRow);
-            PlayMoveSound();  // 🎵 Sonido de movimiento
+            PlayMoveSound();
         }
     }
 
@@ -115,7 +122,7 @@ public class PlayerController : MonoBehaviour
         {
             currentRow--;
             MoveToRow(currentRow);
-            PlayMoveSound();  // 🎵 Sonido de movimiento
+            PlayMoveSound();
         }
     }
 
@@ -133,16 +140,34 @@ public class PlayerController : MonoBehaviour
         transform.position = newPosition;
     }
 
+    // --- LÓGICA DE ATAQUE (CON HECHIZOS) ---
+
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        if (shootTimer <= 0)  // Comprobamos si el cooldown ha terminado
+        if (shootTimer > 0 || isAttacking) return; 
+
+        var shard1 = elementCombiner.firstSelection;
+        var shard2 = elementCombiner.secondSelection;
+
+        if (shard1.HasValue && shard2.HasValue)
         {
-            Shoot();  // Llamamos al método de disparo
-            shootTimer = shootCooldown;  // Reiniciamos el temporizador del cooldown
+            // --- Caso 1: Lanzar Hechizo Combinado ---
+            elementCombiner.CastCombinedSpell(shard1.Value, shard2.Value, projectileSpawnPoint);
+            inventory.CombineObjects(shard1.Value, shard2.Value);
+            elementCombiner.ClearSelections();
+            
+            if (shootAudioSource != null) shootAudioSource.Play();
+            StartCoroutine(PlayAttackAnimation());
+            shootTimer = shootCooldown;
+        }
+        else
+        {
+            // --- Caso 2: Disparo Básico ---
+            ShootBasicProjectile();
         }
     }
 
-    private void Shoot()
+    private void ShootBasicProjectile()
     {
         if (isAttacking) return;
 
@@ -153,6 +178,7 @@ public class PlayerController : MonoBehaviour
             shootAudioSource.Play();
 
         StartCoroutine(PlayAttackAnimation());
+        shootTimer = shootCooldown;
     }
 
     private IEnumerator PlayAttackAnimation()
@@ -172,10 +198,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Reducir el temporizador del cooldown en cada frame
         if (shootTimer > 0)
         {
-            shootTimer -= Time.deltaTime;  // Resta el tiempo del cooldown
+            shootTimer -= Time.deltaTime;
         }
     }
 }

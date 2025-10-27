@@ -1,68 +1,55 @@
 using UnityEngine;
 
-public class SpeedsterController : MonoBehaviour
+// 1. Añadimos ISlowable a la lista de interfaces
+[RequireComponent(typeof(DamageDealer))]
+public class SpeedsterController : MonoBehaviour, IDamageable, ISlowable
 {
     [Header("Configuración del Velocista")]
-    public int health = 2;
-    public int damageToPlayer = 1;
-    public float moveSpeed = 2f;
+    [SerializeField] private int health = 2;
+    
+    public float moveSpeed = 2f; // Esta es la velocidad base
 
-    public int rowIndex; // Asignado externamente al spawnear
+    // --- Variables para ISlowable ---
+    private float originalSpeed; // <-- NUEVO: Para guardar la velocidad original
+    private float currentSpeed;  // <-- NUEVO: La velocidad que se usa en Update
+
+    public int rowIndex;
     public Material FullMaterial;
     public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
-
-    private bool hasReachedPlayer = false;
 
     private void Start()
     {
         transform.tag = "Enemy";
-        transform.rotation = Quaternion.Euler(60f, 0f, 0f); // Mantiene la rotación estándar
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
+
+        // --- Inicialización de ISlowable ---
+        originalSpeed = moveSpeed; // <-- NUEVO: Guardamos la velocidad base
+        currentSpeed = originalSpeed;  // <-- NUEVO: Seteamos la velocidad actual
     }
 
     private void Update()
     {
-        if (!hasReachedPlayer)
-        {
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
-
-            if (transform.position.x <= 0) // Ajusta según tu columna del jugador
-            {
-                hasReachedPlayer = true;
-                ReachPlayerColumn();
-            }
-        }
-    }
-
-    private void ReachPlayerColumn()
-    {
-        Debug.Log("Velocista ha alcanzado la columna del jugador.");
-
-        GameObject playerColumn = GameObject.Find("PlayerColumn");
-        if (playerColumn != null)
-        {
-            ColumnHealthBar columnHealth = playerColumn.GetComponent<ColumnHealthBar>();
-            if (columnHealth != null)
-            {
-                columnHealth.TakeDamage(damageToPlayer);
-            }
-        }
-
-        Destroy(gameObject);
+        // 2. Usamos currentSpeed en lugar de moveSpeed
+        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime); // <-- MODIFICADO
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Projectile"))
+        // (Usando el tag "PlayerColumn" que tenías en tu script EnemyProjectile)
+        if (other.CompareTag("PlayerColumn"))
         {
-            Destroy(other.gameObject);
-            TakeDamage(1);
+            // El enemigo se destruye al chocar.
+            // La columna (en su propio script) ya se habrá
+            // encargado de tomar el daño de nuestro DamageDealer.
+            Destroy(gameObject);
         }
     }
 
-    private void TakeDamage(int dmg)
+    // --- Método de IDamageable (Sin cambios) ---
+    public void TakeDamage(int damageAmount)
     {
-        health -= dmg;
-        Debug.Log($"Velocista recibió {dmg} de daño. Salud restante: {health}");
+        health -= damageAmount;
+        Debug.Log($"Velocista recibió {damageAmount} de daño. Salud restante: {health}");
 
         if (health <= 0)
         {
@@ -72,17 +59,25 @@ public class SpeedsterController : MonoBehaviour
         }
     }
 
+    // --- Método de Drop (Sin cambios) ---
     private void DropShard()
     {
-        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Wind].bigCount > 0)
-        {
-            Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
-            Debug.Log("Fragmento grande de viento añadido al inventario.");
-        }
-        else
-        {
-            Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
-            Debug.Log("Fragmento pequeño de viento añadido al inventario.");
-        }
+        Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
+        Debug.Log("Fragmento grande de viento añadido al inventario.");
+    }
+
+    // --- 3. MÉTODOS REQUERIDOS POR ISlowable ---
+
+    public void ApplySpeedMultiplier(float multiplier) // <-- NUEVO
+    {
+        // Aplicamos el multiplicador a la velocidad original (no a la actual)
+        // para evitar que los slows se "acumulen" (multipliquen entre sí).
+        currentSpeed = originalSpeed * multiplier;
+    }
+
+    public void ResetSpeed() // <-- NUEVO
+    {
+        // Restauramos la velocidad a su valor original
+        currentSpeed = originalSpeed;
     }
 }

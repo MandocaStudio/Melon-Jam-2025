@@ -1,43 +1,37 @@
-using System.Collections;
 using UnityEngine;
 
+// Este script congela permanentemente a cualquier enemigo
+// que implemente la interfaz ISlowable.
 public class FreezeSpell : MonoBehaviour
 {
-    [SerializeField] private float effectDuration = 5f;   // Tiempo que dura la congelación
-    [SerializeField] private float aoeLifetime = 7f;      // Tiempo que dura el hechizo en la escena
-    [SerializeField] private float slowedSpeed = 0f;      // Velocidad de movimiento reducida a 0
+    [Tooltip("Tiempo total del AOE en escena")]
+    [SerializeField] private float aoeLifetime = 7f;
+
+    // 1. El multiplicador de velocidad para congelar es 0.
+    private float speedMultiplier = 0f;
+
+    // 2. [ELIMINADA] Toda la lógica de DisableAOE, Invoke y Collider.
+    // 3. [ELIMINADO] El método OnTriggerExit().
 
     private void Start()
     {
-        Destroy(gameObject, aoeLifetime);   // Destruye el AOE después de su duración
+        // 4. Volvemos al simple Destroy().
+        //    El AOE desaparece, pero el efecto en el enemigo perdura.
+        Destroy(gameObject, aoeLifetime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            MonoBehaviour enemy = other.GetComponent<MonoBehaviour>();
+        // Buscamos si el objeto puede ser ralentizado/congelado
+        ISlowable slowableObject = other.GetComponent<ISlowable>();
 
-            if (enemy != null && enemy.GetType().GetField("moveSpeed") != null)
-            {
-                StartCoroutine(ApplyFreeze(enemy));
-            }
+        if (slowableObject != null)
+        {
+            // Le decimos que se congele (aplique multiplicador 0)
+            slowableObject.ApplySpeedMultiplier(speedMultiplier);
         }
     }
 
-    private IEnumerator ApplyFreeze(MonoBehaviour enemy)
-    {
-        var type = enemy.GetType();
-        var speedField = type.GetField("moveSpeed");
-
-        float originalSpeed = (float)speedField.GetValue(enemy);
-        speedField.SetValue(enemy, slowedSpeed);  // Velocidad a 0
-
-        yield return new WaitForSeconds(effectDuration);
-
-        if (enemy != null)
-        {
-            speedField.SetValue(enemy, originalSpeed);  // Restaurar velocidad original
-        }
-    }
+    // Al no tener OnTriggerExit, la llamada a slowableObject.ResetSpeed()
+    // nunca ocurre, y el enemigo se queda congelado permanentemente.
 }

@@ -1,9 +1,11 @@
+// HealthBar.cs (Nombre de clase: ColumnHealthBar)
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColumnHealthBar : MonoBehaviour
+public class ColumnHealthBar : MonoBehaviour, IDamageable
 {
+    // --- TUS VARIABLES DE UI ---
     public Image healthBar;
     public Image SecondhealthBar;
 
@@ -17,6 +19,7 @@ public class ColumnHealthBar : MonoBehaviour
     private float delayTimer;
     private bool isLerping;
 
+    // --- TU MÉTODO START (RESTAURADO) ---
     void Start()
     {
         currentHealth = maxHealth;
@@ -25,6 +28,7 @@ public class ColumnHealthBar : MonoBehaviour
         SecondhealthBar.fillAmount = targetFill;
     }
 
+    // --- TU MÉTODO UPDATE (RESTAURADO) ---
     void Update()
     {
         // Actualizar la barra principal instantáneamente
@@ -55,11 +59,13 @@ public class ColumnHealthBar : MonoBehaviour
         }
     }
 
+    // --- TU MÉTODO TAKEDAMAGE (RESTAURADO) ---
+    // Este método implementa la interfaz IDamageable
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        Debug.Log("Columna Salud: " + currentHealth + "/" + maxHealth);
+        Debug.Log("Columna Salud: " + currentHealth + "/" + maxHealth); // <-- Revisa tu consola para ver este mensaje
 
         if (currentHealth == 0)
         {
@@ -67,23 +73,28 @@ public class ColumnHealthBar : MonoBehaviour
         }
     }
 
+    // --- TU MÉTODO DIE (RESTAURADO) ---
     void Die()
     {
         Debug.Log("¡La columna ha caído!");
         gameObject.SetActive(false);
     }
 
+    // --- NUESTRO ONTRIGGERENTER CORREGIDO ---
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyProjectile"))
-        {
-            TakeDamage(1);
-            Destroy(other.gameObject);
-        }
-
+        // La columna solo se preocupa si un "Enemy" (físico) la toca.
         if (other.CompareTag("Enemy"))
         {
-            TakeDamage(1);
+            // (Asegúrate de que tus prefabs de Enemigos también tengan
+            // un DamageDealer para el daño por contacto)
+            if (other.TryGetComponent<DamageDealer>(out DamageDealer dealer))
+            {
+                TakeDamage(dealer.damageAmount);
+            }
         }
+        
+        // Ya NO necesita "if (other.CompareTag("EnemyProjectile"))",
+        // porque el proyectil ahora maneja su propio impacto.
     }
 }

@@ -18,7 +18,7 @@ public class BasicEnemySpawner : MonoBehaviour
     // Contadores de tanques de hielo, velocistas y tiradores
     public static int activeIceTanks = 0;
     public static int activeSpeedsters = 0;
-    public static int activeShooters = 0;  // Solo 1 tirador
+    public static int activeShooters = 1;  // Solo 1 tirador
 
     private void Update()
     {

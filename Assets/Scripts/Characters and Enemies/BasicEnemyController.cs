@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class BasicEnemyController : MonoBehaviour
+// 1. Añadimos ISlowable a la lista de interfaces
+[RequireComponent(typeof(DamageDealer))]
+public class BasicEnemyController : MonoBehaviour, IDamageable, ISlowable
 {
-    public float moveSpeed = 1.5f;
+    public float moveSpeed = 1.5f; // Esta es la velocidad base
     public int maxHealth = 3;
 
+    // --- Variables para ISlowable ---
+    private float originalSpeed; // <-- NUEVO: Para guardar la velocidad original
+    private float currentSpeed;  // <-- NUEVO: La velocidad que se usa en Update
+
     // Materiales correspondientes a los shards (para ser añadidos al inventario)
-    public Material purpleShardMaterial, blueShardMaterial, yellowShardMaterial;  
+    public Material purpleShardMaterial, blueShardMaterial, yellowShardMaterial;
     public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
 
-    private int currentHealth;
-    private bool killedByProjectile = false;
+    [SerializeField] private int currentHealth;
 
     public enum EnemyColor { Purple, Blue, Yellow }
     [HideInInspector] public EnemyColor enemyColor;
@@ -19,14 +24,18 @@ public class BasicEnemyController : MonoBehaviour
     {
         currentHealth = maxHealth;
         enemyColor = GetRandomColor();
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
+        transform.tag = "Enemy";
 
-        // Asegúrate de que el enemigo tenga la rotación correcta
-        transform.rotation = Quaternion.Euler(60f, 0f, 0f);  // Rotación de 60 grados en el eje X
+        // --- Inicialización de ISlowable ---
+        originalSpeed = moveSpeed; // <-- NUEVO: Guardamos la velocidad base
+        currentSpeed = originalSpeed;  // <-- NUEVO: Seteamos la velocidad actual
     }
 
     private void Update()
     {
-        transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);  // Movimiento constante del enemigo
+        // 2. Usamos currentSpeed en lugar de moveSpeed
+        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime); // <-- MODIFICADO
     }
 
     private EnemyColor GetRandomColor()
@@ -37,56 +46,59 @@ public class BasicEnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // (Usando el tag "PlayerColumn" que tenías en tu script)
         if (other.CompareTag("PlayerColumn"))
         {
-            ColumnHealthBar playerHealth = other.GetComponentInParent<ColumnHealthBar>();
-            if (playerHealth != null)
-                playerHealth.TakeDamage(1);
-
-            Destroy(gameObject);  // Destruye el enemigo al colisionar con la columna
-        }
-
-        if (other.CompareTag("Projectile"))
-        {
-            Debug.Log("Enemigo recibió impacto de proyectil");
-            killedByProjectile = true;
-            TakeDamage(1);
-            Destroy(other.gameObject);  // Destruye el proyectil
+            // El enemigo solo se destruye.
+            // La columna (en ColumnHealthBar.cs) ya detecta
+            // el tag "Enemy" y toma el daño de nuestro DamageDealer.
+            Destroy(gameObject);
         }
     }
 
-    private void TakeDamage(int amount)
+    // --- Método de IDamageable (Sin cambios) ---
+    public void TakeDamage(int damageAmount)
     {
-        currentHealth -= amount;
-        Debug.Log("Daño recibido: " + amount + " | Vida restante: " + currentHealth);
+        currentHealth -= damageAmount;
+        Debug.Log("Daño recibido: " + damageAmount + " | Vida restante: " + currentHealth);
 
         if (currentHealth <= 0)
         {
             Debug.Log("Enemigo destruido");
-            if (killedByProjectile)
-            {
-                DropShard();  // Llama al método para añadir el shard al inventario
-            }
-            Destroy(gameObject);  // Destruye el enemigo
+            DropShard();
+            Destroy(gameObject);
         }
     }
 
+    // --- Método de Drop (Sin cambios) ---
     private void DropShard()
     {
-        // Se asigna el material del shard correspondiente al inventario según el color del enemigo
         switch (enemyColor)
         {
             case EnemyColor.Purple:
-                Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);  // Asignar material púrpura (shard)
+                Inventory.Instance.CollectSmall(Inventory.ItemType.Wind);
                 break;
             case EnemyColor.Blue:
-                Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);  // Asignar material azul (shard)
+                Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);
                 break;
             case EnemyColor.Yellow:
-                Inventory.Instance.CollectSmall(Inventory.ItemType.Ray);  // Asignar material amarillo (shard)
+                Inventory.Instance.CollectSmall(Inventory.ItemType.Ray);
                 break;
         }
-
         Debug.Log("Fragmento de color " + enemyColor + " añadido al inventario.");
+    }
+
+    // --- 3. MÉTODOS REQUERIDOS POR ISlowable ---
+
+    public void ApplySpeedMultiplier(float multiplier) // <-- NUEVO
+    {
+        // Aplicamos el multiplicador a la velocidad original
+        currentSpeed = originalSpeed * multiplier;
+    }
+
+    public void ResetSpeed() // <-- NUEVO
+    {
+        // Restauramos la velocidad a su valor original
+        currentSpeed = originalSpeed;
     }
 }

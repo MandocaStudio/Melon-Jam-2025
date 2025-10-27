@@ -7,35 +7,38 @@ using UnityEngine.UI;
 public class ElementCombiner : MonoBehaviour
 {
     public Inventory inventory;
-    private Inventory.ItemType? firstSelection = null;
-    private Inventory.ItemType? secondSelection = null;
     private PlayerControls inputActions;
 
+    public Inventory.ItemType? firstSelection { get; private set; } = null;
+    public Inventory.ItemType? secondSelection { get; private set; } = null;
+
+    [Header("UI Sprites")]
     [SerializeField] private Sprite rayImage;
-
     [SerializeField] private Sprite windImage;
-
     [SerializeField] private Sprite iceImage;
-
     [SerializeField] private Sprite voidmage;
-
 
     [SerializeField] private Image firstSlot;
     [SerializeField] private Image secondtSlot;
+
+    [Header("Hechizos Prefabs")]
+    // (Cloud + Cloud)
     [SerializeField] private GameObject windPushPrefab;
-    [SerializeField] private Transform windSpawnPoint;
-
+    // (Cloud + Ice)
     [SerializeField] private GameObject slowAOEPrefab;
-    [SerializeField] private Transform aoeSpawnPoint;
-
-    [SerializeField] private GameObject freezeSpellPrefab;  // Prefab del hechizo de congelación global
+    // (Ice + Ice)
+    [SerializeField] private GameObject freezeSpellPrefab;
+    // (Thunder + Thunder)
     [SerializeField] private GameObject thunderBeamPrefab;
-    [SerializeField] private Transform beamSpawnPoint;
+    
+    // 1. [AÑADIDOS] Los dos prefabs que faltaban
+    // (Cloud + Thunder)
+    [SerializeField] private GameObject thunderCloudPrefab; 
+    // (Ice + Thunder)
+    [SerializeField] private GameObject iceThunderConePrefab; 
 
-    [Header("audio variables")]
+    [Header("Audio Variables")]
     [SerializeField] private AudioClip firstSelectionSound;
-
-    //[SerializeField] private AudioClip SecondSelectionSound;
     [SerializeField] private AudioSource audiosource;
 
 
@@ -47,7 +50,6 @@ public class ElementCombiner : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Enable();
-
         inputActions.Player.ice.performed += ctx => SelectType(Inventory.ItemType.Ice);
         inputActions.Player.wind.performed += ctx => SelectType(Inventory.ItemType.Wind);
         inputActions.Player.ray.performed += ctx => SelectType(Inventory.ItemType.Ray);
@@ -60,142 +62,100 @@ public class ElementCombiner : MonoBehaviour
         inputActions.Player.wind.performed -= ctx => SelectType(Inventory.ItemType.Wind);
         inputActions.Player.ray.performed -= ctx => SelectType(Inventory.ItemType.Ray);
         inputActions.Player.deselect.performed -= OnCancelSelection;
-
         inputActions.Disable();
     }
 
     private void SelectType(Inventory.ItemType selected)
     {
+        // ... (Tu lógica de selección está bien) ...
         int bigCount = inventory.inventory[(int)selected].bigCount;
-
-        if ((firstSelection == selected || secondSelection == selected) && bigCount <= 1)
-        {
-            //Debug.Log($"No puedes seleccionar dos veces el mismo tipo {selected} si solo tienes uno.");
-            return;
-        }
-
-        if (inventory.inventory[(int)selected].bigCount <= 0)
-        {
-            //Debug.Log($"No tienes objetos grandes del tipo {selected}.");
-            return;
-        }
+        if ((firstSelection == selected || secondSelection == selected) && bigCount <= 1) return;
+        if (inventory.inventory[(int)selected].bigCount <= 0) return;
 
         if (firstSelection == null)
         {
             firstSelection = selected;
-            //Debug.Log($"Primera selección: {selected}");
-
             audiosource.PlayOneShot(firstSelectionSound);
-
             switch (selected)
             {
-                case Inventory.ItemType.Ray:
-                    firstSlot.sprite = rayImage;
-                    break;
-
-                case Inventory.ItemType.Wind:
-                    firstSlot.sprite = windImage;
-                    break;
-
-                case Inventory.ItemType.Ice:
-                    firstSlot.sprite = iceImage;
-                    break;
+                case Inventory.ItemType.Ray: firstSlot.sprite = rayImage; break;
+                case Inventory.ItemType.Wind: firstSlot.sprite = windImage; break;
+                case Inventory.ItemType.Ice: firstSlot.sprite = iceImage; break;
             }
-
-
         }
         else if (secondSelection == null)
         {
             secondSelection = selected;
-            //Debug.Log($"Segunda selección: {selected}");
-
             switch (selected)
             {
-                case Inventory.ItemType.Ray:
-                    secondtSlot.sprite = rayImage;
-                    break;
-
-                case Inventory.ItemType.Wind:
-                    secondtSlot.sprite = windImage;
-                    break;
-
-                case Inventory.ItemType.Ice:
-                    secondtSlot.sprite = iceImage;
-                    break;
+                case Inventory.ItemType.Ray: secondtSlot.sprite = rayImage; break;
+                case Inventory.ItemType.Wind: secondtSlot.sprite = windImage; break;
+                case Inventory.ItemType.Ice: secondtSlot.sprite = iceImage; break;
             }
-
-            TryCombine();
         }
         else
         {
-            //Debug.Log("Ya has seleccionado dos elementos. Reiniciando selección.");
             firstSelection = selected;
             secondSelection = null;
+            switch (selected)
+            {
+                case Inventory.ItemType.Ray: firstSlot.sprite = rayImage; break;
+                case Inventory.ItemType.Wind: firstSlot.sprite = windImage; break;
+                case Inventory.ItemType.Ice: firstSlot.sprite = iceImage; break;
+            }
+            secondtSlot.sprite = voidmage;
         }
     }
-
-    IEnumerator borrarCombinaciones()
+    
+    public void ClearSelections()
     {
-        yield return new WaitForSeconds(2f); // Espera 2 segundos
-
+        firstSelection = null;
+        secondSelection = null;
         firstSlot.sprite = voidmage;
         secondtSlot.sprite = voidmage;
-
     }
 
     private void OnCancelSelection(InputAction.CallbackContext ctx)
     {
-        if (firstSelection != null && secondSelection == null)
-        {
-            Debug.Log("Primera selección cancelada.");
-
-            firstSlot.sprite = voidmage;
-            firstSelection = null;
-        }
+        Debug.Log("Selección cancelada.");
+        ClearSelections();
     }
-
-    private void TryCombine()
+    
+    public void CastCombinedSpell(Inventory.ItemType first, Inventory.ItemType second, Transform spawnPoint)
     {
-        if (firstSelection.HasValue && secondSelection.HasValue)
+        // Aseguramos el orden para que Hielo+Viento sea lo mismo que Viento+Hielo
+        if (first > second)
         {
-
-            inventory.CombineObjects(firstSelection.Value, secondSelection.Value);
-
-            firstSelection = null;
-            secondSelection = null;
-
-            StartCoroutine(borrarCombinaciones());
+            var temp = first;
+            first = second;
+            second = temp;
         }
-    }
 
-    private void CombineObjectsLocal(Inventory.ItemType first, Inventory.ItemType second)
-    {
-
-        // Lógica de combinación de hechizos
+        // --- Lógica de combinación ---
         if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Wind)
         {
             Debug.Log("Combinación: Viento + Viento");
-            CastWindPushSpell();
+            CastWindPushSpell(spawnPoint);
         }
         else if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Ray)
         {
             Debug.Log("Combinación: Viento + Trueno");
-            CastWindThunderCloudSpell();
+            CastWindThunderCloudSpell(spawnPoint); // Usa el prefab 'thunderCloudPrefab'
         }
-        else if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Ice)
+        else if (first == Inventory.ItemType.Ice && second == Inventory.ItemType.Wind) // Ordenado
         {
             Debug.Log("Combinación: Viento + Hielo");
-            CastWindIceSlowSpell();
+            CastWindIceSlowSpell(spawnPoint);
         }
         else if (first == Inventory.ItemType.Ray && second == Inventory.ItemType.Ray)
         {
             Debug.Log("Combinación: Trueno + Trueno");
-            CastThunderSpell();
+            CastThunderSpell(spawnPoint);
         }
-        else if (first == Inventory.ItemType.Ray && second == Inventory.ItemType.Ice)
+        else if (first == Inventory.ItemType.Ice && second == Inventory.ItemType.Ray) // Ordenado
         {
             Debug.Log("Combinación: Trueno + Hielo");
-            CastThunderIceSpell();
+            CastThunderIceSpell(spawnPoint); // Usa el prefab 'iceThunderConePrefab'
         }
         else if (first == Inventory.ItemType.Ice && second == Inventory.ItemType.Ice)
         {
@@ -204,49 +164,58 @@ public class ElementCombiner : MonoBehaviour
         }
     }
 
-    // Métodos para cada hechizo
+    // --- Métodos de Casteo ---
 
-    private void CastWindPushSpell()
+    private void CastWindPushSpell(Transform spawnPoint)
     {
-        if (windPushPrefab != null && windSpawnPoint != null)
+        if (windPushPrefab != null)
         {
-            Instantiate(windPushPrefab, windSpawnPoint.position, Quaternion.identity);
-            Debug.Log("Hechizo WindPush lanzado: empuje de viento horizontal.");
+            Instantiate(windPushPrefab, spawnPoint.position, spawnPoint.rotation);
         }
     }
 
-    private void CastWindThunderCloudSpell()
+    // 2. [ACTUALIZADO] Lógica de casteo para Cloud + Thunder
+    private void CastWindThunderCloudSpell(Transform spawnPoint)
     {
-        // Crear una nube que se mueve horizontalmente hacia la derecha
-        // Aplicar daño desde arriba a los enemigos con el tag "Enemy"
-    }
-
-    private void CastWindIceSlowSpell()
-    {
-        if (slowAOEPrefab != null && aoeSpawnPoint != null)
+        // Este hechizo (el rayo aleatorio) ignora el spawnPoint y se auto-posiciona
+        if (thunderCloudPrefab != null)
         {
-            Instantiate(slowAOEPrefab, aoeSpawnPoint.position, Quaternion.identity);
-            Debug.Log("AOE de viento + hielo lanzado.");
+            Instantiate(thunderCloudPrefab); 
         }
     }
 
-    private void CastThunderSpell()
+    private void CastWindIceSlowSpell(Transform spawnPoint)
     {
-        if (thunderBeamPrefab != null && beamSpawnPoint != null)
+        if (slowAOEPrefab != null)
         {
-            Instantiate(thunderBeamPrefab, beamSpawnPoint.position, Quaternion.identity);
+            // Este hechizo (el AOE de hielo) debe spawnear en el centro de la fila
+            // o en la posición del jugador. Usar el spawnPoint está bien.
+            Instantiate(slowAOEPrefab, spawnPoint.position, spawnPoint.rotation);
         }
     }
 
-
-    private void CastThunderIceSpell()
+    private void CastThunderSpell(Transform spawnPoint)
     {
-        // Crear el hechizo con menor daño pero con congelación al frente del jugador
+        if (thunderBeamPrefab != null)
+        {
+            // El rayo estático debe usar la rotación del jugador
+            Instantiate(thunderBeamPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+    }
+
+    // 3. [ACTUALIZADO] Lógica de casteo para Ice + Thunder
+    private void CastThunderIceSpell(Transform spawnPoint)
+    {
+        // El cono de hielo/trueno usa la posición Y rotación del jugador
+        if (iceThunderConePrefab != null)
+        {
+            Instantiate(iceThunderConePrefab, spawnPoint.position, spawnPoint.rotation);
+        }
     }
 
     private void CastIceFreezeSpell()
     {
-        // Instanciar el hechizo FreezeSpell en la escena (posición 0,0,0 ya que afecta a todos)
+        // El hechizo de congelación global no necesita posición
         Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
     }
 }

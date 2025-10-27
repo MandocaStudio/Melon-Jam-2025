@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class IceTankController : MonoBehaviour
+// 1. Añadimos ISlowable a la lista de interfaces
+[RequireComponent(typeof(DamageDealer))]
+public class IceTankController : MonoBehaviour, IDamageable, ISlowable
 {
     [Header("Configuración del Tanque")]
-    public int health = 4;
-    public int shieldHits = 3;
-    public int damageToPlayer = 1;
-    public float moveSpeed = 1f;
+    [SerializeField] private int health = 4;
+    [SerializeField] private int shieldHits = 3; 
 
-    public int rowIndex; // Fila asignada por el spawner
+    public float moveSpeed = 1f; // Esta es la velocidad base
+
+    // --- Variables para ISlowable ---
+    private float originalSpeed; // <-- NUEVO: Para guardar la velocidad original
+    private float currentSpeed;  // <-- NUEVO: La velocidad que se usa en Update
+
+    public int rowIndex;
     private bool isShieldActive = true;
-    private bool hasReachedPlayer = false;
 
     public Material blueFullMaterial;
     public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
@@ -21,20 +26,16 @@ public class IceTankController : MonoBehaviour
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
         ActivateShieldAura();
         Debug.Log("Tanque en fila: " + rowIndex);
+
+        // --- Inicialización de ISlowable ---
+        originalSpeed = moveSpeed; // <-- NUEVO: Guardamos la velocidad base
+        currentSpeed = originalSpeed;  // <-- NUEVO: Seteamos la velocidad actual
     }
 
     private void Update()
     {
-        if (!hasReachedPlayer)
-        {
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
-
-            if (transform.position.x <= 0)
-            {
-                hasReachedPlayer = true;
-                ReachPlayerColumn();
-            }
-        }
+        // 2. Usamos currentSpeed en lugar de moveSpeed
+        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime); // <-- MODIFICADO
     }
 
     private void ActivateShieldAura()
@@ -42,51 +43,41 @@ public class IceTankController : MonoBehaviour
         Debug.Log($"Escudo activado en la fila {rowIndex}, bloqueando {shieldHits} impactos.");
     }
 
-    private void ReachPlayerColumn()
-    {
-        Debug.Log("Tanque ha alcanzado la columna del jugador.");
-
-        GameObject playerColumn = GameObject.Find("PlayerColumn");
-        if (playerColumn != null)
-        {
-            ColumnHealthBar columnHealth = playerColumn.GetComponent<ColumnHealthBar>();
-            if (columnHealth != null)
-            {
-                columnHealth.TakeDamage(damageToPlayer);
-            }
-        }
-
-        Destroy(gameObject);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Projectile"))
+        // (Usando el tag "PlayerColumn" que tenías en tus scripts anteriores)
+        if (other.CompareTag("PlayerColumn"))
         {
-            Destroy(other.gameObject);
-
-            if (isShieldActive)
-            {
-                shieldHits--;
-                Debug.Log($"Escudo absorbió un impacto. Restan {shieldHits}");
-
-                if (shieldHits <= 0)
-                {
-                    isShieldActive = false;
-                    Debug.Log("Escudo destruido");
-                }
-            }
-            else
-            {
-                TakeDamage(1);
-            }
+            // El enemigo se destruye al chocar.
+            // La columna (en su propio script) ya se habrá
+            // encargado de tomar el daño de nuestro DamageDealer.
+            Destroy(gameObject);
         }
     }
 
-    private void TakeDamage(int dmg)
+    // --- Método de IDamageable (Sin cambios) ---
+    public void TakeDamage(int damageAmount)
     {
-        health -= dmg;
-        Debug.Log($"Tanque recibió {dmg} de daño. Salud restante: {health}");
+        // --- INICIO DE LA LÓGICA DEL ESCUDO ---
+        if (isShieldActive)
+        {
+            shieldHits--;
+            Debug.Log($"Escudo absorbió un impacto. Restan {shieldHits}");
+
+            if (shieldHits <= 0)
+            {
+                isShieldActive = false;
+                Debug.Log("Escudo destruido");
+            }
+            
+            // ¡Importante! Salimos del método aquí
+            // para que el daño no se aplique a la vida.
+            return; 
+        }
+        // --- FIN DE LA LÓGICA DEL ESCUDO ---
+
+        health -= damageAmount;
+        Debug.Log($"Tanque recibió {damageAmount} de daño. Salud restante: {health}");
 
         if (health <= 0)
         {
@@ -96,17 +87,24 @@ public class IceTankController : MonoBehaviour
         }
     }
 
+    // --- Método de Drop (Sin cambios) ---
     private void DropShard()
     {
-        if (Inventory.Instance.inventory[(int)Inventory.ItemType.Ice].bigCount > 0)
-        {
-            Inventory.Instance.CollectBig(Inventory.ItemType.Ice);
-            Debug.Log("Fragmento grande de hielo añadido al inventario.");
-        }
-        else
-        {
-            Inventory.Instance.CollectSmall(Inventory.ItemType.Ice);
-            Debug.Log("Fragmento pequeño de hielo añadido al inventario.");
-        }
+        Inventory.Instance.CollectBig(Inventory.ItemType.Ice);
+        Debug.Log("Fragmento grande de hielo añadido al inventario.");
+    }
+    
+    // --- 3. MÉTODOS REQUERIDOS POR ISlowable ---
+
+    public void ApplySpeedMultiplier(float multiplier) // <-- NUEVO
+    {
+        // Aplicamos el multiplicador a la velocidad original
+        currentSpeed = originalSpeed * multiplier;
+    }
+
+    public void ResetSpeed() // <-- NUEVO
+    {
+        // Restauramos la velocidad a su valor original
+        currentSpeed = originalSpeed;
     }
 }

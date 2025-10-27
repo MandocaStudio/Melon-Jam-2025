@@ -1,42 +1,45 @@
-using System.Collections;
+// SlowAOE.cs (Antes Cloud Ice.cs)
 using UnityEngine;
 
 public class SlowAOE : MonoBehaviour
 {
-    public float effectDuration = 3f;       // Cuánto tiempo se ralentiza cada enemigo
-    public float aoeLifetime = 7f;          // Tiempo total del AOE en escena
-    public float slowedSpeed = 0.1f;        // Velocidad reducida temporal
+    [Tooltip("Tiempo total del AOE en escena")]
+    public float aoeLifetime = 7f;          
+    
+    [Tooltip("Multiplicador de velocidad (ej. 0.1 = 10% de velocidad)")]
+    public float speedMultiplier = 0.1f;    
+
+    // 1. ELIMINAMOS effectDuration y slowedSpeed
+    // 2. ELIMINAMOS la corrutina ApplySlow
 
     private void Start()
     {
         Destroy(gameObject, aoeLifetime);   // El AOE desaparece automáticamente
     }
 
+    // 3. Lógica cuando un enemigo ENTRA
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            MonoBehaviour enemy = other.GetComponent<MonoBehaviour>();
+        // Buscamos si el objeto puede ser ralentizado
+        ISlowable slowableObject = other.GetComponent<ISlowable>();
 
-            if (enemy != null && enemy.GetType().GetField("moveSpeed") != null)
-            {
-                StartCoroutine(ApplySlow(enemy));
-            }
+        if (slowableObject != null)
+        {
+            // Le decimos que se ralentice
+            slowableObject.ApplySpeedMultiplier(speedMultiplier);
         }
     }
 
-    private IEnumerator ApplySlow(MonoBehaviour enemy)
+    // 4. [NUEVO] Lógica cuando un enemigo SALE
+    private void OnTriggerExit(Collider other)
     {
-        var type = enemy.GetType();
-        var speedField = type.GetField("moveSpeed");
-        float originalSpeed = (float)speedField.GetValue(enemy);
-        speedField.SetValue(enemy, slowedSpeed);
+        // Buscamos si el objeto puede ser ralentizado
+        ISlowable slowableObject = other.GetComponent<ISlowable>();
 
-        yield return new WaitForSeconds(effectDuration);
-
-        if (enemy != null)
+        if (slowableObject != null)
         {
-            speedField.SetValue(enemy, originalSpeed);
+            // Le decimos que restaure su velocidad
+            slowableObject.ResetSpeed();
         }
     }
 }
