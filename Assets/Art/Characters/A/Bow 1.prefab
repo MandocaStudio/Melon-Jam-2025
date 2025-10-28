@@ -62,6 +62,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,6 +85,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -122,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0f880e23065de2c449b3263ca4442166, type: 2}
     - target: {fileID: -8653719598885068355, guid: a505810dda4e8af47942a8f193d5b684, type: 3}
       propertyPath: m_Name
-      value: Bow
+      value: Bow 1
       objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: a505810dda4e8af47942a8f193d5b684, type: 3}
       propertyPath: m_IsActive
