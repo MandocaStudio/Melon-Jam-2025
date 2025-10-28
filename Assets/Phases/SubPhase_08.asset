@@ -10,20 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7025802be38582d4c97ce385a9c24c29, type: 3}
-  m_Name: SubPhase_02
+  m_Name: SubPhase_08
   m_EditorClassIdentifier: Assembly-CSharp::SubPhaseData
-  duration: 10
+  duration: 15
   directionalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  ambientLightIntensity: 0
+  ambientLightIntensity: 1
   lightingTransitionTime: 5
   spawnBursts:
-  - startTime: 3
-    count: 20
-    interval: 0
+  - startTime: 10
+    count: 2
+    interval: 1
     prefabsToSpawn:
-    - {fileID: 4671872184591195917, guid: d95560a14ad01874caca8c9d070ec41d, type: 3}
+    - {fileID: 2040272074520347807, guid: 7cd09ad9884aa694f9670b084070a8c3, type: 3}
+  - startTime: 0
+    count: 0
+    interval: 0
+    prefabsToSpawn: []
   basicStreamCount: 3
   basicStreamPrefabs:
-  - {fileID: 4672597009367288600, guid: 031517e96ac39154a9144dd0d3bd9f7b, type: 3}
+  - {fileID: 4671872184591195917, guid: d95560a14ad01874caca8c9d070ec41d, type: 3}
   mediumStreamCount: 0
   mediumStreamPrefabs: []

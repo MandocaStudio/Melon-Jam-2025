@@ -430,7 +430,7 @@ Light:
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
   m_ColorTemperature: 6625
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -822,6 +822,13 @@ MonoBehaviour:
   allSubPhases:
   - {fileID: 11400000, guid: 38a66baff2d90244f80c05a883eebee0, type: 2}
   - {fileID: 11400000, guid: 02525c867beda564ea41c5713a04c8cb, type: 2}
+  - {fileID: 11400000, guid: 0298aff3ed8a9b24e89900bb2906171a, type: 2}
+  - {fileID: 11400000, guid: 60a90875599146a46a22c965729b3269, type: 2}
+  - {fileID: 11400000, guid: 0771af6750fde8445af1c524003c7531, type: 2}
+  - {fileID: 11400000, guid: 9d0d3d559d2ab494c9708fda6526fb92, type: 2}
+  - {fileID: 11400000, guid: 06bb0feaedb42164985fd310731a7b98, type: 2}
+  - {fileID: 11400000, guid: 21a306740c0f534438898f8edf294777, type: 2}
+  - {fileID: 11400000, guid: 0519aa5fb75122e41b39752de3ea66b1, type: 2}
 --- !u!4 &971925838
 Transform:
   m_ObjectHideFlags: 0
