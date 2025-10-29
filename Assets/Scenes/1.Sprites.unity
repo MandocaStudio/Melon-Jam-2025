@@ -4154,10 +4154,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 311609057978901950, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 474093420667873001, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e49f8673c0c826d4a999f78a0e543591, type: 2}
+    - target: {fileID: 1124289868017572578, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188194842265669541, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188194842265669541, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718691247288011857, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4923696610290149139, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -4165,6 +4185,10 @@ PrefabInstance:
     - target: {fileID: 5634626446844256526, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
       propertyPath: m_Name
       value: Enemigo Basico
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029336340379408098, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 6843834477863975277, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4213,8 +4237,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5634626446844256526, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3584874185290598910}
   m_SourcePrefab: {fileID: 100100000, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+--- !u!1 &3584874185290598909 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5634626446844256526, guid: 58ebcdadc1ed5f8469033499bedc0156, type: 3}
+  m_PrefabInstance: {fileID: 3584874185290598908}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3584874185290598910
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3584874185290598909}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d3dffd293f03de044979f44d242ca158, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &4999033105027522788
 PrefabInstance:
   m_ObjectHideFlags: 0
