@@ -1,22 +1,44 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // Requerido para la navegación de UI
-using UnityEngine.InputSystem;   // Requerido para detectar el dispositivo
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using System.Collections; // Necesario para la corrutina
 
+// [NUEVO] Le decimos a Unity que este script REQUIERE un AudioSource.
+// Si no tienes uno, Unity lo añadirá automáticamente.
+[RequireComponent(typeof(AudioSource))]
 public class EndScreenMenu : MonoBehaviour
 {
     [Header("Gamepad Navigation")]
     [Tooltip("El botón por defecto que se seleccionará (ej. 'Jugar de Nuevo')")]
     public GameObject firstSelectedButton;
 
+    // --- [NUEVO] Sección de Audio ---
+    [Header("Scene Audio")]
+    [Tooltip("El clip de audio que se reproducirá UNA VEZ al cargar (ej. música de derrota/victoria)")]
+    public AudioClip sceneAudioClip;
+    
+    private AudioSource audioSource;
+    // --- [FIN DE LO NUEVO] ---
+
     private string currentControlScheme;
+
+    // Awake se llama antes que Start
+    private void Awake()
+    {
+        // [NUEVO] Obtenemos la referencia al AudioSource
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    // Start se llama cuando la escena carga
+    private void Start()
+    {
+        // [NUEVO] Llamamos a nuestro método para reproducir el audio
+        PlaySceneAudio();
+    }
 
     private void OnEnable()
     {
-        // Suscribirse al evento de cambio de dispositivo
         InputSystem.onActionChange += HandleDeviceChange;
-        
-        // Forzar la selección del primer botón (con un pequeño retraso)
-        // para asegurar que el EventSystem esté listo.
         StartCoroutine(FocusButtonAfterFrame());
     }
 
@@ -25,63 +47,64 @@ public class EndScreenMenu : MonoBehaviour
         InputSystem.onActionChange -= HandleDeviceChange;
     }
 
-    // Esta es tu lógica del script anterior para detectar el dispositivo
+    // --- [NUEVO] Método para reproducir el audio ---
+    private void PlaySceneAudio()
+    {
+        if (audioSource != null && sceneAudioClip != null)
+        {
+            audioSource.loop = false; // Nos aseguramos de que no se repita
+            audioSource.clip = sceneAudioClip;
+            audioSource.Play();
+        }
+    }
+    // --- [FIN DE LO NUEVO] ---
+
+    // --- (El resto de tu código de Gamepad, Update y Botones no cambia) ---
+
     void HandleDeviceChange(object action, InputActionChange change)
     {
         if (change == InputActionChange.ActionStarted)
         {
-            // Asegurarse de que hay un PlayerInput en la escena
             if (PlayerInput.all.Count > 0)
             {
                 string scheme = PlayerInput.all[0].currentControlScheme;
                 if (scheme != currentControlScheme)
                 {
                     currentControlScheme = scheme;
-                    // Forzar el foco si el dispositivo cambia a gamepad/teclado
                     ForceFocus(); 
                 }
             }
         }
     }
     
-    // Esta es tu lógica del script anterior para mantener el foco
     private void Update()
     {
-        // Si estamos usando un gamepad o teclado
         if (currentControlScheme == "Gamepad" || currentControlScheme == "DualShockGamepad" || currentControlScheme == "KeyBoard")
         {
-            // y si el sistema de eventos ha perdido el foco (no hay nada seleccionado)...
             if (EventSystem.current.currentSelectedGameObject == null)
             {
-                // ...forzamos la selección de vuelta al botón por defecto.
                 EventSystem.current.SetSelectedGameObject(firstSelectedButton);
             }
         }
     }
 
-    // Corrutina para seleccionar el botón al inicio
-    private System.Collections.IEnumerator FocusButtonAfterFrame()
+    private IEnumerator FocusButtonAfterFrame()
     {
         yield return new WaitForEndOfFrame();
         ForceFocus();
     }
 
-    // Método de ayuda para forzar el foco
     private void ForceFocus()
     {
          if (PlayerInput.all.Count > 0)
         {
             currentControlScheme = PlayerInput.all[0].currentControlScheme;
         }
-
-        // Si el control es gamepad/teclado, selecciona el botón
         if (currentControlScheme == "Gamepad" || currentControlScheme == "DualShockGamepad" || currentControlScheme == "KeyBoard")
         {
             EventSystem.current.SetSelectedGameObject(firstSelectedButton);
         }
     }
-
-    // --- Métodos de botones (Llaman a nuestro SceneLoader) ---
 
     public void GoToMainMenu()
     {

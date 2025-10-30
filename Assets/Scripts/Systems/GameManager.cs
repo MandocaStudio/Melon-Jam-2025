@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro; // Necesario para el texto del temporizador
+using UnityEngine.SceneManagement; // Necesario para FindFirstObjectByType
 
 public class GameManager : MonoBehaviour
 {
-    // --- Contador de Enemigos (Paso 3) ---
+    // --- Contador de Enemigos ---
     // Todos los enemigos se reportan a este contador
     public static int activeEnemies = 0; 
 
@@ -14,7 +15,16 @@ public class GameManager : MonoBehaviour
     public WaveSpawner waveSpawner;             
     public TextMeshProUGUI timerText;         
 
-    // --- [NUEVO] Lógica de Victoria/Derrota ---
+    // --- Audio ---
+    [Header("Audio")]
+    [Tooltip("El AudioSource que reproducirá la música de fondo")]
+    public AudioSource backgroundMusicSource;
+    [Tooltip("El clip de música que se reproducirá")]
+    public AudioClip gameMusicClip;
+    [Tooltip("Retraso en segundos antes de que empiece la música")]
+    public float musicStartDelay = 3f;
+
+    // --- Lógica de Victoria/Derrota ---
     [Header("Lógica de Juego")]
     [Tooltip("El prefab del sprite/animación que quieres mostrar cuando el mago es derrotado")]
     public GameObject defeatMageSpritePrefab; 
@@ -46,11 +56,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // 3. [NUEVO] Nos suscribimos a la "señal de radio" de la columna
-        //    Cuando la columna dispare 'OnPlayerDefeated', llamará a nuestro método 'HandlePlayerDefeat'
+        // 3. Nos suscribimos al evento de derrota de la columna
         ColumnHealthBar.OnPlayerDefeated += HandlePlayerDefeat;
 
-        // 4. Empezamos el juego
+        // 4. Iniciamos la corrutina de música
+        StartCoroutine(PlayMusicWithDelay());
+
+        // 5. Empezamos el juego
         StartNextSubPhase();
     }
 
@@ -74,7 +86,7 @@ public class GameManager : MonoBehaviour
         totalGameTime += Time.deltaTime;
         UpdateTimerUI(totalGameTime);
 
-        // --- [NUEVO] Lógica de Victoria ---
+        // --- Lógica de Victoria ---
         // ¿Se completaron todas las fases? Y ¿Ya no quedan enemigos?
         if (allPhasesComplete && activeEnemies <= 0)
         {
@@ -107,7 +119,7 @@ public class GameManager : MonoBehaviour
                                         data.lightingTransitionTime);
     }
 
-    // --- [NUEVO] Manejadores de Victoria y Derrota ---
+    // --- Manejadores de Victoria y Derrota ---
 
     private void HandlePlayerVictory()
     {
@@ -129,6 +141,12 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("¡DERROTA!");
 
+        // Detenemos la música de fondo
+        if (backgroundMusicSource != null && backgroundMusicSource.isPlaying)
+        {
+            backgroundMusicSource.Stop();
+        }
+
         // Iniciamos la secuencia de derrota (animación -> cambio de escena)
         StartCoroutine(DefeatSequence());
     }
@@ -138,29 +156,43 @@ public class GameManager : MonoBehaviour
         // 1. Instancia tu sprite de derrota
         if (defeatMageSpritePrefab != null)
         {
-            // Busca la columna para spawnear el sprite en su posición
+            // Usamos la versión moderna (FindObjectOfType es obsoleta)
             GameObject column = FindFirstObjectByType<ColumnHealthBar>()?.gameObject;
             Vector3 spawnPos = (column != null) ? column.transform.position : Vector3.zero;
             
             Instantiate(defeatMageSpritePrefab, spawnPos, Quaternion.identity);
         }
 
-        // 2. Espera el tiempo de la animación
-       yield return new WaitForSecondsRealtime(defeatAnimTime);
+        // 2. Espera usando tiempo REAL (ignora si Time.timeScale es 0)
+        yield return new WaitForSecondsRealtime(defeatAnimTime);
 
         // 3. Llama al SceneLoader
         SceneLoader.LoadDefeatScene();
     }
+    
+    // --- Corrutina de Música ---
+    private IEnumerator PlayMusicWithDelay()
+    {
+        // 1. Espera los 3 segundos
+        yield return new WaitForSeconds(musicStartDelay);
 
-    // --- [NUEVO] Limpieza ---
+        // 2. Comprueba si el jugador NO ha perdido en esos 3 segundos
+        if (!gameIsOver && backgroundMusicSource != null && gameMusicClip != null)
+        {
+            backgroundMusicSource.clip = gameMusicClip;
+            backgroundMusicSource.loop = true; // Para que se repita
+            backgroundMusicSource.Play();
+        }
+    }
+
+    // --- Limpieza ---
     private void OnDestroy()
     {
-        // Es MUY importante desuscribirse de los eventos al destruir el objeto
-        // para evitar errores de memoria.
+        // Es MUY importante desuscribirse de los eventos
         ColumnHealthBar.OnPlayerDefeated -= HandlePlayerDefeat;
     }
 
-    // --- Lógica del Temporizador (Sin cambios) ---
+    // --- Lógica del Temporizador ---
     private void UpdateTimerUI(float timeInSeconds)
     {
         int minutes = Mathf.FloorToInt(timeInSeconds / 60);
