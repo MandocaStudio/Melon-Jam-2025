@@ -1,25 +1,30 @@
-// HealthBar.cs (Nombre de clase: ColumnHealthBar)
-using System;
+using System; // <-- Requerido para 'Action'
 using UnityEngine;
 using UnityEngine.UI;
 
+// Sigue implementando IDamageable, como ya lo habíamos hecho
 public class ColumnHealthBar : MonoBehaviour, IDamageable
 {
-    // --- TUS VARIABLES DE UI ---
+    // --- [NUEVO] ---
+    // Esta es la "señal de radio" (evento) que el GameManager escuchará
+    public static event Action OnPlayerDefeated;
+    // --- [FIN DE LO NUEVO] ---
+
+    [Header("UI")]
     public Image healthBar;
     public Image SecondhealthBar;
 
+    [Header("Configuración de Vida")]
     [SerializeField] private float lerpSpeed = 2f;
     [SerializeField] private float delayBeforeLerp = 0.5f;
-
     public int maxHealth = 3;
     [SerializeField] private int currentHealth;
 
+    // Variables privadas para la UI
     private float targetFill;
     private float delayTimer;
     private bool isLerping;
 
-    // --- TU MÉTODO START (RESTAURADO) ---
     void Start()
     {
         currentHealth = maxHealth;
@@ -28,10 +33,9 @@ public class ColumnHealthBar : MonoBehaviour, IDamageable
         SecondhealthBar.fillAmount = targetFill;
     }
 
-    // --- TU MÉTODO UPDATE (RESTAURADO) ---
     void Update()
     {
-        // Actualizar la barra principal instantáneamente
+        // Lógica de la barra de vida que se "desliza"
         float desiredFill = (float)currentHealth / maxHealth;
         if (desiredFill != targetFill)
         {
@@ -42,7 +46,6 @@ public class ColumnHealthBar : MonoBehaviour, IDamageable
 
         healthBar.fillAmount = targetFill;
 
-        // Temporizador para retrasar el comienzo del Lerp
         if (!isLerping)
         {
             delayTimer -= Time.deltaTime;
@@ -52,20 +55,18 @@ public class ColumnHealthBar : MonoBehaviour, IDamageable
             }
         }
 
-        // Lerp de la barra secundaria
         if (isLerping && SecondhealthBar.fillAmount > targetFill)
         {
             SecondhealthBar.fillAmount = Mathf.MoveTowards(SecondhealthBar.fillAmount, targetFill, lerpSpeed * Time.deltaTime);
         }
     }
 
-    // --- TU MÉTODO TAKEDAMAGE (RESTAURADO) ---
-    // Este método implementa la interfaz IDamageable
+    // Este es el método público de la interfaz IDamageable
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        Debug.Log("Columna Salud: " + currentHealth + "/" + maxHealth); // <-- Revisa tu consola para ver este mensaje
+        Debug.Log("Columna Salud: " + currentHealth + "/" + maxHealth);
 
         if (currentHealth == 0)
         {
@@ -73,28 +74,29 @@ public class ColumnHealthBar : MonoBehaviour, IDamageable
         }
     }
 
-    // --- TU MÉTODO DIE (RESTAURADO) ---
     void Die()
     {
         Debug.Log("¡La columna ha caído!");
         gameObject.SetActive(false);
+
+        // --- [NUEVO] ---
+        // Dispara el evento para avisarle al GameManager que perdimos
+        OnPlayerDefeated?.Invoke();
+        // --- [FIN DE LO NUEVO] ---
     }
 
-    // --- NUESTRO ONTRIGGERENTER CORREGIDO ---
+    // Este es tu trigger para el daño por CONTACTO de enemigo
     private void OnTriggerEnter(Collider other)
     {
-        // La columna solo se preocupa si un "Enemy" (físico) la toca.
         if (other.CompareTag("Enemy"))
         {
-            // (Asegúrate de que tus prefabs de Enemigos también tengan
-            // un DamageDealer para el daño por contacto)
+            // La columna toma daño si un enemigo (con DamageDealer) la choca
             if (other.TryGetComponent<DamageDealer>(out DamageDealer dealer))
             {
                 TakeDamage(dealer.damageAmount);
             }
         }
-        
-        // Ya NO necesita "if (other.CompareTag("EnemyProjectile"))",
-        // porque el proyectil ahora maneja su propio impacto.
+        // Nota: El daño por "EnemyProjectile" ahora es manejado
+        // por el script del propio proyectil, no por la columna.
     }
 }

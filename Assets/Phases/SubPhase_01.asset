@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SubPhaseData
   duration: 15
   directionalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  ambientLightIntensity: 1
+  ambientLightIntensity: 5
   lightingTransitionTime: 5
   spawnBursts:
   - startTime: 10

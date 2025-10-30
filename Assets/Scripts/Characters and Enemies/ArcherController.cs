@@ -1,40 +1,47 @@
 using UnityEngine;
+using System.Collections; // Necesario para la corrutina
 
-// 1. [REQUERIDO] Añadimos esto. Para que el enemigo haga daño por
-//    contacto a la columna (como definimos en ColumnHealthBar.cs).
-[RequireComponent(typeof(DamageDealer))]
-public class ShooterController : MonoBehaviour, IDamageable // 2. [REQUERIDO] Implementamos la interfaz
+[RequireComponent(typeof(DamageDealer), typeof(EnemyFeedback))]
+public class ShooterController : MonoBehaviour, IDamageable // Solo implementa IDamageable
 {
     [Header("Blink Targets")]
-    public GameObject[] blinkObjects;
+    public GameObject[] blinkObjects; 
     private int lastBlinkIndex = -1;
 
     [Header("Configuración del Arquero")]
-    // 3. [BUENA PRÁCTICA] Cambiado a private con SerializeField.
-    //    Ya nada externo necesita acceder a 'health' directamente.
-    [SerializeField] private int health = 1;
+    [SerializeField] private int health = 1; // Encapsulado
     public float fireRate = 1.5f;
     public float blinkInterval = 3f;
 
     [Header("Proyectil")]
     public GameObject projectilePrefab;
-    public float projectileSpeed = 10f; // Esta variable ya no se usa aquí,
-                                        // pero la dejamos por si la usa otro script.
 
+    [Header("Loot")]
+    [Tooltip("El prefab 2D de la esquirla que soltará")]
+    [SerializeField] private GameObject shardDropPrefab;
+
+    // Referencias internas
     private float nextFireTime = 0f;
     private float blinkTimer = 0f;
+    private EnemyFeedback enemyFeedback;
 
     private void Start()
     {
+        // --- Inicialización ---
         transform.tag = "Enemy";
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
-        BlinkToNewPosition();
+        
+        // --- Inicialización de Módulos ---
+        enemyFeedback = GetComponent<EnemyFeedback>();
+        BlinkToNewPosition(); // Primer blink inicial
+
+        // --- [NUEVO] Paso 1: Reportarse al GameManager al nacer ---
+        GameManager.activeEnemies++;
     }
 
     private void Update()
     {
-        // 4. [BUENA PRÁCTICA] Comprobación de vida al inicio del Update.
-        //    (Ya lo tenías, ¡excelente!)
+        // Si está muerto, no hace nada
         if (health <= 0) return;
 
         // Disparo del arquero
@@ -53,6 +60,58 @@ public class ShooterController : MonoBehaviour, IDamageable // 2. [REQUERIDO] Im
         }
     }
 
+    // --- Lógica de Daño (IDamageable) ---
+    public void TakeDamage(int damageAmount)
+    {
+        // Si ya está muerto, no puede recibir más daño
+        if (health <= 0) return;
+
+        // 1. Mostrar feedback visual
+        if (enemyFeedback != null)
+        {
+            enemyFeedback.PlayHitEffect();
+        }
+
+        // 2. Aplicar daño
+        health -= damageAmount;
+        Debug.Log($"Arquero recibió {damageAmount} de daño. Salud restante: {health}");
+
+        // 3. Comprobar muerte
+        if (health <= 0)
+        {
+            // --- [NUEVO] Paso 2: Reportarse al GameManager al morir ---
+            GameManager.activeEnemies--;
+            Debug.Log($"Arquero destruido. Enemigos restantes: {GameManager.activeEnemies}");
+            // --- [FIN DE LO NUEVO] ---
+
+            // Soltar loot y destruirse
+            DropShard();
+            Destroy(gameObject);
+        }
+    }
+
+    // --- Lógica de Loot ---
+    private void DropShard()
+    {
+        if (shardDropPrefab == null) return;
+
+        // 1. Instancia el prefab
+        GameObject shardInstance = Instantiate(
+            shardDropPrefab,
+            transform.position,
+            Quaternion.identity
+        );
+
+        // 2. Inicializa la esquirla (le dice que es Grande y de Rayo)
+        shardInstance.GetComponent<ShardDrop2D>().Initialize(
+            Inventory.ItemType.Ray,
+            ShardDrop2D.ShardSize.Big
+        );
+
+        Debug.Log("Fragmento grande de rayo soltado.");
+    }
+    
+    // --- Métodos de Habilidad ---
     private void BlinkToNewPosition()
     {
         if (blinkObjects == null || blinkObjects.Length == 0) return;
@@ -64,48 +123,12 @@ public class ShooterController : MonoBehaviour, IDamageable // 2. [REQUERIDO] Im
         transform.position = blinkObjects[newIndex].transform.position;
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
         lastBlinkIndex = newIndex;
-
-        Debug.Log($"Archer blinked to object {newIndex}.");
     }
 
     private void ShootProjectile()
     {
+        // El script EnemyProjectile.cs se encarga de su propio movimiento
         Vector3 spawnPosition = transform.position + new Vector3(1f, 0f, 0f);
-        
-        // 5. [CORRECCIÓN] Solo instanciamos. No controlamos su Rigidbody.
-        //    El script "EnemyProjectile.cs" ya se encarga de su propio
-        //    movimiento usando transform.Translate.
         Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(60f, 0f, 0f));
-    }
-
-    // 6. [ELIMINADO] Este método ya no es necesario.
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        // El script "Projectile.cs" (del jugador) ahora
-        // es el responsable de detectar al "Enemy" y
-        // llamar a "TakeDamage"
-    }
-    */
-
-    // 7. [REQUERIDO] Este método ahora implementa la interfaz
-    //    Debe ser 'public' y el parámetro debe coincidir.
-    public void TakeDamage(int damageAmount)
-    {
-        health -= damageAmount;
-        Debug.Log($"Archer took {damageAmount} damage. Remaining HP: {health}");
-
-        if (health <= 0)
-        {
-            Debug.Log("Archer destroyed");
-            DropShard();
-            Destroy(gameObject);
-        }
-    }
-
-    private void DropShard()
-    {
-        Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
-        Debug.Log("Fragmento grande de rayo añadido al inventario.");
     }
 }

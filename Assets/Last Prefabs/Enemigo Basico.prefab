@@ -333,6 +333,7 @@ GameObject:
   - component: {fileID: 3363244426632042817}
   - component: {fileID: 2583369392187127571}
   - component: {fileID: 3111693455314984323}
+  - component: {fileID: -9123777246882792831}
   m_Layer: 0
   m_Name: Enemigo Basico
   m_TagString: Untagged
@@ -373,6 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.5
   maxHealth: 1
+  shardDropPrefab: {fileID: 6066979258443683881, guid: 207481512df0c8f4ba6d39b974604bd1, type: 3}
   purpleShardMaterial: {fileID: 2100000, guid: 5ac7b415612674945bbc18478c98dc35, type: 2}
   blueShardMaterial: {fileID: 2100000, guid: f3fd8d6b86e682e4cbd9319aafe1ab5a, type: 2}
   yellowShardMaterial: {fileID: 2100000, guid: d0985ffd141c5a247b73daf6deb7a03e, type: 2}
@@ -440,6 +442,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
   damageAmount: 1
+--- !u!95 &-9123777246882792831
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4671872184591195917}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d3dffd293f03de044979f44d242ca158, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5114607747938540785
 GameObject:
   m_ObjectHideFlags: 0

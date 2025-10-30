@@ -1,110 +1,137 @@
 using UnityEngine;
 
-// 1. Añadimos ISlowable a la lista de interfaces
-[RequireComponent(typeof(DamageDealer))]
+[RequireComponent(typeof(DamageDealer), typeof(EnemyFeedback))]
 public class IceTankController : MonoBehaviour, IDamageable, ISlowable
 {
-    [Header("Configuración del Tanque")]
+    [Header("Stats")]
     [SerializeField] private int health = 4;
     [SerializeField] private int shieldHits = 3; 
+    public float moveSpeed = 1f;
 
-    public float moveSpeed = 1f; // Esta es la velocidad base
-
-    // --- Variables para ISlowable ---
-    private float originalSpeed; // <-- NUEVO: Para guardar la velocidad original
-    private float currentSpeed;  // <-- NUEVO: La velocidad que se usa en Update
-
-    public int rowIndex;
-    private bool isShieldActive = true;
-
-    public Material blueFullMaterial;
+    [Header("Loot")]
+    [Tooltip("El prefab 2D de la esquirla que soltará")]
+    [SerializeField] private GameObject shardDropPrefab;
     public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
+
+    [Header("Referencias")]
+    public int rowIndex;
+    public Material blueFullMaterial;
+
+    // Referencias internas
+    private bool isShieldActive = true;
+    private EnemyFeedback enemyFeedback;
+    private float originalSpeed;
+    private float currentSpeed;
 
     private void Start()
     {
+        // --- Inicialización ---
         transform.tag = "Enemy";
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
         ActivateShieldAura();
-        Debug.Log("Tanque en fila: " + rowIndex);
 
-        // --- Inicialización de ISlowable ---
-        originalSpeed = moveSpeed; // <-- NUEVO: Guardamos la velocidad base
-        currentSpeed = originalSpeed;  // <-- NUEVO: Seteamos la velocidad actual
+        // --- Inicialización de Módulos ---
+        originalSpeed = moveSpeed;
+        currentSpeed = originalSpeed;
+        enemyFeedback = GetComponent<EnemyFeedback>();
+
+        // --- [NUEVO] Paso 1: Reportarse al GameManager al nacer ---
+        GameManager.activeEnemies++;
     }
 
     private void Update()
     {
-        // 2. Usamos currentSpeed en lugar de moveSpeed
-        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime); // <-- MODIFICADO
+        // Se mueve usando la velocidad actual (que puede ser modificada por ISlowable)
+        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime);
     }
 
-    private void ActivateShieldAura()
-    {
-        Debug.Log($"Escudo activado en la fila {rowIndex}, bloqueando {shieldHits} impactos.");
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // (Usando el tag "PlayerColumn" que tenías en tus scripts anteriores)
-        if (other.CompareTag("PlayerColumn"))
-        {
-            // El enemigo se destruye al chocar.
-            // La columna (en su propio script) ya se habrá
-            // encargado de tomar el daño de nuestro DamageDealer.
-            Destroy(gameObject);
-        }
-    }
-
-    // --- Método de IDamageable (Sin cambios) ---
+    // --- Lógica de Daño (IDamageable) ---
     public void TakeDamage(int damageAmount)
     {
-        // --- INICIO DE LA LÓGICA DEL ESCUDO ---
+        // 1. Mostrar feedback visual (incluso si el escudo lo absorbe)
+        if (enemyFeedback != null)
+        {
+            enemyFeedback.PlayHitEffect();
+        }
+
+        // 2. Lógica del Escudo
         if (isShieldActive)
         {
             shieldHits--;
             Debug.Log($"Escudo absorbió un impacto. Restan {shieldHits}");
-
             if (shieldHits <= 0)
             {
                 isShieldActive = false;
                 Debug.Log("Escudo destruido");
             }
-            
-            // ¡Importante! Salimos del método aquí
-            // para que el daño no se aplique a la vida.
-            return; 
+            return; // El daño no pasa a la vida
         }
-        // --- FIN DE LA LÓGICA DEL ESCUDO ---
 
+        // 3. Aplicar daño si el escudo está roto
         health -= damageAmount;
         Debug.Log($"Tanque recibió {damageAmount} de daño. Salud restante: {health}");
 
+        // 4. Comprobar muerte
         if (health <= 0)
         {
-            Debug.Log("Tanque destruido");
+            // --- [NUEVO] Paso 2: Reportarse al GameManager al morir ---
+            GameManager.activeEnemies--;
+            Debug.Log($"Tanque destruido. Enemigos restantes: {GameManager.activeEnemies}");
+            // --- [FIN DE LO NUEVO] ---
+
+            // Soltar loot y destruirse
             DropShard();
             Destroy(gameObject);
         }
     }
 
-    // --- Método de Drop (Sin cambios) ---
+    // --- Lógica de Loot ---
     private void DropShard()
     {
-        Inventory.Instance.CollectBig(Inventory.ItemType.Ice);
-        Debug.Log("Fragmento grande de hielo añadido al inventario.");
+        if (shardDropPrefab == null) return;
+
+        // 1. Instancia el prefab
+        GameObject shardInstance = Instantiate(
+            shardDropPrefab,
+            transform.position + dropOffset,
+            Quaternion.identity
+        );
+
+        // 2. Inicializa la esquirla (le dice que es Grande y de Hielo)
+        shardInstance.GetComponent<ShardDrop2D>().Initialize(
+            Inventory.ItemType.Ice,
+            ShardDrop2D.ShardSize.Big
+        );
+
+        Debug.Log("Fragmento grande de hielo soltado.");
     }
     
-    // --- 3. MÉTODOS REQUERIDOS POR ISlowable ---
-
-    public void ApplySpeedMultiplier(float multiplier) // <-- NUEVO
+    // --- Lógica de Ralentización (ISlowable) ---
+    public void ApplySpeedMultiplier(float multiplier)
     {
-        // Aplicamos el multiplicador a la velocidad original
         currentSpeed = originalSpeed * multiplier;
     }
 
-    public void ResetSpeed() // <-- NUEVO
+    public void ResetSpeed()
     {
-        // Restauramos la velocidad a su valor original
         currentSpeed = originalSpeed;
+    }
+
+    // --- Lógica de Colisión (Autodestrucción) ---
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerColumn"))
+        {
+            // --- [NUEVO] Paso 3: Reportarse al GameManager al chocar ---
+            GameManager.activeEnemies--;
+            Debug.Log($"Tanque chocó con columna. Enemigos restantes: {GameManager.activeEnemies}");
+            Destroy(gameObject);
+        }
+    }
+
+    // --- Otros Métodos ---
+    private void ActivateShieldAura()
+    {
+        Debug.Log($"Escudo activado en la fila {rowIndex}, bloqueando {shieldHits} impactos.");
     }
 }

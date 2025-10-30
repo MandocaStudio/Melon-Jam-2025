@@ -18,12 +18,13 @@ MonoBehaviour:
   lightingTransitionTime: 5
   spawnBursts:
   - startTime: 3
-    count: 20
-    interval: 0
+    count: 5
+    interval: 2
     prefabsToSpawn:
     - {fileID: 4671872184591195917, guid: d95560a14ad01874caca8c9d070ec41d, type: 3}
-  basicStreamCount: 3
+  basicStreamCount: 1
   basicStreamPrefabs:
   - {fileID: 4672597009367288600, guid: 031517e96ac39154a9144dd0d3bd9f7b, type: 3}
   mediumStreamCount: 0
-  mediumStreamPrefabs: []
+  mediumStreamPrefabs:
+  - {fileID: 0}

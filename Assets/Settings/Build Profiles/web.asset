@@ -21,10 +21,19 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
+    m_path: Assets/Scenes/Menus/logos.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Menus/main menu.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Menus/tutorial.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/Probablemente la que mas ssirve.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Menus/logos.unity
-  m_ScriptingDefines: []
+    m_path: Assets/Scenes/Menus/Victory.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Menus/Defeat.unity
+  m_ScriptingDefines:
+  - 
   m_PlayerSettingsYaml:
     m_Settings: []
   references:
