@@ -204,6 +204,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "serializedVersion": "2",
         "key0": {
@@ -271,7 +273,7 @@
         "atime6": 0,
         "atime7": 0,
         "m_Mode": 0,
-        "m_ColorSpace": 1,
+        "m_ColorSpace": -1,
         "m_NumColorKeys": 3,
         "m_NumAlphaKeys": 2
     }

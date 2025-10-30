@@ -20,11 +20,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - line 5
+  - line 4
+  - line 3
+  - line 2
+  - line 1
   - 
   - 
   - 
@@ -49,6 +49,21 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Row 5
+    uniqueID: 244223033
+    locked: 0
+  - name: Row 4
+    uniqueID: 265251339
+    locked: 0
+  - name: Row 3
+    uniqueID: 2518183059
+    locked: 0
+  - name: Row 2
+    uniqueID: 406374459
+    locked: 0
+  - name: Row 1
+    uniqueID: 4218439077
     locked: 0
   m_RenderingLayers:
   - Default
