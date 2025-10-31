@@ -26,8 +26,8 @@ Material:
     m_TexEnvs:
     - _Alpha:
         m_Texture: {fileID: 2800000, guid: 416a6522cca81b34bb6dbaaaa9193db9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: -0.1, y: 0}
+        m_Offset: {x: 0.14, y: 0}
     - _SampleTexture2D_b87cd7ff74404605b46ada4c9edba803_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: eb07a05e75c6e1e459ab73f0c49a9dc3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -47,7 +47,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Float: 3
-    - _FresnelPower: 3
+    - _FresnelPower: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _pos: 0
