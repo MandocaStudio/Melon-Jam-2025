@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8371769762612591617}
   - component: {fileID: 360758579561089658}
   - component: {fileID: 1878102668198753921}
+  - component: {fileID: 1558722899633105855}
   m_Layer: 0
   m_Name: 'WindPushEffect '
   m_TagString: Untagged
@@ -71,3 +72,30 @@ MonoBehaviour:
   pushForce: 1.5
   pushDuration: 3
   maxHits: 3
+--- !u!54 &1558722899633105855
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3036714290789681911}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

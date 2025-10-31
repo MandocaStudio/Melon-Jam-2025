@@ -7,28 +7,25 @@ using UnityEngine.SceneManagement; // Necesario para FindFirstObjectByType
 public class GameManager : MonoBehaviour
 {
     // --- Contador de Enemigos ---
-    // Todos los enemigos se reportan a este contador
     public static int activeEnemies = 0; 
+
+    // --- Estado del Juego ---
+    // Lo hacemos 'public static' para que PlayerController pueda leerlo
+    public static bool gameIsOver = false; 
 
     [Header("Referencias")]
     public LightingController lightingController; 
-    public WaveSpawner waveSpawner;             
+    public WaveSpawner waveSpawner; // (O WaveManager, según lo hayas nombrado)
     public TextMeshProUGUI timerText;         
+    public PlayerController playerController; // Referencia al jugador
 
-    // --- Audio ---
     [Header("Audio")]
-    [Tooltip("El AudioSource que reproducirá la música de fondo")]
     public AudioSource backgroundMusicSource;
-    [Tooltip("El clip de música que se reproducirá")]
     public AudioClip gameMusicClip;
-    [Tooltip("Retraso en segundos antes de que empiece la música")]
     public float musicStartDelay = 3f;
 
-    // --- Lógica de Victoria/Derrota ---
     [Header("Lógica de Juego")]
-    [Tooltip("El prefab del sprite/animación que quieres mostrar cuando el mago es derrotado")]
-    public GameObject defeatMageSpritePrefab; 
-    [Tooltip("Cuánto tiempo (seg) se muestra el sprite antes de cambiar de escena")]
+    [Tooltip("Tiempo (seg) que se muestra la animación de derrota antes de cambiar de escena")]
     public float defeatAnimTime = 3f; 
 
     [Header("Configuración de Fases")]
@@ -39,30 +36,33 @@ public class GameManager : MonoBehaviour
     private int currentSubPhaseIndex = -1;
     private float phaseTimer = 0f;
     private float totalGameTime = 0f;
-    private bool allPhasesComplete = false; // ¿Terminaron las 9 oleadas?
-    private bool gameIsOver = false;        // ¿Ya perdimos o ganamos?
+    private bool allPhasesComplete = false; 
 
     private void Start()
     {
-        // 1. Reseteamos los contadores al iniciar el juego
+        // 1. Reseteamos los contadores estáticos
+        gameIsOver = false; 
         activeEnemies = 0;
         allPhasesComplete = false;
-        gameIsOver = false;
+        
+        // 2. ¡MUY IMPORTANTE! Descongelamos el tiempo (por si venimos de 'Rejugar')
+        Time.timeScale = 1f;
 
-        // 2. Verificamos que todo esté conectado
-        if (lightingController == null || waveSpawner == null)
+        // 3. Verificamos referencias
+        if (lightingController == null || waveSpawner == null || playerController == null)
         {
-            Debug.LogError("¡Faltan referencias (LightingController o WaveSpawner) en el GameManager!");
+            Debug.LogError("¡Faltan referencias (LightingController, WaveSpawner o PlayerController) en el GameManager!");
+            enabled = false; // Desactivamos el GameManager
             return;
         }
 
-        // 3. Nos suscribimos al evento de derrota de la columna
+        // 4. Nos suscribimos al evento de derrota de la columna
         ColumnHealthBar.OnPlayerDefeated += HandlePlayerDefeat;
 
-        // 4. Iniciamos la corrutina de música
+        // 5. Iniciamos la corrutina de música
         StartCoroutine(PlayMusicWithDelay());
 
-        // 5. Empezamos el juego
+        // 6. Empezamos el juego
         StartNextSubPhase();
     }
 
@@ -137,8 +137,11 @@ public class GameManager : MonoBehaviour
     private void HandlePlayerDefeat()
     {
         if (gameIsOver) return; // Evita doble ejecución
+        
+        // --- ¡CONGELA EL JUEGO! ---
+        Time.timeScale = 0f; 
+        
         gameIsOver = true;
-
         Debug.Log("¡DERROTA!");
 
         // Detenemos la música de fondo
@@ -153,14 +156,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DefeatSequence()
     {
-        // 1. Instancia tu sprite de derrota
-        if (defeatMageSpritePrefab != null)
+        // 1. Llama al PlayerController para que muestre el sprite
+        if (playerController != null)
         {
-            // Usamos la versión moderna (FindObjectOfType es obsoleta)
-            GameObject column = FindFirstObjectByType<ColumnHealthBar>()?.gameObject;
-            Vector3 spawnPos = (column != null) ? column.transform.position : Vector3.zero;
-            
-            Instantiate(defeatMageSpritePrefab, spawnPos, Quaternion.identity);
+            playerController.PlayDefeatSequence();
         }
 
         // 2. Espera usando tiempo REAL (ignora si Time.timeScale es 0)

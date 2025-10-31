@@ -9,9 +9,6 @@ public class ElementCombiner : MonoBehaviour
     public Inventory inventory;
     private PlayerControls inputActions;
 
-    public Inventory.ItemType? firstSelection { get; private set; } = null;
-    public Inventory.ItemType? secondSelection { get; private set; } = null;
-
     [Header("UI Sprites")]
     [SerializeField] private Sprite rayImage;
     [SerializeField] private Sprite windImage;
@@ -21,25 +18,22 @@ public class ElementCombiner : MonoBehaviour
     [SerializeField] private Image firstSlot;
     [SerializeField] private Image secondtSlot;
 
-    [Header("Hechizos Prefabs")]
-    // (Cloud + Cloud)
-    [SerializeField] private GameObject windPushPrefab;
-    // (Cloud + Ice)
-    [SerializeField] private GameObject slowAOEPrefab;
-    // (Ice + Ice)
-    [SerializeField] private GameObject freezeSpellPrefab;
-    // (Thunder + Thunder)
-    [SerializeField] private GameObject thunderBeamPrefab;
-    
-    // 1. [AÑADIDOS] Los dos prefabs que faltaban
-    // (Cloud + Thunder)
-    [SerializeField] private GameObject thunderCloudPrefab; 
-    // (Ice + Thunder)
-    [SerializeField] private GameObject iceThunderConePrefab; 
-
     [Header("Audio Variables")]
     [SerializeField] private AudioClip firstSelectionSound;
     [SerializeField] private AudioSource audiosource;
+
+    [Header("Hechizos Prefabs (Dinámicos)")]
+    [SerializeField] private GameObject windPushPrefab;
+    [SerializeField] private GameObject thunderCloudPrefab; 
+    
+    [Header("Hechizos Estáticos (En la Jerarquía)")]
+    [SerializeField] private GameObject slowAOE_Object; 
+    [SerializeField] private GameObject freezeSpell_Object;
+    [SerializeField] private GameObject thunderBeam_Object;
+    [SerializeField] private GameObject iceThunderCone_Object;
+
+    public Inventory.ItemType? firstSelection { get; private set; } = null;
+    public Inventory.ItemType? secondSelection { get; private set; } = null;
 
 
     private void Awake()
@@ -67,7 +61,7 @@ public class ElementCombiner : MonoBehaviour
 
     private void SelectType(Inventory.ItemType selected)
     {
-        // ... (Tu lógica de selección está bien) ...
+        // ... (Tu lógica de selección de UI está bien) ...
         int bigCount = inventory.inventory[(int)selected].bigCount;
         if ((firstSelection == selected || secondSelection == selected) && bigCount <= 1) return;
         if (inventory.inventory[(int)selected].bigCount <= 0) return;
@@ -120,10 +114,12 @@ public class ElementCombiner : MonoBehaviour
         Debug.Log("Selección cancelada.");
         ClearSelections();
     }
-    
+
+    // --- LÓGICA DE CASTEO CORREGIDA ---
     public void CastCombinedSpell(Inventory.ItemType first, Inventory.ItemType second, Transform spawnPoint)
     {
-        // Aseguramos el orden para que Hielo+Viento sea lo mismo que Viento+Hielo
+        // Asumiendo el orden del enum: Ray (0), Wind (1), Ice (2)
+        // Ordenamos para que 'first' sea siempre el valor más bajo.
         if (first > second)
         {
             var temp = first;
@@ -131,41 +127,47 @@ public class ElementCombiner : MonoBehaviour
             second = temp;
         }
 
-        // --- Lógica de combinación ---
-        if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Wind)
-        {
-            Debug.Log("Combinación: Viento + Viento");
-            CastWindPushSpell(spawnPoint);
-        }
-        else if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Ray)
-        {
-            Debug.Log("Combinación: Viento + Trueno");
-            CastWindThunderCloudSpell(spawnPoint); // Usa el prefab 'thunderCloudPrefab'
-        }
-        else if (first == Inventory.ItemType.Ice && second == Inventory.ItemType.Wind) // Ordenado
-        {
-            Debug.Log("Combinación: Viento + Hielo");
-            CastWindIceSlowSpell(spawnPoint);
-        }
-        else if (first == Inventory.ItemType.Ray && second == Inventory.ItemType.Ray)
+        // --- Lógica de Combinación (AHORA CORREGIDA Y ORDENADA) ---
+        
+        // Ray (0) + Ray (0)
+        if (first == Inventory.ItemType.Ray && second == Inventory.ItemType.Ray)
         {
             Debug.Log("Combinación: Trueno + Trueno");
-            CastThunderSpell(spawnPoint);
+            CastThunderSpell(spawnPoint); // Estático (SetActive)
         }
-        else if (first == Inventory.ItemType.Ice && second == Inventory.ItemType.Ray) // Ordenado
+        // Ray (0) + Wind (1)
+        else if (first == Inventory.ItemType.Ray && second == Inventory.ItemType.Wind)
+        {
+            Debug.Log("Combinación: Trueno + Viento");
+            CastWindThunderCloudSpell(spawnPoint); // Dinámico (Instantiate)
+        }
+        // Ray (0) + Ice (2)
+        else if (first == Inventory.ItemType.Ray && second == Inventory.ItemType.Ice)
         {
             Debug.Log("Combinación: Trueno + Hielo");
-            CastThunderIceSpell(spawnPoint); // Usa el prefab 'iceThunderConePrefab'
+            CastThunderIceSpell(spawnPoint); // Estático (SetActive)
         }
+        // Wind (1) + Wind (1)
+        else if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Wind)
+        {
+            Debug.Log("Combinación: Viento + Viento");
+            CastWindPushSpell(spawnPoint); // Dinámico (Instantiate)
+        }
+        // Wind (1) + Ice (2)
+        else if (first == Inventory.ItemType.Wind && second == Inventory.ItemType.Ice)
+        {
+            Debug.Log("Combinación: Viento + Hielo");
+            CastWindIceSlowSpell(spawnPoint); // Estático (SetActive)
+        }
+        // Ice (2) + Ice (2)
         else if (first == Inventory.ItemType.Ice && second == Inventory.ItemType.Ice)
         {
             Debug.Log("Combinación: Hielo + Hielo");
-            CastIceFreezeSpell();
+            CastIceFreezeSpell(); // Estático (SetActive)
         }
     }
 
-    // --- Métodos de Casteo ---
-
+    // --- Métodos de Casteo Dinámicos (Instantiate) ---
     private void CastWindPushSpell(Transform spawnPoint)
     {
         if (windPushPrefab != null)
@@ -174,48 +176,44 @@ public class ElementCombiner : MonoBehaviour
         }
     }
 
-    // 2. [ACTUALIZADO] Lógica de casteo para Cloud + Thunder
     private void CastWindThunderCloudSpell(Transform spawnPoint)
     {
-        // Este hechizo (el rayo aleatorio) ignora el spawnPoint y se auto-posiciona
         if (thunderCloudPrefab != null)
         {
             Instantiate(thunderCloudPrefab); 
         }
     }
 
+    // --- Métodos de Casteo Estáticos (Reciclaje) ---
     private void CastWindIceSlowSpell(Transform spawnPoint)
     {
-        if (slowAOEPrefab != null)
+        if (slowAOE_Object != null)
         {
-            // Este hechizo (el AOE de hielo) debe spawnear en el centro de la fila
-            // o en la posición del jugador. Usar el spawnPoint está bien.
-            Instantiate(slowAOEPrefab, spawnPoint.position, spawnPoint.rotation);
+            slowAOE_Object.SetActive(true);
         }
     }
 
     private void CastThunderSpell(Transform spawnPoint)
     {
-        if (thunderBeamPrefab != null)
+        if (thunderBeam_Object != null)
         {
-            // El rayo estático debe usar la rotación del jugador
-            Instantiate(thunderBeamPrefab, spawnPoint.position, spawnPoint.rotation);
+            thunderBeam_Object.SetActive(true);
         }
     }
 
-    // 3. [ACTUALIZADO] Lógica de casteo para Ice + Thunder
     private void CastThunderIceSpell(Transform spawnPoint)
     {
-        // El cono de hielo/trueno usa la posición Y rotación del jugador
-        if (iceThunderConePrefab != null)
+        if (iceThunderCone_Object != null)
         {
-            Instantiate(iceThunderConePrefab, spawnPoint.position, spawnPoint.rotation);
+            iceThunderCone_Object.SetActive(true);
         }
     }
 
     private void CastIceFreezeSpell()
     {
-        // El hechizo de congelación global no necesita posición
-        Instantiate(freezeSpellPrefab, Vector3.zero, Quaternion.identity);
+        if (freezeSpell_Object != null)
+        {
+            freezeSpell_Object.SetActive(true);
+        }
     }
 }

@@ -465,7 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 390174067}
-  sceneAudioClip: {fileID: 8300000, guid: 230153ee5e18c454fbc22545a55f662c, type: 3}
+  sceneAudioClip: {fileID: 8300000, guid: 122fc9fb2cae5884abbfdb45aa8dfc68, type: 3}
 --- !u!82 &581950655
 AudioSource:
   m_ObjectHideFlags: 0

@@ -334,9 +334,10 @@ GameObject:
   - component: {fileID: 2583369392187127571}
   - component: {fileID: 3111693455314984323}
   - component: {fileID: -9123777246882792831}
+  - component: {fileID: 7636703771970726978}
   m_Layer: 0
   m_Name: Enemigo Basico
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -374,12 +375,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.5
   maxHealth: 1
-  shardDropPrefab: {fileID: 6066979258443683881, guid: 207481512df0c8f4ba6d39b974604bd1, type: 3}
-  purpleShardMaterial: {fileID: 2100000, guid: 5ac7b415612674945bbc18478c98dc35, type: 2}
-  blueShardMaterial: {fileID: 2100000, guid: f3fd8d6b86e682e4cbd9319aafe1ab5a, type: 2}
-  yellowShardMaterial: {fileID: 2100000, guid: d0985ffd141c5a247b73daf6deb7a03e, type: 2}
-  dropOffset: {x: -0.3, y: 0, z: 0}
   currentHealth: 0
+  shardDropPrefab: {fileID: 6066979258443683881, guid: 207481512df0c8f4ba6d39b974604bd1, type: 3}
+  dropOffset: {x: -0.3, y: 0, z: 0}
   enemyColor: 0
 --- !u!54 &3363244426632042817
 Rigidbody:
@@ -464,6 +462,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7636703771970726978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4671872184591195917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1faf7105808bae14196d2abff07e3dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFeedback
+  enemySpriteRenderer: {fileID: 0}
+  visualTransform: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  effectDuration: 0.2
 --- !u!1 &5114607747938540785
 GameObject:
   m_ObjectHideFlags: 0

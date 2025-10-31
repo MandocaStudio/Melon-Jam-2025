@@ -2,48 +2,63 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class CanvasFader : MonoBehaviour
 {
+    [Tooltip("El CanvasGroup que controla el fade")]
     public CanvasGroup canvasGroup;
-    public float fadeDuration = 1f;
+    
+    // --- ESTA ES LA VARIABLE CLAVE ---
+    [Tooltip("Tiempo (en segundos) que tarda en aparecer y desaparecer. AMBOS USAN ESTE VALOR.")]
+    public float fadeDuration = 0.5f;
+
+    [Tooltip("Tiempo (en segundos) que el logo permanece visible")]
+    public float logoDisplayTime = 2.0f;
 
     void Start()
     {
-        canvasGroup = transform.GetComponent<CanvasGroup>();
-
-        // Puedes iniciar con un fade in si lo deseas
-        StartCoroutine(FadeIn());
+        if (canvasGroup == null)
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
+        
+        // Empezamos la secuencia completa
+        StartCoroutine(SplashSequence());
     }
 
-    public IEnumerator FadeIn()
+    private IEnumerator SplashSequence()
     {
-        float time = 0f;
-        while (time < fadeDuration)
-        {
-            time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(0f, 1f, time / fadeDuration);
-            yield return null;
-        }
+        // 1. APARECER (Fade In)
+        // Usa 'fadeDuration'
+        yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
 
-        canvasGroup.alpha = 1f; // Asegurar que termine en 1
+        // 2. ESPERAR (Mostrar logo)
+        yield return new WaitForSeconds(logoDisplayTime);
 
-        yield return new WaitForSeconds(1f);
+        // 3. DESAPARECER (Fade Out)
+        // También usa 'fadeDuration'
+        yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
 
+        // 4. CARGAR ESCENA SIGUIENTE
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
 
-    public IEnumerator FadeOut()
+    /// <summary>
+    /// Corrutina de fundido que usa SmoothStep para un Easing.
+    /// </summary>
+    private IEnumerator Fade(float startAlpha, float endAlpha, float duration)
     {
         float time = 0f;
-        while (time < fadeDuration)
+        while (time < duration)
         {
-            time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, time / fadeDuration);
+            time += Time.unscaledDeltaTime;
+            
+            // Usa SmoothStep para un fundido suave
+            canvasGroup.alpha = Mathf.SmoothStep(startAlpha, endAlpha, time / duration);
+
             yield return null;
         }
-
-        canvasGroup.alpha = 0f; // Asegurar que termine en 0
+        canvasGroup.alpha = endAlpha; // Asegurar el valor final
     }
 }
