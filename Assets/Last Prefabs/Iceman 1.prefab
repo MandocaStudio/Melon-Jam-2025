@@ -559,9 +559,10 @@ GameObject:
   - component: {fileID: 870502268792767921}
   - component: {fileID: 6680364590339980907}
   - component: {fileID: 4673596549549874155}
+  - component: {fileID: 6022731831112559032}
   m_Layer: 0
   m_Name: Iceman 1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -604,9 +605,10 @@ MonoBehaviour:
   health: 4
   shieldHits: 2
   moveSpeed: 1
+  shardDropPrefab: {fileID: 0}
+  dropOffset: {x: -0.3, y: 0, z: 0}
   rowIndex: 0
   blueFullMaterial: {fileID: 2100000, guid: f3fd8d6b86e682e4cbd9319aafe1ab5a, type: 2}
-  dropOffset: {x: -0.3, y: 0, z: 0}
 --- !u!65 &6746773198043317768
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -690,6 +692,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
   damageAmount: 1
+--- !u!114 &6022731831112559032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4672597009367288600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1faf7105808bae14196d2abff07e3dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFeedback
+  enemySpriteRenderer: {fileID: 0}
+  visualTransform: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  effectDuration: 0.2
 --- !u!1 &4716903798090431354
 GameObject:
   m_ObjectHideFlags: 0

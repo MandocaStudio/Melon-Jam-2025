@@ -1,45 +1,70 @@
 using UnityEngine;
+using System.Collections; 
 
-// (Archivo: Thunder Thunder.cs)
 public class ThunderBeamSpell : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float lifetime = 5f;
+    [Header("Forma del Rayo (Caja)")]
+    [SerializeField] private float beamLength = 20f;
+    [SerializeField] private float beamWidth = 1f;
+    [SerializeField] private float beamHeight = 2f;
+
+    [Header("Daño")]
     [SerializeField] private int damageAmount = 100;
+    [Tooltip("Tiempo que dura el VFX antes de desactivarse")]
+    [SerializeField] private float lifetime = 1.5f; 
+    
+    // 1. [ELIMINADO] Ya no necesitamos la variable 'enemyLayer'.
+    // [SerializeField] private LayerMask enemyLayer;
 
-    private void Start()
+    [Header("Visuales")]
+    [SerializeField] private GameObject beamVFX; 
+
+    private void OnEnable()
     {
-        // El hechizo se autodestruye después de su vida útil
-        Destroy(gameObject, lifetime);
+        ApplyAreaDamage();
+        if (beamVFX != null) beamVFX.SetActive(true);
+        StartCoroutine(DisableAfterTime());
     }
 
-    private void Update()
+    private IEnumerator DisableAfterTime()
     {
-        // Se mueve hacia la derecha (hacia los enemigos)
-        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+        yield return new WaitForSeconds(lifetime);
+        if (beamVFX != null) beamVFX.SetActive(false);
+        gameObject.SetActive(false);
     }
 
-    // --- LÓGICA DE TRIGGER CORREGIDA ---
-    private void OnTriggerEnter(Collider other)
+    // --- [MODIFICADO] Este método ahora filtra por Tag ---
+    private void ApplyAreaDamage()
     {
-        // 1. Filtramos solo por enemigos
-        if (other.CompareTag("Enemy"))
+        Vector3 center = transform.position;
+        Vector3 halfExtents = new Vector3(beamWidth / 2, beamHeight / 2, beamLength / 2);
+        Quaternion orientation = transform.rotation;
+
+        // 2. [MODIFICADO] Hacemos el escaneo SIN filtro de capa.
+        //    Esto escaneará TODO (suelo, paredes, enemigos, etc.)
+        Collider[] hits = Physics.OverlapBox(center, halfExtents, orientation);
+
+        // 3. [NUEVO] Filtramos la lista manualmente usando CompareTag
+        foreach (Collider hit in hits)
         {
-            // 2. Buscamos si el enemigo puede recibir daño (interfaz)
-            //    Usamos GetComponentInParent por si el collider está en un objeto hijo.
-            IDamageable damageableObject = other.GetComponentInParent<IDamageable>();
-
-            if (damageableObject != null)
+            // Solo continuamos si el objeto tiene el tag "Enemy"
+            if (hit.CompareTag("Enemy"))
             {
-                // 3. ¡Adiós Reflection! Aplicamos el daño.
-                //    El enemigo (en su propio script TakeDamage)
-                //    se encargará de revisar su vida y destruirse.
-                damageableObject.TakeDamage(damageAmount);
+                // Aplicamos daño usando la interfaz
+                IDamageable damageableObject = hit.GetComponentInParent<IDamageable>();
+                if (damageableObject != null)
+                {
+                    damageableObject.TakeDamage(damageAmount);
+                }
             }
         }
+    }
 
-        // Nota: El rayo atraviesa a los enemigos porque no hay
-        // un "Destroy(gameObject);" dentro del if.
-        // Seguirá golpeando enemigos hasta que 'lifetime' termine.
+    // (El Gizmo no cambia)
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 1, 0, 0.5f); 
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(beamWidth, beamHeight, beamLength));
     }
 }

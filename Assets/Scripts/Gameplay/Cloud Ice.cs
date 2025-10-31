@@ -1,45 +1,74 @@
-// SlowAOE.cs (Antes Cloud Ice.cs)
 using UnityEngine;
+using System.Collections; 
 
+[RequireComponent(typeof(Collider))]
 public class SlowAOE : MonoBehaviour
 {
-    [Tooltip("Tiempo total del AOE en escena")]
-    public float aoeLifetime = 7f;          
-    
-    [Tooltip("Multiplicador de velocidad (ej. 0.1 = 10% de velocidad)")]
-    public float speedMultiplier = 0.1f;    
+    [Header("Configuración del AOE")]
+    [SerializeField] private float aoeLifetime = 7f;          
+    [SerializeField] private float speedMultiplier = 0.1f;    
 
-    // 1. ELIMINAMOS effectDuration y slowedSpeed
-    // 2. ELIMINAMOS la corrutina ApplySlow
+    private Collider myCollider;
 
-    private void Start()
+    private void Awake()
     {
-        Destroy(gameObject, aoeLifetime);   // El AOE desaparece automáticamente
+        myCollider = GetComponent<Collider>();
     }
 
-    // 3. Lógica cuando un enemigo ENTRA
+    // OnEnable se llama CADA VEZ que el objeto se activa
+    private void OnEnable()
+    {
+        if (myCollider != null)
+        {
+            myCollider.enabled = true;
+        }
+        
+        // Programa la auto-desactivación
+        StartCoroutine(DisableAfterTime());
+    }
+
+    private IEnumerator DisableAfterTime()
+    {
+        yield return new WaitForSeconds(aoeLifetime);
+        DisableSpell();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        // Buscamos si el objeto puede ser ralentizado
         ISlowable slowableObject = other.GetComponent<ISlowable>();
-
         if (slowableObject != null)
         {
-            // Le decimos que se ralentice
             slowableObject.ApplySpeedMultiplier(speedMultiplier);
         }
     }
 
-    // 4. [NUEVO] Lógica cuando un enemigo SALE
     private void OnTriggerExit(Collider other)
     {
-        // Buscamos si el objeto puede ser ralentizado
         ISlowable slowableObject = other.GetComponent<ISlowable>();
-
         if (slowableObject != null)
         {
-            // Le decimos que restaure su velocidad
             slowableObject.ResetSpeed();
+        }
+    }
+    
+    private void DisableSpell()
+    {
+        // Apaga el collider primero para disparar OnTriggerExit
+        if (myCollider != null)
+        {
+            myCollider.enabled = false;
+        }
+
+        // Apaga el GameObject
+        gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        // Seguridad por si se apaga externamente
+        if (myCollider != null && myCollider.enabled)
+        {
+            myCollider.enabled = false;
         }
     }
 }

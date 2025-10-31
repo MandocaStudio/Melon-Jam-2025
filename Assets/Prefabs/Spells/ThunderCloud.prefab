@@ -46,10 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ThunderCloudSpell
   strikeDelay: 0.75
   vfxLifetime: 1
-  strikeRadius: 2
+  strikeRadius: 5
   strikeDamage: 50
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
   lightningVfxPrefab: {fileID: 0}
   cloudModel: {fileID: 0}

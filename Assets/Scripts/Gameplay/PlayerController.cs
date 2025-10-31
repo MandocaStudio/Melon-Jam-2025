@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     private PlayerControls controls;
-
+    
     [Header("Referencias")]
     public ElementCombiner elementCombiner;
     public Inventory inventory;
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [Header("Modelos del Jugador")]
     public GameObject idleModel;
     public GameObject attackModel;
+    public GameObject defeatModel; // <-- Modelo de derrota
     public float attackDuration = 0.5f;
 
     [Header("Audio")]
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        // --- Lógica de Grid (Restaurada) ---
+        // --- Lógica de Grid ---
         for (int i = 0; i < tileObjects.Length; i++)
         {
             if (tileObjects[i] != null)
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
         if (spawnTile != null)
         {
             columnX = spawnTile.position.x;
+
             float spawnZ = spawnTile.position.z;
             int closestRow = 0;
             float minDistance = Mathf.Abs(rowZPositions[0] - spawnZ);
@@ -66,6 +68,7 @@ public class PlayerController : MonoBehaviour
                     minDistance = distance;
                 }
             }
+
             currentRow = closestRow;
             MoveToRow(currentRow);
         }
@@ -73,10 +76,13 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("No has asignado el Spawn Tile al Player.");
         }
-        
+
+        // --- Configuración de Modelos ---
         if (idleModel != null) idleModel.SetActive(true);
         if (attackModel != null) attackModel.SetActive(false);
-        
+        if (defeatModel != null) defeatModel.SetActive(false); // Asegúrate de que esté apagado
+
+        // --- Verificaciones de Referencias ---
         if (elementCombiner == null)
             Debug.LogError("¡ElementCombiner no está asignado en el PlayerController!");
         if (inventory == null)
@@ -97,10 +103,12 @@ public class PlayerController : MonoBehaviour
         controls.Disable();
     }
 
-    // --- LÓGICA DE MOVIMIENTO (RESTAURADA) ---
-
+    // --- Lógica de Movimiento ---
     private void OnMovePerformed(InputAction.CallbackContext ctx)
     {
+        // Si el juego terminó, no te muevas.
+        if (GameManager.gameIsOver) return;
+
         Vector2 input = ctx.ReadValue<Vector2>();
         if (input.y > 0.1f) MoveForward();
         else if (input.y < -0.1f) MoveBackward();
@@ -140,10 +148,12 @@ public class PlayerController : MonoBehaviour
         transform.position = newPosition;
     }
 
-    // --- LÓGICA DE ATAQUE (CON HECHIZOS) ---
-
+    // --- Lógica de Ataque ---
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
+        // Si el juego terminó, no ataques.
+        if (GameManager.gameIsOver) return; 
+
         if (shootTimer > 0 || isAttacking) return; 
 
         var shard1 = elementCombiner.firstSelection;
@@ -152,6 +162,7 @@ public class PlayerController : MonoBehaviour
         if (shard1.HasValue && shard2.HasValue)
         {
             // --- Caso 1: Lanzar Hechizo Combinado ---
+            Debug.Log("Lanzando hechizo combinado...");
             elementCombiner.CastCombinedSpell(shard1.Value, shard2.Value, projectileSpawnPoint);
             inventory.CombineObjects(shard1.Value, shard2.Value);
             elementCombiner.ClearSelections();
@@ -198,9 +209,24 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // Si el juego terminó, no actualices el cooldown.
+        if (GameManager.gameIsOver) return; 
+        
         if (shootTimer > 0)
         {
             shootTimer -= Time.deltaTime;
         }
+    }
+    
+    // --- Método de Derrota ---
+    // El GameManager llamará a esto cuando pierdas.
+    public void PlayDefeatSequence()
+    {
+        // Apaga todos los modelos normales
+        if (idleModel != null) idleModel.SetActive(false);
+        if (attackModel != null) attackModel.SetActive(false);
+
+        // Enciende el modelo de derrota
+        if (defeatModel != null) defeatModel.SetActive(true);
     }
 }

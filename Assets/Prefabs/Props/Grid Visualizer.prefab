@@ -93,6 +93,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile 2_3
       objectReference: {fileID: 0}
+    - target: {fileID: 6525844325855831874, guid: 4823fe24f6af64e41a01c750f008ccfd, type: 3}
+      propertyPath: m_TagString
+      value: BlinkPoints
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -217,6 +221,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile 2_4
       objectReference: {fileID: 0}
+    - target: {fileID: 8276590465651829867, guid: 9d47e631f76974742873bf3453515ee4, type: 3}
+      propertyPath: m_TagString
+      value: BlinkPoints
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -340,6 +348,10 @@ PrefabInstance:
     - target: {fileID: 7468673559398512695, guid: 2016f8df770b4ae4e8f46fc01f5e4f87, type: 3}
       propertyPath: m_Name
       value: Tile 2_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7468673559398512695, guid: 2016f8df770b4ae4e8f46fc01f5e4f87, type: 3}
+      propertyPath: m_TagString
+      value: BlinkPoints
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -527,6 +539,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile 2_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4567624890156172348, guid: 9f2f8e18eb2e4564888e17f1fd476d9a, type: 3}
+      propertyPath: m_TagString
+      value: BlinkPoints
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -588,6 +604,10 @@ PrefabInstance:
     - target: {fileID: 7204819974554915853, guid: 0e50957ac9409894bb979cc4e75ce429, type: 3}
       propertyPath: m_Name
       value: Tile 2_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7204819974554915853, guid: 0e50957ac9409894bb979cc4e75ce429, type: 3}
+      propertyPath: m_TagString
+      value: BlinkPoints
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

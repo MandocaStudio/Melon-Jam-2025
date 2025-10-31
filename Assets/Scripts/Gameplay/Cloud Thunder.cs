@@ -10,91 +10,94 @@ public class ThunderCloudSpell : MonoBehaviour
 
     [Header("Damage Settings")]
     [SerializeField] private float strikeRadius = 2.0f;
-    [SerializeField] private int strikeDamage = 50;
-    [SerializeField] private LayerMask enemyLayer; 
-
+    // --- Esta es la variable de daño ---
+    [SerializeField] private int strikeDamage = 50; 
+    
     [Header("Visuals (Opcional)")]
     [SerializeField] private GameObject lightningVfxPrefab;
     [SerializeField] private GameObject cloudModel;
     
-    // --- Nueva variable para guardar el objetivo ---
     private Vector3 strikePosition; 
 
     private void Start()
     {
-        // 1. [NUEVO] El hechizo busca su propio objetivo
+        Debug.Log("[ThunderCloud] Hechizo instanciado. Empezando 'Start()'.");
+
         if (!FindTargetPosition())
         {
-            // Si no hay enemigos, nos destruimos inútilmente
+            Debug.LogWarning("[ThunderCloud] 'FindTargetPosition' falló (no hay enemigos con Tag 'Enemy'). Destruyendo hechizo.");
             Destroy(gameObject);
             return;
         }
 
-        // 2. [NUEVO] Nos movemos a la posición del objetivo
-        //    (La nube aparecerá sobre el enemigo aleatorio)
         transform.position = strikePosition;
-        
-        // 3. Iniciamos la secuencia
         StartCoroutine(StrikeSequence());
-        
-        // 4. Programamos la autodestrucción
         Destroy(gameObject, strikeDelay + vfxLifetime);
     }
     
-    // --- [NUEVO] Método para encontrar un objetivo ---
     private bool FindTargetPosition()
     {
-        // Buscamos a todos los enemigos en la escena por su Tag
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        Debug.Log($"[ThunderCloud] 'FindTargetPosition' encontró {enemies.Length} GameObjects con el Tag 'Enemy'.");
 
         if (enemies.Length == 0)
         {
-            // No hay objetivos
             return false; 
         }
 
-        // Elegimos un enemigo al azar de la lista
         int randomIndex = Random.Range(0, enemies.Length);
         GameObject targetEnemy = enemies[randomIndex];
-        
-        // Guardamos su posición
         strikePosition = targetEnemy.transform.position;
+        
+        Debug.Log($"[ThunderCloud] Objetivo seleccionado: {targetEnemy.name} en la posición {strikePosition}");
         return true;
     }
 
     private IEnumerator StrikeSequence()
     {
-        // --- FASE 1: Telegraph (Aviso) ---
-        // La nube es visible sobre el enemigo
+        Debug.Log($"[ThunderCloud] 'StrikeSequence' iniciado. Esperando {strikeDelay} segundos para el golpe.");
         yield return new WaitForSeconds(strikeDelay);
 
-        // --- FASE 2: Golpe ---
+        Debug.Log("[ThunderCloud] ¡GOLPE! Tiempo de espera terminado. Llamando a ApplyAreaDamage y SpawnVFX.");
+        
         if (cloudModel != null)
         {
             cloudModel.SetActive(false);
         }
         
-        // 5. [MODIFICADO] Usamos la posición guardada
         ApplyAreaDamage(strikePosition); 
         SpawnVFX(strikePosition);
     }
 
-    // 6. [MODIFICADO] Ahora acepta la 'center' como parámetro
     private void ApplyAreaDamage(Vector3 center)
     {
-        Collider[] hits = Physics.OverlapSphere(center, strikeRadius, enemyLayer);
+        Debug.Log($"[ThunderCloud] 'ApplyAreaDamage' escaneando en {center} con un radio de {strikeRadius}.");
+
+        Collider[] hits = Physics.OverlapSphere(center, strikeRadius);
+
+        Debug.Log($"[ThunderCloud] 'OverlapSphere' encontró {hits.Length} colliders en total (sin filtrar).");
 
         foreach (Collider hit in hits)
         {
-            IDamageable damageableObject = hit.GetComponentInParent<IDamageable>();
-            if (damageableObject != null)
+            if (hit.CompareTag("Enemy"))
             {
-                damageableObject.TakeDamage(strikeDamage);
+                IDamageable damageableObject = hit.GetComponentInParent<IDamageable>();
+                if (damageableObject != null)
+                {
+                    // --- [CORRECCIÓN AQUÍ] ---
+                    // Asegúrate de que ambas líneas usen "strikeDamage"
+                    Debug.Log($"[ThunderCloud] ¡ÉXITO! Objeto '{hit.gameObject.name}' tiene Tag 'Enemy'. Aplicando {strikeDamage} de daño."); 
+                    damageableObject.TakeDamage(strikeDamage);
+                }
+                else
+                {
+                    Debug.LogWarning($"[ThunderCloud] El objeto {hit.gameObject.name} tiene Tag 'Enemy' pero no se encontró un script 'IDamageable'.");
+                }
             }
         }
     }
 
-    // 7. [MODIFICADO] Ahora acepta la 'center' como parámetro
     private void SpawnVFX(Vector3 center)
     {
         if (lightningVfxPrefab != null)
@@ -105,7 +108,6 @@ public class ThunderCloudSpell : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // El Gizmo se mostrará en la posición del prefab
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, strikeRadius);
     }

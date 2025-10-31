@@ -1,50 +1,66 @@
 using UnityEngine;
+using System.Collections;
 
-// 1. [REQUERIDO] Añadimos esto. Para que el enemigo haga daño por
-//    contacto a la columna (como definimos en ColumnHealthBar.cs).
-[RequireComponent(typeof(DamageDealer))]
-public class ShooterController : MonoBehaviour, IDamageable // 2. [REQUERIDO] Implementamos la interfaz
+[RequireComponent(typeof(DamageDealer), typeof(EnemyFeedback), typeof(Animator))] 
+public class ArcherController : MonoBehaviour, IDamageable 
 {
     [Header("Blink Targets")]
-    public GameObject[] blinkObjects;
-    private int lastBlinkIndex = -1;
+    private GameObject[] blinkObjects; 
+
+    // --- [CORREGIDO] ---
+    // La variable 'lastBlinkIndex' solo debe declararse UNA VEZ.
+    // La he movido aquí abajo con las otras variables internas.
+    // private int lastBlinkIndex = -1; // <-- Esta era la declaración duplicada
 
     [Header("Configuración del Arquero")]
-    // 3. [BUENA PRÁCTICA] Cambiado a private con SerializeField.
-    //    Ya nada externo necesita acceder a 'health' directamente.
     [SerializeField] private int health = 1;
-    public float fireRate = 1.5f;
-    public float blinkInterval = 3f;
+    public float fireRate = 5f;
+    public float blinkInterval = 5f;
 
     [Header("Proyectil")]
     public GameObject projectilePrefab;
-    public float projectileSpeed = 10f; // Esta variable ya no se usa aquí,
-                                        // pero la dejamos por si la usa otro script.
 
+    [Header("Loot")]
+    [SerializeField] private GameObject shardDropPrefab;
+
+    // --- Referencias internas ---
+    private int lastBlinkIndex = -1; // <-- Declarada UNA SOLA VEZ aquí
     private float nextFireTime = 0f;
     private float blinkTimer = 0f;
+    private EnemyFeedback enemyFeedback;
+    private Animator animator; 
 
     private void Start()
     {
         transform.tag = "Enemy";
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
-        BlinkToNewPosition();
+        enemyFeedback = GetComponent<EnemyFeedback>();
+        animator = GetComponent<Animator>(); 
+
+        // Busca sus propios puntos de salto
+        blinkObjects = GameObject.FindGameObjectsWithTag("BlinkPoint");
+        if (blinkObjects.Length == 0)
+        {
+            Debug.LogError("¡ArcherController no encontró GameObjects con el tag 'BlinkPoint'!");
+            enabled = false; 
+        }
+        
+        BlinkToNewPosition(); 
+        GameManager.activeEnemies++;
     }
 
     private void Update()
     {
-        // 4. [BUENA PRÁCTICA] Comprobación de vida al inicio del Update.
-        //    (Ya lo tenías, ¡excelente!)
         if (health <= 0) return;
 
-        // Disparo del arquero
+        // Disparo
         if (Time.time >= nextFireTime)
         {
             ShootProjectile();
             nextFireTime = Time.time + fireRate;
         }
 
-        // Blink a nuevo tile
+        // Blink
         blinkTimer += Time.deltaTime;
         if (blinkTimer >= blinkInterval)
         {
@@ -53,59 +69,54 @@ public class ShooterController : MonoBehaviour, IDamageable // 2. [REQUERIDO] Im
         }
     }
 
-    private void BlinkToNewPosition()
-    {
-        if (blinkObjects == null || blinkObjects.Length == 0) return;
-
-        int newIndex = Random.Range(0, blinkObjects.Length);
-        while (newIndex == lastBlinkIndex && blinkObjects.Length > 1)
-            newIndex = Random.Range(0, blinkObjects.Length);
-
-        transform.position = blinkObjects[newIndex].transform.position;
-        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
-        lastBlinkIndex = newIndex;
-
-        Debug.Log($"Archer blinked to object {newIndex}.");
-    }
-
-    private void ShootProjectile()
-    {
-        Vector3 spawnPosition = transform.position + new Vector3(1f, 0f, 0f);
-        
-        // 5. [CORRECCIÓN] Solo instanciamos. No controlamos su Rigidbody.
-        //    El script "EnemyProjectile.cs" ya se encarga de su propio
-        //    movimiento usando transform.Translate.
-        Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(60f, 0f, 0f));
-    }
-
-    // 6. [ELIMINADO] Este método ya no es necesario.
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        // El script "Projectile.cs" (del jugador) ahora
-        // es el responsable de detectar al "Enemy" y
-        // llamar a "TakeDamage"
-    }
-    */
-
-    // 7. [REQUERIDO] Este método ahora implementa la interfaz
-    //    Debe ser 'public' y el parámetro debe coincidir.
+    // --- Lógica de Daño (IDamageable) ---
     public void TakeDamage(int damageAmount)
     {
+        if (health <= 0) return;
+        if (enemyFeedback != null) enemyFeedback.PlayHitEffect();
         health -= damageAmount;
-        Debug.Log($"Archer took {damageAmount} damage. Remaining HP: {health}");
+        
+        Debug.Log($"Arquero recibió {damageAmount} de daño. Salud restante: {health}");
 
         if (health <= 0)
         {
-            Debug.Log("Archer destroyed");
+            GameManager.activeEnemies--;
+            Debug.Log($"Arquero destruido. Enemigos restantes: {GameManager.activeEnemies}");
             DropShard();
             Destroy(gameObject);
         }
     }
 
+    // --- Lógica de Loot ---
     private void DropShard()
     {
-        Inventory.Instance.CollectBig(Inventory.ItemType.Ray);
-        Debug.Log("Fragmento grande de rayo añadido al inventario.");
+        if (shardDropPrefab == null) return;
+        GameObject shardInstance = Instantiate(shardDropPrefab, transform.position, Quaternion.identity);
+        shardInstance.GetComponent<ShardDrop2D>().Initialize(Inventory.ItemType.Ray, ShardDrop2D.ShardSize.Big);
+    }
+    
+    // --- Habilidades ---
+    private void BlinkToNewPosition()
+    {
+        if (blinkObjects == null || blinkObjects.Length == 0) return;
+        int newIndex = Random.Range(0, blinkObjects.Length);
+        while (newIndex == lastBlinkIndex && blinkObjects.Length > 1)
+            newIndex = Random.Range(0, blinkObjects.Length);
+        transform.position = blinkObjects[newIndex].transform.position;
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
+        lastBlinkIndex = newIndex;
+    }
+
+    private void ShootProjectile()
+    {
+        // 1. Llama al trigger de la animación
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
+        // 2. Spawnea el proyectil
+        Vector3 spawnPosition = transform.position + new Vector3(1f, 0f, 0f);
+        Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(60f, 0f, 0f));
     }
 }

@@ -1,83 +1,116 @@
 using UnityEngine;
 
-// 1. Añadimos ISlowable a la lista de interfaces
-[RequireComponent(typeof(DamageDealer))]
+[RequireComponent(typeof(DamageDealer), typeof(EnemyFeedback))]
 public class SpeedsterController : MonoBehaviour, IDamageable, ISlowable
 {
-    [Header("Configuración del Velocista")]
+    [Header("Stats")]
     [SerializeField] private int health = 2;
-    
-    public float moveSpeed = 2f; // Esta es la velocidad base
+    public float moveSpeed = 2f;
 
-    // --- Variables para ISlowable ---
-    private float originalSpeed; // <-- NUEVO: Para guardar la velocidad original
-    private float currentSpeed;  // <-- NUEVO: La velocidad que se usa en Update
+    [Header("Loot")]
+    [Tooltip("El prefab 2D de la esquirla que soltará")]
+    [SerializeField] private GameObject shardDropPrefab;
+    public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
 
+    [Header("Referencias")]
     public int rowIndex;
     public Material FullMaterial;
-    public Vector3 dropOffset = new Vector3(-0.3f, 0, 0);
+
+    // Referencias internas
+    private EnemyFeedback enemyFeedback;
+    private float originalSpeed;
+    private float currentSpeed;
 
     private void Start()
     {
+        // --- Inicialización ---
         transform.tag = "Enemy";
         transform.rotation = Quaternion.Euler(60f, 0f, 0f);
 
-        // --- Inicialización de ISlowable ---
-        originalSpeed = moveSpeed; // <-- NUEVO: Guardamos la velocidad base
-        currentSpeed = originalSpeed;  // <-- NUEVO: Seteamos la velocidad actual
+        // --- Inicialización de Módulos ---
+        originalSpeed = moveSpeed;
+        currentSpeed = originalSpeed;
+        enemyFeedback = GetComponent<EnemyFeedback>();
+
+        // --- [NUEVO] Paso 1: Reportarse al GameManager al nacer ---
+        GameManager.activeEnemies++;
     }
 
     private void Update()
     {
-        // 2. Usamos currentSpeed en lugar de moveSpeed
-        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime); // <-- MODIFICADO
+        // Se mueve usando la velocidad actual (que puede ser modificada por ISlowable)
+        transform.Translate(Vector3.left * currentSpeed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // (Usando el tag "PlayerColumn" que tenías en tu script EnemyProjectile)
-        if (other.CompareTag("PlayerColumn"))
-        {
-            // El enemigo se destruye al chocar.
-            // La columna (en su propio script) ya se habrá
-            // encargado de tomar el daño de nuestro DamageDealer.
-            Destroy(gameObject);
-        }
-    }
-
-    // --- Método de IDamageable (Sin cambios) ---
+    // --- Lógica de Daño (IDamageable) ---
     public void TakeDamage(int damageAmount)
     {
+        // 1. Mostrar feedback visual
+        if (enemyFeedback != null)
+        {
+            enemyFeedback.PlayHitEffect();
+        }
+
+        // 2. Aplicar daño
         health -= damageAmount;
         Debug.Log($"Velocista recibió {damageAmount} de daño. Salud restante: {health}");
 
+        // 3. Comprobar muerte
         if (health <= 0)
         {
-            Debug.Log("Velocista destruido");
+            // --- [NUEVO] Paso 2: Reportarse al GameManager al morir ---
+            GameManager.activeEnemies--;
+            Debug.Log($"Velocista destruido. Enemigos restantes: {GameManager.activeEnemies}");
+            // --- [FIN DE LO NUEVO] ---
+
+            // Soltar loot y destruirse
             DropShard();
             Destroy(gameObject);
         }
     }
 
-    // --- Método de Drop (Sin cambios) ---
+    // --- Lógica de Loot ---
     private void DropShard()
     {
-        Inventory.Instance.CollectBig(Inventory.ItemType.Wind);
-        Debug.Log("Fragmento grande de viento añadido al inventario.");
+        if (shardDropPrefab == null) return;
+
+        // 1. Instancia el prefab
+        GameObject shardInstance = Instantiate(
+            shardDropPrefab,
+            transform.position + dropOffset,
+            Quaternion.identity
+        );
+
+        // 2. Inicializa la esquirla (le dice que es Grande y de Viento)
+        shardInstance.GetComponent<ShardDrop2D>().Initialize(
+            Inventory.ItemType.Wind,
+            ShardDrop2D.ShardSize.Big
+        );
+
+        Debug.Log("Fragmento grande de viento soltado.");
     }
 
-    // --- 3. MÉTODOS REQUERIDOS POR ISlowable ---
-
-    public void ApplySpeedMultiplier(float multiplier) // <-- NUEVO
+    // --- Lógica de Ralentización (ISlowable) ---
+    public void ApplySpeedMultiplier(float multiplier)
     {
-        // Aplicamos el multiplicador a la velocidad original (no a la actual)
-        // para evitar que los slows se "acumulen" (multipliquen entre sí).
         currentSpeed = originalSpeed * multiplier;
     }
 
-    public void ResetSpeed() // <-- NUEVO
+    public void ResetSpeed()
     {
-        // Restauramos la velocidad a su valor original
         currentSpeed = originalSpeed;
+    }
+
+    // --- Lógica de Colisión (Autodestrucción) ---
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerColumn"))
+        {
+            // --- [NUEVO] Paso 3: Reportarse al GameManager al chocar ---
+            // (Chocar con la columna también es una "muerte")
+            GameManager.activeEnemies--;
+            Debug.Log($"Velocista chocó con columna. Enemigos restantes: {GameManager.activeEnemies}");
+            Destroy(gameObject);
+        }
     }
 }

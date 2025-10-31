@@ -14,19 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SubPhaseData
   duration: 15
   directionalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  ambientLightIntensity: 1
+  ambientLightIntensity: 5
   lightingTransitionTime: 5
   spawnBursts:
-  - startTime: 10
-    count: 2
+  - startTime: 5
+    count: 1
     interval: 1
     prefabsToSpawn:
     - {fileID: 2040272074520347807, guid: 7cd09ad9884aa694f9670b084070a8c3, type: 3}
-  - startTime: 0
-    count: 0
-    interval: 0
-    prefabsToSpawn: []
-  basicStreamCount: 3
+  basicStreamCount: 8
   basicStreamPrefabs:
   - {fileID: 4671872184591195917, guid: d95560a14ad01874caca8c9d070ec41d, type: 3}
   mediumStreamCount: 0

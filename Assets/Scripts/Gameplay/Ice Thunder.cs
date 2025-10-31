@@ -1,42 +1,61 @@
 using UnityEngine;
 using System.Collections.Generic; // ¡Necesario para la lista!
+using System.Collections;       // ¡Necesario para la corrutina!
 
-// (Archivo: Ice Thunder.cs)
+[RequireComponent(typeof(Collider))] // Nos aseguramos de que tenga un collider
 public class IceThunderCone : MonoBehaviour
 {
-    [Header("Cone Settings")]
-    [Tooltip("Tiempo que el cono permanece en el mundo")]
+    [Header("Configuración del Cono")]
+    [Tooltip("Tiempo que el cono permanece activo en el mundo")]
     [SerializeField] private float lifetime = 3.0f;
     
-    [Header("Ice Effect (Slow)")]
+    [Header("Efecto Hielo (Slow)")]
     [Tooltip("Multiplicador de velocidad (ej: 0.3 = 70% más lento)")]
     [SerializeField] private float speedMultiplier = 0.3f; 
 
-    [Header("Thunder Effect (Damage)")]
+    [Header("Efecto Trueno (Damage)")]
     [Tooltip("Daño que se aplica UNA VEZ al entrar")]
     [SerializeField] private int damageAmount = 25;
     
-    // --- System Internals ---
+    // --- Referencias Internas ---
     private Collider myCollider;
     
     // Esta lista rastrea a los enemigos que ya han sido dañados
     // para evitar que reciban daño varias veces.
     private List<Collider> alreadyDamagedEnemies;
 
-    private void Start()
+    // Awake se usa para obtener referencias (solo se llama una vez)
+    private void Awake()
     {
         myCollider = GetComponent<Collider>();
-        if (myCollider == null) {
-            Debug.LogError("¡IceThunderCone no tiene Collider!");
-            return;
-        }
-        
-        // Inicializamos la lista
+        // Inicializamos la lista aquí
         alreadyDamagedEnemies = new List<Collider>();
-
-        // Usamos el patrón de 'Invoke' para desactivar de forma segura
-        Invoke(nameof(DisableAOE), lifetime);
     }
+
+    // OnEnable se llama CADA VEZ que el objeto se activa
+    private void OnEnable()
+    {
+        // 1. Reseteamos la lista de enemigos dañados
+        alreadyDamagedEnemies.Clear();
+
+        // 2. Aseguramos que el collider esté encendido
+        if (myCollider != null)
+        {
+            myCollider.enabled = true;
+        }
+
+        // 3. Programamos la auto-desactivación
+        StartCoroutine(DisableAfterTime());
+    }
+
+    // Corrutina para auto-desactivarse
+    private IEnumerator DisableAfterTime()
+    {
+        yield return new WaitForSeconds(lifetime);
+        DisableSpell();
+    }
+
+    // --- Lógica de Hielo (Slow) y Trueno (Damage) ---
 
     private void OnTriggerEnter(Collider other)
     {
@@ -82,15 +101,28 @@ public class IceThunderCone : MonoBehaviour
         }
     }
 
-    private void DisableAOE()
+    // --- Lógica de Desactivación (Reemplaza a Destroy) ---
+    
+    private void DisableSpell()
     {
-        // Este patrón asegura que OnTriggerExit se llame para todos
+        // 1. [CRÍTICO] Apagamos el collider primero.
+        // Esto fuerza a que OnTriggerExit() se llame en todos los
+        // enemigos que siguen dentro, reseteando su velocidad.
         if (myCollider != null)
         {
             myCollider.enabled = false;
         }
 
-        // Destruimos el objeto un segundo después
-        Destroy(gameObject, 1f);
+        // 2. Apagamos el GameObject.
+        gameObject.SetActive(false);
+    }
+    
+    private void OnDisable()
+    {
+        // Seguridad por si el objeto se apaga externamente
+        if (myCollider != null && myCollider.enabled)
+        {
+            myCollider.enabled = false;
+        }
     }
 }
